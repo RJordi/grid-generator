@@ -1,0 +1,238 @@
+@id,@type,@lat,@lon,name,operator,power,frequency,voltage
+1380927825,node,46.7552114,12.9974464,,KELAG,substation,50,20000
+4018721508,node,47.1683470,13.2526666,,,substation,50,30000
+5645886026,node,47.0657070,13.3527727,,Verbund Hydro Power GmbH,substation,50,110000
+5645904462,node,46.9828458,13.4548526,,KELAG,substation,50,20000
+5653873949,node,46.8954518,13.3432254,,Verbund Hydro Power GmbH,substation,50,220000
+5654710358,node,46.9922618,13.0469634,,KELAG,substation,50,110000
+5658636668,node,47.0294669,12.8581613,,KELAG,substation,50,20000
+5680260031,node,46.7214603,13.6454460,,Verbund Hydro Power GmbH,substation,50,20000
+5680429507,node,46.6692828,13.7251827,,Verbund Hydro Power GmbH,substation,50,20000
+5683331147,node,46.6325900,13.8287468,,Verbund Hydro Power GmbH,substation,50,20000
+5761932804,node,46.5600895,13.7584180,,KELAG,substation,50,20000
+5771775995,node,46.6292009,13.4611608,,VVT Vermögensverwaltung GmbH,substation,50,20000
+5777524686,node,47.0288791,12.8544652,,Großglockner Seilbahn GmbH,substation,50,20000
+5777524702,node,47.0372885,12.8734352,,KELAG,substation,50,20000
+5794346236,node,46.7155778,13.8284866,,KNG-Kärnten Netz GmbH,substation,50,20000
+7699924093,node,47.5929311,13.3149549,,Salzburg Netz,substation,,30000
+7704469925,node,47.5844929,13.3192250,,Salzburg Netz,substation,50,30000
+7850561242,node,48.3245190,14.3004040,Umspannwerk Nord,Linz AG Strom,substation,,
+23899163,way,47.5222807,12.0761303,Umspannwerk Kirchbichl,,substation,,220000;110000
+24253250,way,48.3583123,16.3782533,Umspannwerk Bisamberg,Austrian Power Grid AG,substation,,380000;220000;110000
+24768685,way,47.2728400,11.4713662,Umspannwerk Thaur,TIWAG-Netz AG,substation,50,220000;110000
+24830381,way,48.3247401,14.3008850,Umspannwerk Linz-Nord,Linz Netz,substation,50,110000
+26209260,way,48.2007408,16.2368717,Umspannwerk Wien West,Wiener Netze,substation,50,110000
+26524546,way,47.2799045,9.6155049,Umspannwerk Brederis,Vorarlberger Energienetze GmbH,substation,,110000
+26644088,way,48.2576399,16.3900092,Umspannwerk Wien Nord,,substation,,380000;110000
+26703085,way,47.4936113,10.7487458,,,substation,50,110000
+27673934,way,48.2051052,16.3111490,Umspannwerk Kendlerstraße,Austrian Grid Power AG,substation,50,380000
+27763479,way,48.1245976,14.4738968,Umspannwerk Ernsthofen,Austrian Power Grid AG,substation,,380000;220000;110000
+27795895,way,48.1238348,16.4195774,Umspannwerk Wien Südost,Austrian Power Grid AG,substation,,380000;220000;110000
+27797285,way,48.2250575,15.6892335,Umspannwerk Pottenbrunn,Netz NÖ,substation,,380000;110000
+28596524,way,47.1625541,11.8507323,Schaltanlage Mayrhofen,,substation,50,220000
+28968803,way,48.0650615,16.6150515,Umspannwerk Enzersdorf,Netz NÖ,substation,,110000
+29563097,way,48.2669045,14.3421947,UW Hütte Süd 110kV,voestalpine Stahl GmbH,substation,50,110000
+30042006,way,48.2687459,15.7373596,Schaltwerk Etzersdorf,Austrian Power Grid AG,substation,,380000
+30076588,way,48.1466970,15.0478209,Umspannwerk Ybbsfeld,,substation,50,220000;110000
+30244554,way,48.2180527,15.2696277,Umspannwerk Bergern,EVN;Verbund Austrian Power Grid AG,substation,50,110000
+30842675,way,47.9703735,13.7975249,Schaltwerk Ohlsdorf,Energie AG,substation,50,110000
+32293834,way,47.2220246,9.6426103,Umspannwerk Frastanz,,substation,,110000
+32497342,way,48.2473236,14.4280146,Umspannwerk Wasserkraftwerk Abwinden-Asten,Austrian Power Grid,substation,,110000
+32501080,way,48.2672016,14.3475040,Umspannwerk FHKW Linz-Süd,Linz Netz,substation,,110000
+33041399,way,47.8310518,13.0296454,Umspannwerk Salzach Stich,Austrian Power Grid AG,substation,,220000
+33058565,way,48.2047654,14.2238799,,Energie AG Oberösterreich,substation,50,110000
+33482741,way,47.9937798,14.3779845,Kraftwerk Rosenau,,substation,50,110000
+33631653,way,48.3567020,16.2407904,Umspannwerk Greifenstein,,substation,50,220000
+33840061,way,48.0107661,13.5882739,Umspannwerk Timelkam,,substation,50,110000
+38821658,way,47.2592344,12.7424019,Umspannwerk Kaprun,"Verbund Hydro Power, Austrian Power Grid AG",substation,50,380000;220000;110000
+38868243,way,47.2777201,12.7398102,Umspannwerk Tauern,Austrian Power Grid AG,substation,,380000;220000
+42306133,way,47.8920507,14.5172612,Umspannwerk Großraming,,substation,50,110000
+45544115,way,48.3307663,16.3397514,,Austrian Power Grid AG,substation,,110000
+47001881,way,48.3939886,15.7056168,Umspannwerk Theiß,Netz NÖ,substation,,380000;110000
+47002504,way,48.4092572,15.6892309,Umspannwerk Stratzdorf,Netz NÖ,substation,50,110000;20000
+50650855,way,48.0832552,14.0521115,Umspannwerk Sattledt,Austrian Grid Power AG,substation,,220000
+59531071,way,48.3288984,15.8856141,Umspannwerk Dürnrohr,Austrian Power Grid;Netz Niederösterreich,substation,,380000;220000;110000
+60222001,way,47.8447254,16.9006726,Umspannwerk Frauenkirchen,Netz Burgenland,substation,,110000;20000
+61108302,way,47.3123674,9.5919204,Umspannwerk Meiningen,Vorarlberger Energienetze GmbH,substation,,380000;220000
+67628695,way,48.3111014,14.3036410,Umspannwerk Linz-Mitte,Linz Netz,substation,,30000;10000
+70497801,way,48.1895046,15.0656375,Umspannwerk Ybbs Persenbeug,Verbund,substation,50,220000
+81216242,way,48.2106835,13.5149921,Umspannwerk Ried,,substation,50,110000
+81540198,way,48.2563255,13.0819957,Umspannwerk St. Peter,Austrian Power Grid AG,substation,,380000
+81611149,way,47.4233631,15.2740556,Umspannwerk Bruck an der Mur,,substation,50,110000
+81684898,way,47.2506067,16.2763973,Umspannwerk Südburgenland/Rotenturm,Verbund Austrian Power Grid AG,substation,,380000;110000
+82201785,way,47.9604168,16.8379779,Umspannwerk Neusiedl,Austrian Power Grid;Netz Burgenland,substation,,220000;110000
+83202471,way,47.7070905,16.0650000,Umspannwerk Ternitz,Austrian Power Grid AG,substation,50,220000;110000;20000
+83424897,way,47.7224869,16.3830080,Umspannwerk Mattersburg,Netz Burgenland,substation,50,110000
+83529203,way,47.4326458,9.7165734,Umspannwerk Werben - Dornbirn,Vorarlberger Energienetze GmbH,substation,50,220000;110000
+83740194,way,46.9036309,15.4230708,Umspannwerk Kainachtal/Zwaring,Verbund Austrian Power Grid AG;STEWEAG-STEG,substation,,380000;110000
+83742775,way,46.9090053,15.4839254,,,substation,,
+83742801,way,47.0909039,15.7257874,Umspannwerk Oststeiermark/Wünschendorf,Verbund Austrian Power Grid AG;STEWEAG-STEG,substation,,380000;110000
+83803297,way,47.3153791,13.1379192,,,substation,,110000
+83805040,way,46.8709922,13.3277449,Malta Hauptstufe,,substation,50,220000;110000
+83805050,way,46.8724869,13.3125134,Reißeck-Kreuzeck,Verbund Hydro Power GmbH,substation,50,110000
+83823298,way,46.9340217,13.1100115,,,substation,50,110000
+83831570,way,46.6685514,14.6816920,Umspannwerk Obersielach,Austrian Power Grid AG,substation,50,380000;220000;110000
+83947318,way,48.5593654,16.0710334,Umspannwerk Hollabrunn,Netz NÖ,substation,50,110000
+84014731,way,46.6314905,13.8935659,Umspannwerk Landskron,KNG-Kärnten Netz GmbH,substation,50,110000
+84789829,way,47.3924278,11.8387173,Schaltwerk Strass,,substation,50,220000
+85291082,way,46.8018801,12.7497839,,,substation,,
+85471947,way,46.7196814,14.0905635,Umspannwerk Feldkirchen,KNG-Kärnten Netz GmbH,substation,50,110000
+85699520,way,47.0357610,12.5165236,UW Gruben,TIWAG,substation,50,110000
+85699549,way,46.9235706,12.5915244,UW Kienburg,,substation,50,110000
+85703086,way,46.9229426,12.6010942,KW Kalserbach,TIWAG,substation,50,110000
+86119428,way,46.5683182,14.0279728,Kraftwerk Rosegg,Verbund Hydro Power GmbH,substation,50,220000
+86119456,way,46.5358440,14.1729613,Umspannwerk Feistritz,,substation,50,220000
+86321271,way,46.5454848,14.2988831,Kraftwerk Ferlach-Maria Rain,Verbund Hydro Power GmbH,substation,50,110000
+87246307,way,46.5595831,14.4830762,Kraftwerk Freibach,KNG-Kärnten Netz GmbH,substation,50,110000
+87365703,way,46.6297973,14.7024405,Kraftwerk Edling,Verbund Hydro Power GmbH,substation,50,220000
+87372613,way,46.6580101,14.8745979,Kraftwerk Schwabeck,Verbund Hydro Power GmbH,substation,50,110000
+88180087,way,48.6477036,15.6326906,Umspannwerk Horn,Netz NÖ,substation,,110000
+88381335,way,46.7720962,14.8379508,Umspannwerk Sankt Andrä,,substation,50,110000
+88680218,way,47.3969053,15.0207676,Umspannwerk Hessenberg,Verbund Austrian Power Grid AG,substation,,220000;110000
+88684218,way,47.1809776,14.7261996,Umspannwerk Zeltweg,Austrian Power Grid AG,substation,,220000
+89451551,way,47.5745273,14.2077640,Umspannwerk Weißenbach,Verbund;Austrian Power Grid AG,substation,,220000
+89985993,way,47.6784472,14.3304791,Umspannwerk Pyhrn,Verbund Austrian Power Grid AG,substation,50,220000
+90060333,way,48.1119688,14.8668341,Umspannwerk Amstetten Süd,Netz NÖ;Stadtwerke Amstetten,substation,,110000;20000
+90677190,way,48.2723126,15.6530180,Umspannwerk Zagging,Netz NÖ,substation,,110000
+91062369,way,48.0893176,15.3904194,Umspannwerk Kilb,Netz NÖ,substation,50,110000
+91236151,way,47.4945661,14.4643748,Umspannwerk Schwarzenbach,Energienetze Steiermark,substation,,110000
+91579706,way,48.3150623,14.1511682,Kraftwerk Ottensheim,Energie AG,substation,50,110000
+92873353,way,48.3852250,14.0196105,Umspannwerk Aschach,,substation,50,220000
+93077882,way,48.1043962,13.8997983,Umspannwerk Hausruck,Verbund Austrian Power Grid AG,substation,50,220000
+93235072,way,48.2499086,14.3200643,Umspannwerk Kleinmünchen,Linz Netz,substation,,110000
+93370554,way,48.2565643,14.3765076,Umspannwerk Pichling,,substation,50,110000
+93483694,way,47.2854963,12.8119492,Umspannwerk Bruck,Salzburg AG,substation,50,110000
+94149189,way,47.1698034,12.6271921,KW Enzingerboden,ÖBB-Infrastruktur AG,substation,16.7,110000
+95003268,way,48.1204321,13.1340717,Umspannwerk Mattighofen,,substation,50,110000
+95195213,way,48.1854400,15.1810811,Umspannwerk Erlauf,Netz NÖ,substation,,110000
+95456147,way,47.9813449,13.8140169,Umspannwerk Laakirchen,Netz OÖ,substation,,110000
+95642941,way,47.6078087,13.6328064,Umspannwerk Steeg,Netz OÖ,substation,50,110000
+95743675,way,47.7173291,13.5968217,Umspannwerk Pfandl,Netz OÖ,substation,,110000;30000
+95790224,way,47.0164549,15.4919286,Umspannwerk Grambach,,substation,50,110000;20000
+95812231,way,47.2695305,10.9662584,Umspannwerk Silz,TIWAG-Netz AG,substation,,220000;110000
+95828351,way,48.2244070,14.5318866,Schaltwerk St. Pantaleon,,substation,50,110000
+95837658,way,48.1641688,14.6952629,Umspannwerk Wallsee,Austrian Power Grid AG,substation,50,220000;110000
+95848249,way,46.6673136,14.4211246,Umspannwerk Lassendorf,KNG-Kärnten Netz GmbH,substation,50,110000
+96250616,way,48.4337701,13.9866848,110/30kV Schalthaus,Energie AG,substation,,
+96596880,way,47.9787842,16.5687419,Umspannwerk Wasenbruck,Netz NÖ,substation,50,110000
+96689254,way,47.8436275,16.5462960,Umspannwerk Eisenstadt,Netz Burgenland,substation,50,110000;20000
+97218204,way,47.0101033,16.1916316,Umspannwerk Eltendorf,BEWAG,substation,50,110000;20000
+97586384,way,47.8013951,16.2735602,Umspannwerk Neudörfl,Netz Burgenland,substation,50,110000
+98290225,way,46.5620396,14.4798346,Kraftwerk Annabrücke,ÖBB-Infrastruktur AG,substation,16.7,110000
+99761298,way,47.7258808,16.1038074,Umspannwerk Hohe Wand,,substation,50,110000
+100404264,way,47.2429573,10.8687545,Tiwag Umspannwerk Ötztal,TIWAG,substation,50,110000
+100602290,way,47.0694064,10.6653149,Umspannwerk Prutz,,substation,,220000;110000
+100872499,way,47.2117890,10.7200122,110kV Freischaltanlage,,substation,,110000
+101997887,way,47.1430048,9.8104929,Umspannwerk Bürs,Vorarlberger Illwerke AG,substation,,380000;220000
+102295643,way,48.2916865,14.2860581,Umspannwerk Linz-Zentrum,Linz Netz,substation,,110000
+102572506,way,48.2472584,14.2688603,Umspannwerk Wegscheid,APG;Netz OÖ,substation,50,110000
+103394555,way,47.2926839,15.3226620,Kraftwerk Laufnitzdorf,Verbund Hydro Power GmbH,substation,50,110000
+103801374,way,47.2804819,15.3171075,Umspannwerk Frohnleiten,,substation,,
+105065132,way,47.8879833,13.0668277,Umspannwerk Salzburg,Austrian Power Grid AG,substation,,220000
+105080874,way,47.5152530,12.0875270,,,substation,50,110000
+107248400,way,48.0318168,16.6959469,Umspannwerk Sarasdorf,,substation,,380000;110000
+107908697,way,48.2096440,16.3677012,Umspannwerk Neubad,Wiener Netze,substation,,110000
+113597106,way,48.5898540,15.4429474,Umspannwerk Krumau,Netz NÖ,substation,,110000;20000
+114715432,way,47.2520961,9.5845347,Umspannwerk Gisingen,Vorarlberger Energienetze GmbH,substation,,110000
+118060597,way,48.1650978,16.3306594,Umspannwerk Süd,Wiener Netze,substation,,380000;110000
+118091356,way,48.3731802,15.8551217,,Austrian Power Grid AG,substation,,220000
+118132395,way,48.1034650,13.8999121,Umspannwerk Lambach,Energie AG,substation,50,110000
+118248006,way,47.3640903,10.1970073,,,substation,,110000
+119428954,way,48.2845354,15.7117734,Umspannwerk Herzogenburg,Netz NÖ,substation,,110000
+122592181,way,48.3295220,15.8799634,Umspannwerk Dürnrohr,Verbund,substation,,380000
+122763233,way,47.8802492,15.2664020,Umspannwerk Erlaufboden,Netz NÖ,substation,50,110000
+122857785,way,48.0956757,16.8648917,Umspannwerk Petronell,Netz NÖ,substation,,110000
+123098511,way,46.9774593,13.0519156,Umspannwerk Innerfragant,KNG-Kärnten Netz GmbH,substation,50,110000
+123174725,way,47.0844698,9.8810557,Umspannwerk Rodund I,Vorarlberger Illwerke AG,substation,,
+123176540,way,47.0731662,9.8737711,KW Lünersee,,substation,,220000
+124814541,way,48.2769308,14.3451607,Umspannwerk Hütte Ost,,substation,,110000
+124952731,way,48.2835514,14.3421601,Umspannwerk Hütte Nord,voestalpine Stahl GmbH,substation,,110000
+128225177,way,48.3576700,16.3233825,Umspannwerk Korneuburg,Netz NÖ,substation,,110000
+128228754,way,48.1109080,15.1343150,Umspannwerk Wieselburg,Netz NÖ,substation,,110000
+129643773,way,47.0687817,9.9164889,Umspannwerk Tschagguns,Vorarlberger Energienetze GmbH,substation,,110000
+135260775,way,48.1998401,16.4644440,,,substation,50,110000
+136384702,way,48.0810819,16.8378783,Umspannwerk Scharndorf,Netz NÖ,substation,,110000
+137946515,way,46.6729182,14.9560855,Umspannwerk Ettendorf,,substation,50,110000
+138407044,way,48.1828057,16.4303382,Schaltanlage Simmering,,substation,,380000;110000
+140375658,way,47.2341328,11.8978247,SF6-Halle 380 kV,,substation,50,380000
+144202272,way,47.9420350,14.3529407,Kraftwerk Ternberg,,substation,50,110000
+145583866,way,47.2363081,11.3924219,Umspannwerk Vill,TIWAG,substation,50,220000
+152245073,way,47.8213918,14.1632065,Umspannwerk Klaus,Austrian Power Grid AG,substation,50,220000
+153783851,way,46.5450890,14.3957478,Umspannwerk Sankt Margareten,KNG-Kärnten Netz GmbH,substation,50,110000
+156604223,way,47.3210049,13.1848027,Kraftwerk Plankenau,,substation,50,60000
+156973414,way,47.2333799,11.8978570,Umspannwerk Zell am Ziller,Austrian Power Grid AG,substation,50,380000;220000;110000
+162826525,way,46.8250919,12.8063356,Umspannwerk Lienz,Austrian Power Grid AG,substation,50,380000;220000;110000
+169304139,way,47.2327042,9.5895164,Umspannwerk Feldkirch,,substation,,110000
+171066516,way,47.9377161,16.9945648,Umspannwerk Zurndorf,Austrian Power Grid AG;Energie Burgenland AG,substation,,380000;110000
+173495825,way,46.6070118,14.3210744,Klagenfurt Süd,Energie Klagenfurt GmbH,substation,50,110000
+173502223,way,48.2235932,16.3719967,Umspannwerk Leopoldstadt,Wiener Netze,substation,,110000
+174531795,way,48.2056560,14.7601453,Umspannwerk Baumgartenberg,Linz Netz,substation,50,110000
+179051110,way,48.2271890,16.3342400,Umspannwerk Währing,Wiener Netze,substation,,110000
+180468540,way,46.5431735,13.6798601,Umspannwerk Greuth,Eneco S.r.l.,substation,50,220000
+185647172,way,48.5235964,15.2444970,,,substation,,
+196322535,way,48.2137621,16.5248208,Umspannwerk Essling,Wiener Netze,substation,,110000
+202285850,way,48.5873936,16.7468569,Umspannwerk Prinzendorf,Netz NÖ,substation,,110000
+202577634,way,48.5566194,14.1479671,,,substation,,
+206394519,way,48.1301753,14.4756504,,,substation,,110000
+210191809,way,48.4345509,13.4428590,Umspannwerk Schärding,,substation,,220000
+219909160,way,46.9689375,10.0541168,Umspannwerk Kops,Vorarlberger Energienetze GmbH,substation,50,110000;220000
+219909161,way,47.0848407,9.8744295,Umspannwerk Rodund II,,substation,,
+220456274,way,47.2963338,13.0569581,,,substation,50,60000
+228731882,way,48.2181597,16.4959011,Umspannwerk Aspern,Wiener Netze,substation,,110000
+235546807,way,48.1163904,14.4693298,Schaltwerk Kronstorf,Austrian Power Grid AG,substation,,380000
+266449118,way,47.8586064,13.5588130,EAG,,substation,,
+272456377,way,48.1948683,16.3103246,Umspannwerk Penzing,Wiener Netze,substation,,110000
+285543649,way,48.2102368,16.4107136,Umspannwerk Prater,Wiener Netze,substation,,110000
+288347513,way,48.3131913,16.0416013,Umspannwerk Tulln-West,Netz NÖ,substation,,110000
+308781050,way,46.5209885,14.5772356,,Kraftwerk Blasnitzen GmbH,substation,50,20000
+317264549,way,48.3308354,16.2075360,SST Wördern,EVN,substation,,
+320442058,way,48.2688915,14.2261746,Umspannwerk Leonding,APG;Linz Netz,substation,50,110000;30000
+321946617,way,48.1108878,15.6133002,Umspannwerk Wilhelmsburg,EVN,substation,,110000
+324055876,way,48.6974395,16.0500484,Umspannwerk Peigarten,Netz NÖ,substation,,110000
+325753786,way,48.3569638,15.7572611,Umspannwerk Stollhofen,Netz NÖ,substation,,110000;20000
+337169409,way,47.9867574,13.7156509,Umspannwerk Regau,Netz OÖ,substation,,110000;30000
+347968939,way,47.0855167,11.7786275,Umspannwerk Rosshag,Austrian Power Grid AG,substation,,220000
+376315134,way,47.4100712,15.2138199,,,substation,,
+389462463,way,48.2223343,16.3489127,Umspannwerk Michelbeuern,Wiener Netze Strom,substation,,110000
+478850561,way,48.4743306,16.5689827,Umspannwerk Gaweinstal,Netz NÖ,substation,,110000
+478863889,way,48.6258313,16.7490440,Umspannwerk Hauskirchen,Netz NÖ,substation,,110000
+497665559,way,48.5336006,14.4888733,Umspannwerk Rainbach im Mühlkreis,Linz AG,substation,50,110000;30000
+551728528,way,48.2150566,16.3214549,Umspannwerk Ottakring,Wiener Netze,substation,,110000
+587747481,way,48.3496458,14.0797006,Umspannwerk Feldkirchen,Netz OÖ,substation,50,110000;30000
+593100931,way,46.9660708,13.1883836,,ÖBB-Infrastruktur AG,substation,50,20000
+593119859,way,46.9367953,13.1927689,Obervellach,ÖBB-Infrastruktur AG,substation,16.7,110000
+593152355,way,46.6338903,14.9554082,Kraftwerk Koralpe,KELAG,substation,50,110000
+593501423,way,48.1867093,16.3392675,Umspannwerk Gaudenzdorf,Wiener Netze,substation,,110000
+603139216,way,46.5539607,13.8278667,Villach Süd,Austrian Power Grid AG;KNG-Kärnten Netz GmbH,substation,50,220000;110000
+609808987,way,46.9257721,13.0809671,,KNG-Kärnten Netz GmbH,substation,50,20000
+617084338,way,48.1974531,15.3897864,Umspannwerk Loosdorf,Netz NÖ,substation,,110000
+620696996,way,46.5454163,14.2994177,,KNG-Kärnten Netz GmbH,substation,50,20000
+656592483,way,48.3862118,16.7625412,Umspannwerk Prottes,Netz NÖ,substation,,110000
+671588826,way,48.2653091,16.7483007,Umspannwerk Untersiebenbrunn,Netz NÖ,substation,,110000
+675291183,way,47.9292695,16.3575621,Umspannwerk Pottendorf,Wiener Netze,substation,,110000
+694695942,way,46.9100887,15.4911746,Umspannwerk Mellach,Austrian Power Grid AG,substation,,380000
+714463001,way,48.3298908,15.9415307,Umspannwerk Pischelsdorf,Netz NÖ,substation,,110000
+727225348,way,47.2439938,10.8739154,APG Umspannwerk Westtirol,Austrian Power Grid AG,substation,50,380000;220000;110000
+765101679,way,48.1389956,16.4315299,Umspannwerk Kledering,Austrian Power Grid AG,substation,50,220000
+778635054,way,47.2587370,12.7416894,,Austrian Power Grid AG,substation,50,380000
+790994348,way,48.7158806,16.2820458,Schaltwerk Pernhofen,Netz NÖ,substation,,110000
+852324809,way,47.1989663,9.6701263,Umspannwerk Walgauwerk,Vorarlberger Energienetze GmbH,substation,50,220000
+888593883,way,48.4896558,13.7518617,,,substation,50,110000
+888662973,way,48.3540771,13.6237642,,,substation,,110000
+893218229,way,47.8212596,14.1630322,,Austrian Power Grid AG,substation,,
+903355442,way,48.2075555,14.1684807,Umspannwerk Hörsching,Netz OÖ,substation,50,110000;30000
+941582806,way,48.2969839,14.3007227,Umspannwerk Linz-City,Linz Netz,substation,,110000
+974852055,way,47.9417571,15.0971359,Umspannwerk Gaming,Wiener Netze,substation,,110000
+978393462,way,47.8678338,15.7023710,,NETZ NOE,substation,,
+983838971,way,47.9852012,16.6093186,Umspannwerk Mannersdorf,Netz NÖ,substation,,110000
+983842177,way,47.9852012,16.6093186,Umspannwerk Mannersdorf,Netz NÖ,substation,,110000
+989813518,way,47.8191765,16.4365525,Umspannwerk Steinbrunn,Netz Burgenland,substation,,110000
+996237055,way,48.0479445,16.7857295,Umspannwerk Höflein,Netz NÖ,substation,,110000
+1001640574,way,48.3274978,15.9250618,,Austrian Power Grid,substation,,380000
+1022835369,way,47.3892739,11.7572051,,,substation,50,110000
+1030388922,way,48.2880224,14.3312956,Umspannwerk Linz Ost,,substation,,110000
+1036023136,way,48.5924218,15.3321868,Umspannwerk Ottenstein,Netz NÖ,substation,,110000;20000
+1036849480,way,48.0207814,16.8603181,Umspannwerk Bruckneudorf,Netz Burgenland,substation,,110000
+1051033055,way,47.3787883,13.2103809,Umspannwerk Pongau,Austrian Grid Power AG;Salzburg Netz,substation,50,220000;110000;30000
+3688586,relation,48.1709930,16.2889443,Umspannwerk Speising,Wiener Netze,substation,,110000
+10725395,relation,48.7775469,15.5425637,Umspannwerk Japons,Netz NÖ,substation,,110000;20000

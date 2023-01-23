@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modules &mdash; Austrian Transmission Grid  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data Sources" href="sources.html" />
+    <link rel="prev" title="Getting Started" href="gettingstarted.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Austrian Transmission Grid
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-network_generator_V2">NetworkGeneratorV2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#networkgeneratorv3">NetworkGeneratorV3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lines">LinesGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-terminals">TerminalsGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-power_plants">PowerPlantsGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-main">ModelGenerator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">Data Sources</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Austrian Transmission Grid</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Modules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="modules">
+<h1>Modules<a class="headerlink" href="#modules" title="Permalink to this heading"></a></h1>
+<div class="section" id="module-network_generator_V2">
+<span id="networkgeneratorv2"></span><h2>NetworkGeneratorV2<a class="headerlink" href="#module-network_generator_V2" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2._get_template_obj_class_type">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">_get_template_obj_class_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/network_generator_V2.html#_get_template_obj_class_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2._get_template_obj_class_type" title="Permalink to this definition"></a></dt>
+<dd><p>Get template class. It returns ElmSym or ElmGenstat</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>template</strong> – template object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>class type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2._import_csv_files">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">_import_csv_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_source_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/network_generator_V2.html#_import_csv_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2._import_csv_files" title="Permalink to this definition"></a></dt>
+<dd><p>Import csv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_source_files</strong> – list of files to import</p></li>
+<li><p><strong>csv_format</strong> – locale format e.g. for DE use {‘delimiter’: ‘;’, ‘decimal’: ‘,’}</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dict of frames</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2._is_pf_object">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">_is_pf_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/network_generator_V2.html#_is_pf_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2._is_pf_object" title="Permalink to this definition"></a></dt>
+<dd><p>Check is object exists in the current active project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> – object</p></li>
+<li><p><strong>obj_class</strong> – object class</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is object exists</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2._pf_sort">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">_pf_sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/network_generator_V2.html#_pf_sort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2._pf_sort" title="Permalink to this definition"></a></dt>
+<dd><p>Sort dataframes based on the PF class order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>grid</strong> – Dict of frames</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a sorted dict of frames based on the PF order</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2.add_objs_from_templates">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">add_objs_from_templates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">templates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o_IntPrj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pflib.pf_typing.IntPrj</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/network_generator_V2.html#add_objs_from_templates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2.add_objs_from_templates" title="Permalink to this definition"></a></dt>
+<dd><p>Add objects using templates. It is assumed that a template contains only one object of type ElmSym or a ElmGenStat.
+This object will be connected to the grid and the power plant for this object will be imported automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> – input data with the objects to import</p></li>
+<li><p><strong>templates</strong> – templates folder object</p></li>
+<li><p><strong>grid_name</strong> – loc_name of the ElmNet</p></li>
+<li><p><strong>o_IntPrj</strong> – project object</p></li>
+<li><p><strong>validate_input_data</strong> – validate input frames</p></li>
+<li><p><strong>csv_format</strong> – csv format, default delimiter=”,” decimal=”.”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2.create_project">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">create_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">net_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pflib.pf_typing.IntPrj</span></span></span><a class="reference internal" href="_modules/network_generator_V2.html#create_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2.create_project" title="Permalink to this definition"></a></dt>
+<dd><p>Create a project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project_name</strong> – project name</p></li>
+<li><p><strong>net_name</strong> – ElmNet loc_name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the project object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2.define_measuring_points">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">define_measuring_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_source_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o_IntPrj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pflib.pf_typing.IntPrj</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/network_generator_V2.html#define_measuring_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2.define_measuring_points" title="Permalink to this definition"></a></dt>
+<dd><p>Define measuring points for StaPqmea and StaVmea</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_source_files</strong> – list of files</p></li>
+<li><p><strong>o_IntPrj</strong> – project object</p></li>
+<li><p><strong>csv_format</strong> – csv format, default delimiter=”,” decimal=”.”</p></li>
+<li><p><strong>validate_input_data</strong> – validate input data</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2.generate_network_data_from_csv">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">generate_network_data_from_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_source_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o_IntPrj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pflib.pf_typing.IntPrj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pflib.pf_typing.IntPrj</span></span></span><a class="reference internal" href="_modules/network_generator_V2.html#generate_network_data_from_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2.generate_network_data_from_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Generate network data from csv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_source_files</strong> – a list of csv files containing the grid data</p></li>
+<li><p><strong>grid_name</strong> – loc_name of the ElmNet obj</p></li>
+<li><p><strong>validate_input_data</strong> – set to True if you want to validate the input data</p></li>
+<li><p><strong>csv_format</strong> – locale format e.g. for DE use {‘delimiter’: ‘;’, ‘decimal’: ‘,’}</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2.generate_network_data_from_frames">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">generate_network_data_from_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o_IntPrj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pflib.pf_typing.IntPrj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/network_generator_V2.html#generate_network_data_from_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2.generate_network_data_from_frames" title="Permalink to this definition"></a></dt>
+<dd><p>Generate network data from csv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frames</strong> – dictionary of frames containing the grid data</p></li>
+<li><p><strong>grid_name</strong> – loc_name of the ElmNet obj</p></li>
+<li><p><strong>validate_input_data</strong> – set to True if you want to validate the input data</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="network_generator_V2.import_templates">
+<span class="sig-prename descclassname"><span class="pre">network_generator_V2.</span></span><span class="sig-name descname"><span class="pre">import_templates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o_IntPrj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pflib.pf_typing.IntPrj</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pflib.pf.DataObject</span></span></span><a class="reference internal" href="_modules/network_generator_V2.html#import_templates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V2.import_templates" title="Permalink to this definition"></a></dt>
+<dd><p>Import templates library specified as input in the template folder. If no input project is specified
+the active project will be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> – filepath of the templates library</p></li>
+<li><p><strong>o_IntPrj</strong> – PF project</p></li>
+<li><p><strong>overwrite</strong> – if the library already exists it will be overwritten</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the imported PF library</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="networkgeneratorv3">
+<h2>NetworkGeneratorV3<a class="headerlink" href="#networkgeneratorv3" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">network_generator_V3.</span></span><span class="sig-name descname"><span class="pre">NetworkGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o_IntPrj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pflib.pf_typing.IntPrj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator._activate_project">
+<span class="sig-name descname"><span class="pre">_activate_project</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator._activate_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator._activate_project" title="Permalink to this definition"></a></dt>
+<dd><p>Activate correct project</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator._get_template_obj_class_type">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_get_template_obj_class_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator._get_template_obj_class_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator._get_template_obj_class_type" title="Permalink to this definition"></a></dt>
+<dd><p>Get template class. It returns ElmSym or ElmGenstat</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>template</strong> – template object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>class type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator._import_csv_files">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_import_csv_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_source_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator._import_csv_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator._import_csv_files" title="Permalink to this definition"></a></dt>
+<dd><p>Import csv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_source_files</strong> – list of files to import</p></li>
+<li><p><strong>csv_format</strong> – locale format e.g. for DE use {‘delimiter’: ‘;’, ‘decimal’: ‘,’}</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dict of frames</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator._is_pf_object">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_is_pf_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator._is_pf_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator._is_pf_object" title="Permalink to this definition"></a></dt>
+<dd><p>Check is the input object exists in the current active project</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> – object</p></li>
+<li><p><strong>obj_class</strong> – object class</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is object exists</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator._pf_sort">
+<span class="sig-name descname"><span class="pre">_pf_sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator._pf_sort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator._pf_sort" title="Permalink to this definition"></a></dt>
+<dd><p>Sort dataframes based on the PF class order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>grid</strong> – Dict of frames</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a sorted dict of frames based on the PF order</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator.add_objs_from_templates">
+<span class="sig-name descname"><span class="pre">add_objs_from_templates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">templates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator.add_objs_from_templates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator.add_objs_from_templates" title="Permalink to this definition"></a></dt>
+<dd><p>Add objects using templates. It is assumed that a template contains only one object of type ElmSym or a ElmGenStat.
+This object will be connected to the grid and the power plant for this object will be imported automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> – input data with the objects to import</p></li>
+<li><p><strong>templates</strong> – templates folder object</p></li>
+<li><p><strong>grid_name</strong> – loc_name of the ElmNet</p></li>
+<li><p><strong>validate_input_data</strong> – validate input frames</p></li>
+<li><p><strong>csv_format</strong> – csv format, default delimiter=”,” decimal=”.”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator.define_measuring_points">
+<span class="sig-name descname"><span class="pre">define_measuring_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_source_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator.define_measuring_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator.define_measuring_points" title="Permalink to this definition"></a></dt>
+<dd><p>Define measuring points for StaPqmea and StaVmea</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_source_files</strong> – list of files</p></li>
+<li><p><strong>csv_format</strong> – csv format, default delimiter=”,” decimal=”.”</p></li>
+<li><p><strong>validate_input_data</strong> – validate input data</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator.generate_network_data_from_csv">
+<span class="sig-name descname"><span class="pre">generate_network_data_from_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_source_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pflib.pf_typing.IntPrj</span></span></span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator.generate_network_data_from_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator.generate_network_data_from_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Generate network data from csv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_source_files</strong> – a list of csv files containing the grid data</p></li>
+<li><p><strong>grid_name</strong> – loc_name of the ElmNet obj</p></li>
+<li><p><strong>validate_input_data</strong> – set to True if you want to validate the input data</p></li>
+<li><p><strong>csv_format</strong> – locale format e.g. for DE use {‘delimiter’: ‘;’, ‘decimal’: ‘,’}</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator.generate_network_data_from_frames">
+<span class="sig-name descname"><span class="pre">generate_network_data_from_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator.generate_network_data_from_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator.generate_network_data_from_frames" title="Permalink to this definition"></a></dt>
+<dd><p>Generate network data from csv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frames</strong> – dictionary of frames containing the grid data</p></li>
+<li><p><strong>grid_name</strong> – loc_name of the ElmNet obj</p></li>
+<li><p><strong>validate_input_data</strong> – set to True if you want to validate the input data</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="network_generator_V3.NetworkGenerator.import_templates">
+<span class="sig-name descname"><span class="pre">import_templates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pflib.pf.DataObject</span></span></span><a class="reference internal" href="_modules/network_generator_V3.html#NetworkGenerator.import_templates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#network_generator_V3.NetworkGenerator.import_templates" title="Permalink to this definition"></a></dt>
+<dd><p>Import templates library specified as input in the template folder. If no input project is specified
+the active project will be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> – filepath of the templates library</p></li>
+<li><p><strong>overwrite</strong> – if the library already exists it will be overwritten</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the imported PF library</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lines">
+<span id="linesgenerator"></span><h2>LinesGenerator<a class="headerlink" href="#module-lines" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.calculate_line_length">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">calculate_line_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/lines.html#calculate_line_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.calculate_line_length" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the length of a line</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coords_list</strong> (<em>list</em><em>(</em><em>list</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>)</em>) – Coordinates that define the line</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The line’s length value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.correct_incoherent_cables">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">correct_incoherent_cables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/lines.html#correct_incoherent_cables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.correct_incoherent_cables" title="Permalink to this definition"></a></dt>
+<dd><p>Correct incoherent data in the cables column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lines DataFrame without incoherent cables</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>The number of cables should always be a multiple of 3 because we are considering that all circuits are 3-phased</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.correct_incoherent_combinations">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">correct_incoherent_combinations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/lines.html#correct_incoherent_combinations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.correct_incoherent_combinations" title="Permalink to this definition"></a></dt>
+<dd><p>Correct incoherent data between columns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lines DataFrame without incoherent data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.find_connecting_segments">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">find_connecting_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/lines.html#find_connecting_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.find_connecting_segments" title="Permalink to this definition"></a></dt>
+<dd><p>Return the ids of the ways containing the initial or final node from the given list of nodes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> (<em>pd.Series</em>) – row of the Series consisting of the nodes that belong to a line</p></li>
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list with ids of ways that contain the start or end node of row</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.format_lines">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">format_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/lines.html#format_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.format_lines" title="Permalink to this definition"></a></dt>
+<dd><p>Format lines DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>formatted lines DataFrame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>Get relevant information from tags and put it in the DataFrame’s columns. Calculate the length of each line
+using <a class="reference internal" href="#lines.calculate_line_length" title="lines.calculate_line_length"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_line_length()</span></code></a> and compute each line’s connecting line using <a class="reference internal" href="#lines.find_connecting_segments" title="lines.find_connecting_segments"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_connecting_segments()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.handle_nan">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">handle_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/lines.html#handle_nan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.handle_nan" title="Permalink to this definition"></a></dt>
+<dd><p>Fill NaN data in the DataFrame columns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines pd.DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lines DataFrame without NaN values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.join_lines">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">join_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/lines.html#join_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.join_lines" title="Permalink to this definition"></a></dt>
+<dd><p>Join two line elements that are exclusively connected between each other</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lines DataFrame with concatenated lines</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>TODO: Detailed explanation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.query_lines">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">query_lines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lines.html#query_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.query_lines" title="Permalink to this definition"></a></dt>
+<dd><p>Overpass API query to be run</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>query string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p>The query looks for lines and cables with a voltage value &gt;= 100kV inside the area of Austria and filters out
+the lines and cables with a frequency of 16.7Hz, which belong to the railway system.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.split_lines_by_voltage">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">split_lines_by_voltage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/lines.html#split_lines_by_voltage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.split_lines_by_voltage" title="Permalink to this definition"></a></dt>
+<dd><p>Split lines with more than one voltage level into multiple lines (one for each voltage level)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lines DataFrame containing lines with a single voltage level per line</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>When the number of voltage levels is the same as the number of circuits a line is assigned to each voltage level
+(a line here is equivalent to a row of the DataFrame). When the number of voltage levels is different from the
+number of circuits we distinguish two cases:</p>
+<ul>
+<li><p><strong>number_of_circuits % number_of_voltage_levels == 0</strong>: we assign a line to each voltage level, but now the
+line has a number of circuits equal to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">number_of_circuits</span> <span class="o">/</span> <span class="n">number_of_voltage_levels</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>number_of_circuits % number_of_voltage_levels != 0</strong>: we look if the references are known (there’s one
+reference for each circuit):</p>
+<ul class="simple">
+<li><p><strong>references are known</strong>: we assign a line to each voltage level and the number of determined by the references</p></li>
+<li><p><strong>references are not known</strong>:  TODO</p></li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lines.split_middle_connections">
+<span class="sig-prename descclassname"><span class="pre">lines.</span></span><span class="sig-name descname"><span class="pre">split_middle_connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/lines.html#split_middle_connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lines.split_middle_connections" title="Permalink to this definition"></a></dt>
+<dd><p>Split lines that are connected to other lines at some point which is not its start or end</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>ps.DataFrame</em>) – lines DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lines DataFrame without any middle connection</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>TODO -&gt; More detailed explanation of what the function does</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-terminals">
+<span id="terminalsgenerator"></span><h2>TerminalsGenerator<a class="headerlink" href="#module-terminals" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="terminals.assign_areas_and_zones">
+<span class="sig-prename descclassname"><span class="pre">terminals.</span></span><span class="sig-name descname"><span class="pre">assign_areas_and_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/terminals.html#assign_areas_and_zones"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#terminals.assign_areas_and_zones" title="Permalink to this definition"></a></dt>
+<dd><p>Assign areas and zones to terminals using NUTS (Nomenclature of Territorial Units for Statistics)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – terminals DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>terminals DataFrame with assigned zone and area</p>
+</dd>
+<dt class="field-odd">Retype</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>NUTS2 regions define the areas and NUTS3 define the zones. Tieline terminals are assigned the code ‘TL’ for the
+area and the zone fields.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="terminals.convert_substation_areas">
+<span class="sig-prename descclassname"><span class="pre">terminals.</span></span><span class="sig-name descname"><span class="pre">convert_substation_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/terminals.html#convert_substation_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#terminals.convert_substation_areas" title="Permalink to this definition"></a></dt>
+<dd><p>Transform substations to circular geometries</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – substations DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>substations DataFrame with new geometry</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>Uses the Mercator projection to find the Hausdorff distance between the substation’s centroid and
+the substation’s perimeter. Then creates a circle with a minimum radius of 200 meters and proportional
+to the Hausdorff distance. And finally converts the circle to GPS coordinates and assigns it as the
+substation’s geometry.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="terminals.create_trafos_csv">
+<span class="sig-prename descclassname"><span class="pre">terminals.</span></span><span class="sig-name descname"><span class="pre">create_trafos_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/terminals.html#create_trafos_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#terminals.create_trafos_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Create transformers data and write it to a csv file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – terminals DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>transformers DataFrame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="terminals.format_substations">
+<span class="sig-prename descclassname"><span class="pre">terminals.</span></span><span class="sig-name descname"><span class="pre">format_substations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/terminals.html#format_substations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#terminals.format_substations" title="Permalink to this definition"></a></dt>
+<dd><p>Format and clean substations DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – substations DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>formatted substations DataFrame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="terminals.query_terminals">
+<span class="sig-prename descclassname"><span class="pre">terminals.</span></span><span class="sig-name descname"><span class="pre">query_terminals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/terminals.html#query_terminals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#terminals.query_terminals" title="Permalink to this definition"></a></dt>
+<dd><p>Overpass API query to be run</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>query string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p>The query looks for substations with a voltage value &gt;= 100kV inside the area of Austria and filters out
+the substations with a frequency of 16.7Hz, which belong to the railway system.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-power_plants">
+<span id="powerplantsgenerator"></span><h2>PowerPlantsGenerator<a class="headerlink" href="#module-power_plants" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.cluster_data">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">cluster_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.Series</span></span></span><a class="reference internal" href="_modules/power_plants.html#cluster_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.cluster_data" title="Permalink to this definition"></a></dt>
+<dd><p>Cluster power plants using DBSCAN</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p></li>
+<li><p><strong>dist</strong> (<em>int</em>) – maximum distance between two samples for one to be considered as in the neighborhood of the other</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>clusters resulting from DBSCAN algorithm</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.convert_capacity">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">convert_capacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/power_plants.html#convert_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.convert_capacity" title="Permalink to this definition"></a></dt>
+<dd><p>Convert ‘capacity’ column to values in MW</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>power plants DataFrame with capacity values in MW</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.format_power_plants">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">format_power_plants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/power_plants.html#format_power_plants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.format_power_plants" title="Permalink to this definition"></a></dt>
+<dd><p>Format and clean substations DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>formatted power plants DataFrame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.load_atlas_data">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">load_atlas_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_file</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/power_plants.html#load_atlas_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.load_atlas_data" title="Permalink to this definition"></a></dt>
+<dd><p>Get solar generation installations data from <a class="reference external" href="https://www.statistik.at/atlas/">https://www.statistik.at/atlas/</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>csv_file</strong> (<em>str</em>) – path to csv file with new data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame with formatted new solar installations data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>The new solar power plants data is based on the installed PV systems supported by the funding initiatives
+<a class="reference external" href="https://www.klimafonds.gv.at/">Climate and Energy Fund</a> and <a class="reference external" href="https://www.oem-ag.at/de/home/">OeMAG</a>.
+The data shows the output kW per 1000 inhabitants of the PV systems installed in each municipality of Austria.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.load_gps_data">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">load_gps_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_file</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/power_plants.html#load_gps_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.load_gps_data" title="Permalink to this definition"></a></dt>
+<dd><p>Get geometric data of the Austrian municipalities from <a class="reference external" href="https://data.statistik.gv.at/web/meta.jsp?dataset=OGDEXT_GEM_1">https://data.statistik.gv.at/web/meta.jsp?dataset=OGDEXT_GEM_1</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>csv_file</strong> (<em>str</em>) – path to csv file with data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame with centroid coordinates of each municipality</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.plot_power_plant_map">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">plot_power_plant_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/power_plants.html#plot_power_plant_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.plot_power_plant_map" title="Permalink to this definition"></a></dt>
+<dd><p>Plot power plants weighted by their capacity on austrian map</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.print_agg_cap_by_source">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">print_agg_cap_by_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/power_plants.html#print_agg_cap_by_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.print_agg_cap_by_source" title="Permalink to this definition"></a></dt>
+<dd><p>Show power plant capacity summary with capacities aggregated by power plant source type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.query_power_plants">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">query_power_plants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/power_plants.html#query_power_plants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.query_power_plants" title="Permalink to this definition"></a></dt>
+<dd><p>Overpass API query to be run</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>query string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p>The query looks for power plants and generators with a numerical value for the output electricity
+inside the area of Austria.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.reassign_source_values">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">reassign_source_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/power_plants.html#reassign_source_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.reassign_source_values" title="Permalink to this definition"></a></dt>
+<dd><p>Modify source for some power plants and create ‘template’ column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>power plants DataFrame with new source values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>The ‘template’ column is used to write the csv file. This column maps each power plant’s source to a
+PowerFactory template for that type of power plant.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.remove_redundant_generators">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">remove_redundant_generators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clusters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/power_plants.html#remove_redundant_generators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.remove_redundant_generators" title="Permalink to this definition"></a></dt>
+<dd><p>Remove generators whose capacity is already included in a near power plant of the same source</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clusters</strong> (<em>pd.Series</em>) – clusters resulting from <a class="reference internal" href="#power_plants.cluster_data" title="power_plants.cluster_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">cluster_data()</span></code></a></p></li>
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>power plants DataFrame without redundant generators</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="power_plants.update_solar">
+<span class="sig-prename descclassname"><span class="pre">power_plants.</span></span><span class="sig-name descname"><span class="pre">update_solar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/power_plants.html#update_solar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#power_plants.update_solar" title="Permalink to this definition"></a></dt>
+<dd><p>Update solar power plants with new data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new power plants DataFrame with updated data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-main">
+<span id="modelgenerator"></span><h2>ModelGenerator<a class="headerlink" href="#module-main" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="main.assign_substation_to_lines">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">assign_substation_to_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/main.html#assign_substation_to_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.assign_substation_to_lines" title="Permalink to this definition"></a></dt>
+<dd><p>Assign terminal to line end if this one is geometrically inside the terminal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – substations DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lines DataFrame with assigned terminals</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>substations DataFrame with corresponding terminals</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>TODO: Detailed explanation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.assign_substation_to_power_plants">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">assign_substation_to_power_plants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_pp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/main.html#assign_substation_to_power_plants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.assign_substation_to_power_plants" title="Permalink to this definition"></a></dt>
+<dd><p>Assign the closest terminal to each power plant</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_pp</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – terminals DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>df_pp</strong> (<em>pd.DataFrame</em>) - power plants DataFrame with assigned terminals</p></li>
+<li><p><strong>df_pp_agg</strong> (<em>pd.DataFrame</em>) - power plants DataFrame with assigned terminals and aggregated capacity</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>TODO: Detailed explanation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.calculate_load_nominal_value_different_days">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">calculate_load_nominal_value_different_days</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_loads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/main.html#calculate_load_nominal_value_different_days"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.calculate_load_nominal_value_different_days" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate nominal value for the load using the load profile of a certain day</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_loads</strong> (<em>pd.DataFrame</em>) – loads DataFrame</p></li>
+<li><p><strong>load_profile</strong> (<em>pd.DataFrame</em>) – load profile of one day</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>loads DataFrame with nominal value for the power of the loads</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>TODO: Detailed explanation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.calculate_load_nominal_value_year_average">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">calculate_load_nominal_value_year_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_loads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/main.html#calculate_load_nominal_value_year_average"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.calculate_load_nominal_value_year_average" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate nominal value for the loads based on the load profile of the whole year</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_loads</strong> (<em>pd.DataFrame</em>) – loads DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>loads DataFrame with nominal value for the power of the loads</p>
+</dd>
+<dt class="field-odd">Rytpe</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>TODO: Detailed explanation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.create_pf_csv">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">create_pf_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_pp_agg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_loads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/main.html#create_pf_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.create_pf_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Create csv files to generate the PowerFactory model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – terminals DataFrame</p></li>
+<li><p><strong>df_pp_agg</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p></li>
+<li><p><strong>df_loads</strong> (<em>pd.DataFrame</em>) – loads DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>0</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p>TODO: Detailed explanation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.create_virtual_terminals">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">create_virtual_terminals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/main.html#create_virtual_terminals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.create_virtual_terminals" title="Permalink to this definition"></a></dt>
+<dd><p>Create virtual terminals at points where more than 2 lines meet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – terminals DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lines DataFrame with assigned virtual terminals</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>terminals DataFrame with new virtual terminals appended</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>TODO: Detailed explanation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.delete_lines_in_subs">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">delete_lines_in_subs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/main.html#delete_lines_in_subs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.delete_lines_in_subs" title="Permalink to this definition"></a></dt>
+<dd><p>Delete lines that start and end inside the same substation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – substations DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lines DataFrame with some lines deleted</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.generate_loads">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">generate_loads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/main.html#generate_loads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.generate_loads" title="Permalink to this definition"></a></dt>
+<dd><p>Create data for the loads based on the model from <a class="reference external" href="https://www.energiemosaik.at/">https://www.energiemosaik.at/</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – terminals DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>loads DataFrame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p>TODO: Detailed explanation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.handle_floating_ends">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">handle_floating_ends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/main.html#handle_floating_ends"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.handle_floating_ends" title="Permalink to this definition"></a></dt>
+<dd><p>Assign a terminal to line ends which are still not connected anywhere</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – terminals DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) - lines DataFrame with assigned floating end terminals</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) - terminals DataFrame with new floating end terminals appended</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>Get lines with at least a floating end. If they have a substation nearby (less than 1 km), assign substation to line and
+add the length value corresponding to the missing segment. Otherwise, add a new terminal to the floating end.
+If the line end is outside the region of Austria, the line is a tieline and a substation is added at the floating end.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.handle_special_cases">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">handle_special_cases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_subs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_trafos</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/main.html#handle_special_cases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.handle_special_cases" title="Permalink to this definition"></a></dt>
+<dd><p>Handle observed troublesome cases “manually”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – temrinals DataFrame</p></li>
+<li><p><strong>df_trafos</strong> (<em>pd.DataFrame</em>) – transformers DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) - lines DataFrame with resolved troublesome cases</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) - terminals DataFrame with resolved troublesome cases</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>TODO: Detailed explanation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.qgis">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">qgis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_trafos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_pp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_pp_agg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_loads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/main.html#qgis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.qgis" title="Permalink to this definition"></a></dt>
+<dd><p>Create csv files to visualize data using QGIS desktop application</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_lines</strong> (<em>pd.DataFrame</em>) – lines DataFrame</p></li>
+<li><p><strong>df_subs</strong> (<em>pd.DataFrame</em>) – terminals DataFrame</p></li>
+<li><p><strong>df_trafos</strong> (<em>pd.DataFrame</em>) – transformers plants DataFrame</p></li>
+<li><p><strong>df2</strong> (<em>pd.DataFrame</em>) – substations DataFrame with original geometries (before converting to circles)</p></li>
+<li><p><strong>df_pp</strong> (<em>pd.DataFrame</em>) – power plants DataFrame</p></li>
+<li><p><strong>df_pp_agg</strong> (<em>pd.DataFrame</em>) – power plants DataFrame with aggregated distributed generation</p></li>
+<li><p><strong>df_loads</strong> (<em>pd.DataFrame</em>) – loads DataFrame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>0</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p>Create csv files with attributes and WKT geometries to visualize the data of the model in QGIS.
+This way layers can be added to the QGIS project using the “Add Delimited Text Layer…” operation.
+The terminals had to be separated into two different files because QGIS can only read data with the same WKT type
+for each file.
+For the power plants also two files are created: one contains the power plants at the original location and before
+being aggregated and the other contains the aggregated power plants located at the position where their assigned
+terminal is positioned.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.query_overpass">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">query_overpass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="_modules/main.html#query_overpass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.query_overpass" title="Permalink to this definition"></a></dt>
+<dd><p>Query Overpass API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<em>str</em>) – query</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response with relevant information</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gettingstarted.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sources.html" class="btn btn-neutral float-right" title="Data Sources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Vettoretti Denis, Basel Morsy, Ribas Sobreviela Jordi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

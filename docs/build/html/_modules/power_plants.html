@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>power_plants &mdash; Austrian Transmission Grid  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Austrian Transmission Grid
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources.html">Data Sources</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Austrian Transmission Grid</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>power_plants</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for power_plants</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span> <span class="k">as</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">DBSCAN</span>
+
+
+<div class="viewcode-block" id="query_power_plants"><a class="viewcode-back" href="../api.html#power_plants.query_power_plants">[docs]</a><span class="k">def</span> <span class="nf">query_power_plants</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Overpass API query to be run</span>
+
+<span class="sd">	:param:</span>
+<span class="sd">	:return: query string</span>
+<span class="sd">	:rtype: str</span>
+
+<span class="sd">	The query looks for power plants and generators with a numerical value for the output electricity</span>
+<span class="sd">	inside the area of Austria.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">	// define output format</span>
+<span class="s2">	[out:json];</span>
+<span class="s2">	</span>
+<span class="s2">	// gather results</span>
+<span class="s2">	area[name=&quot;Österreich&quot;]-&gt;.searchArea;</span>
+<span class="s2">	(</span>
+<span class="s2">	  nwr[&quot;power&quot;=&quot;plant&quot;][&quot;plant:output:electricity&quot;](if:t[&quot;plant:output:electricity&quot;]!=&quot;yes&quot;)(area.searchArea);</span>
+<span class="s2">	  nwr[&quot;power&quot;=&quot;generator&quot;][&quot;generator:output:electricity&quot;](if:t[&quot;generator:output:electricity&quot;]!=&quot;yes&quot;)(area.searchArea);</span>
+<span class="s2">	);</span>
+<span class="s2">	</span>
+<span class="s2">	// print results</span>
+<span class="s2">	out tags center;</span>
+<span class="s2">	&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">query</span></div>
+
+
+<span class="c1"># def read_csv(csv_file) -&gt; pd.DataFrame:</span>
+<span class="c1">#     df = pd.read_csv(csv_file, index_col=&#39;@id&#39;)</span>
+<span class="c1">#     # Combine plants and generators</span>
+<span class="c1">#     df[&#39;source&#39;] = df[&#39;plant:source&#39;].fillna(df[&#39;generator:source&#39;])</span>
+<span class="c1">#     df[&#39;capacity&#39;] = df[&#39;plant:output:electricity&#39;].fillna(df[&#39;generator:output:electricity&#39;])</span>
+<span class="c1">#     df[&#39;method&#39;] = df[&#39;plant:method&#39;].fillna(df[&#39;generator:method&#39;])</span>
+<span class="c1">#     # Drop unuseful columns and rename the ones that we will use</span>
+<span class="c1">#     df.drop([&#39;plant:source&#39;, &#39;generator:source&#39;, &#39;plant:output:electricity&#39;, &#39;generator:output:electricity&#39;,</span>
+<span class="c1">#              &#39;plant:method&#39;, &#39;generator:method&#39;], axis=1, inplace=True)</span>
+<span class="c1">#     df.rename(columns={&#39;@type&#39;:&#39;OSM type&#39;, &#39;@lat&#39;:&#39;lat&#39;, &#39;@lon&#39;:&#39;lon&#39;}, inplace=True)</span>
+<span class="c1">#     df.rename_axis(&#39;id&#39;, axis=&#39;index&#39;, inplace=True)</span>
+<span class="c1">#</span>
+<span class="c1">#     if df.index.has_duplicates:</span>
+<span class="c1">#         raise Exception(&#39;The index contains duplicates, please change the duplicated id to a valid one&#39;)</span>
+<span class="c1">#</span>
+<span class="c1">#     return df</span>
+
+<div class="viewcode-block" id="format_power_plants"><a class="viewcode-back" href="../api.html#power_plants.format_power_plants">[docs]</a><span class="k">def</span> <span class="nf">format_power_plants</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Format and clean substations DataFrame</span>
+
+<span class="sd">	:param pd.DataFrame df: power plants DataFrame</span>
+<span class="sd">	:return: formatted power plants DataFrame</span>
+<span class="sd">	:rtype: pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Set id of each element as the index of the DataFrame</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verify_integrity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+
+	<span class="c1"># Create one DataFrame for each &quot;type&quot; value as they need to be handled separately</span>
+	<span class="n">df_node</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;node&#39;</span><span class="p">][[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">]]</span>
+	<span class="n">df_way</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;way&#39;</span><span class="p">][[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">]]</span>
+	<span class="n">df_relation</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;relation&#39;</span><span class="p">][[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">]]</span>
+
+	<span class="c1"># Get latitude and longitude of the centroid of power plants with types &quot;way&quot; and &quot;relation&quot;</span>
+	<span class="n">df_way</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">df_way</span><span class="o">.</span><span class="n">center</span><span class="p">]</span>
+	<span class="n">df_way</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">df_way</span><span class="o">.</span><span class="n">center</span><span class="p">]</span>
+	<span class="n">df_relation</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">df_relation</span><span class="o">.</span><span class="n">center</span><span class="p">]</span>
+	<span class="n">df_relation</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">df_relation</span><span class="o">.</span><span class="n">center</span><span class="p">]</span>
+
+	<span class="c1"># Join the three DataFrames</span>
+	<span class="n">df_pp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_node</span><span class="p">,</span> <span class="n">df_way</span><span class="p">,</span> <span class="n">df_relation</span><span class="p">])</span>
+
+	<span class="c1"># Delete power plants operated by ÖBB because they are part of the railway system</span>
+	<span class="n">df_pp</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_pp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_pp</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;ÖBB&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;operator&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;operator&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Create columns from the information in the &quot;tags&quot; column</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;OSM type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">type</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;power&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;power&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;power&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;generator:source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;generator:source&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;generator:source&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;generator:output:electricity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;generator:output:electricity&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;generator:output:electricity&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;generator:method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;generator:method&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;generator:method&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;plant:source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;plant:source&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;plant:source&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;plant:output:electricity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;plant:output:electricity&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;plant:output:electricity&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;plant:method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;plant:method&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;plant:method&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+
+	<span class="c1"># Combine plants and generators</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;plant:source&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;generator:source&#39;</span><span class="p">])</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;plant:output:electricity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;generator:output:electricity&#39;</span><span class="p">])</span>
+	<span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;plant:method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df_pp</span><span class="p">[</span><span class="s1">&#39;generator:method&#39;</span><span class="p">])</span>
+	<span class="c1"># Drop unuseful columns and rename the ones that we will use</span>
+	<span class="n">df_pp</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;plant:source&#39;</span><span class="p">,</span> <span class="s1">&#39;generator:source&#39;</span><span class="p">,</span> <span class="s1">&#39;plant:output:electricity&#39;</span><span class="p">,</span> <span class="s1">&#39;generator:output:electricity&#39;</span><span class="p">,</span>
+				<span class="s1">&#39;plant:method&#39;</span><span class="p">,</span> <span class="s1">&#39;generator:method&#39;</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Drop entries that don&#39;t have a value for the capacity</span>
+	<span class="n">df_pp</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_pp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_pp</span><span class="o">.</span><span class="n">capacity</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span><span class="n">char</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">df_pp</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">has_duplicates</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The index contains duplicates, please change the duplicated id to a valid one&#39;</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df_pp</span></div>
+
+
+<div class="viewcode-block" id="convert_capacity"><a class="viewcode-back" href="../api.html#power_plants.convert_capacity">[docs]</a><span class="k">def</span> <span class="nf">convert_capacity</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Convert &#39;capacity&#39; column to values in MW</span>
+
+<span class="sd">	:param pd.DataFrame df: power plants DataFrame</span>
+<span class="sd">	:return: power plants DataFrame with capacity values in MW</span>
+<span class="sd">	:rtype: pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Create DataFrame from the values in the &quot;capacity&quot; column</span>
+	<span class="n">capacity_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;capacity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;unit&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Manually change capacity from elements with unit == MWh</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">5398756504</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="s1">&#39;MW&#39;</span><span class="p">]</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">8339177107</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.82</span><span class="p">,</span> <span class="s1">&#39;MW&#39;</span><span class="p">]</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">8339205885</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.4</span><span class="p">,</span> <span class="s1">&#39;MW&#39;</span><span class="p">]</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">8339205888</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.8</span><span class="p">,</span> <span class="s1">&#39;MW&#39;</span><span class="p">]</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">8339205968</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;MW&#39;</span><span class="p">]</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">8339205997</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;MW&#39;</span><span class="p">]</span>
+
+	<span class="c1"># Drop entries without a capacity value or with a capacity equal to 0 and format values</span>
+	<span class="n">problematic_values</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+	<span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">problematic_values</span><span class="p">:</span>
+		<span class="n">problematic_entries</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">val</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+
+		<span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">char</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">val</span><span class="p">):</span>
+			<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">problematic_entries</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">problematic_entries</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">problematic_entries</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">isnull</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+				<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)):</span>
+					<span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+						<span class="n">break_idx</span> <span class="o">=</span> <span class="n">i</span>
+						<span class="k">break</span>
+				<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">val</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">problematic_entries</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="n">break_idx</span><span class="p">:]</span>
+				<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">val</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">problematic_entries</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">break_idx</span><span class="p">]</span>
+				<span class="n">val</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">problematic_entries</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+			<span class="k">if</span> <span class="s1">&#39;,&#39;</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+				<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">val</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">problematic_entries</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">capacity_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">problematic_entries</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+			<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">problematic_entries</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+
+	<span class="c1"># Delete entries with a capacity of 0 (some plants only provide thermal power and also some entries have missing data)</span>
+	<span class="n">zero_capacity_entries</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">zero_capacity_entries</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">zero_capacity_entries</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Check that all entries have the correct format</span>
+	<span class="n">problematic_values</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">problematic_values</span> <span class="o">!=</span> <span class="p">[]:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;There are still bad formatted entries in the dataset:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">problematic_values</span><span class="p">)</span>
+
+	<span class="c1"># Convert units to MW -&gt; create DataFrame with incorrect units</span>
+	<span class="n">kw_to_mw</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;kw&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;kwp&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;kva&#39;</span><span class="p">)]</span>
+	<span class="n">w_to_mw</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;w&#39;</span><span class="p">)]</span>
+	<span class="n">gw_to_mw</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">capacity_df</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gw&#39;</span><span class="p">)]</span>
+
+	<span class="c1"># Drop entries with units in GW (incorrect values)</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">gw_to_mw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="c1"># Drop entries also from the power plants DataFrame</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">gw_to_mw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Convert units</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">kw_to_mw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span><span class="o">/</span><span class="mi">1000</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">w_to_mw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span><span class="o">/</span><span class="mf">1e6</span>
+	<span class="n">capacity_df</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="s1">&#39;MW&#39;</span>
+
+	<span class="c1"># Put converted capacity values into the power plants DataFrame</span>
+	<span class="n">df</span><span class="p">[</span><span class="s1">&#39;capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacity_df</span><span class="o">.</span><span class="n">value</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;capacity&#39;</span><span class="p">:</span> <span class="s1">&#39;capacity(MW)&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="reassign_source_values"><a class="viewcode-back" href="../api.html#power_plants.reassign_source_values">[docs]</a><span class="k">def</span> <span class="nf">reassign_source_values</span><span class="p">(</span><span class="n">df</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Modify source for some power plants and create &#39;template&#39; column</span>
+
+<span class="sd">	:param pd.DataFrame df: power plants DataFrame</span>
+<span class="sd">	:return: power plants DataFrame with new source values</span>
+<span class="sd">	:rtype: pd.DataFrame</span>
+
+<span class="sd">	The &#39;template&#39; column is used to write the csv file. This column maps each power plant&#39;s source to a</span>
+<span class="sd">	PowerFactory template for that type of power plant.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;biogas&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;biomass&#39;</span> <span class="c1"># combine biomass and biogas into biomass</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;gas;waste;biomass&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gas&#39;</span> <span class="c1"># manually checked</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;gas;oil;biomass&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gas&#39;</span> <span class="c1"># manually checked</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;waste;gas&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;waste&#39;</span> <span class="c1"># manually checked</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;hydro;solar&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;hydro&#39;</span> <span class="c1"># manually checked</span>
+
+	<span class="c1"># Create new column &quot;template&quot; which will be used to create the csv file according to PF format</span>
+	<span class="n">d_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;wind&#39;</span><span class="p">:</span> <span class="s1">&#39;Wind&#39;</span><span class="p">,</span> <span class="s1">&#39;solar&#39;</span><span class="p">:</span> <span class="s1">&#39;PV&#39;</span><span class="p">,</span> <span class="s1">&#39;hydro&#39;</span><span class="p">:</span> <span class="s1">&#39;Hydro&#39;</span><span class="p">,</span> <span class="s1">&#39;biomass&#39;</span><span class="p">:</span> <span class="s1">&#39;Gas&#39;</span><span class="p">,</span> <span class="s1">&#39;gas&#39;</span><span class="p">:</span> <span class="s1">&#39;Gas&#39;</span><span class="p">,</span> <span class="s1">&#39;gas;waste&#39;</span><span class="p">:</span> <span class="s1">&#39;Gas&#39;</span><span class="p">,</span> <span class="s1">&#39;waste&#39;</span><span class="p">:</span> <span class="s1">&#39;Gas&#39;</span><span class="p">}</span>
+	<span class="n">df</span><span class="p">[</span><span class="s1">&#39;template&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">d_type</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+	<span class="n">hydro_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;run-of-the-river&#39;</span><span class="p">,</span> <span class="s1">&#39;water-storage&#39;</span><span class="p">,</span> <span class="s1">&#39;water-pumped-storage&#39;</span><span class="p">]</span>
+	<span class="n">condition</span> <span class="o">=</span> <span class="o">~</span><span class="n">df</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">hydro_methods</span><span class="p">)</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;hydro&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;hydro&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">source</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">method</span><span class="p">)</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Delete power plants with source == &quot;battery&quot; and generators with source == &quot;gas&quot; (they are redundant):</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;battery&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">power</span> <span class="o">==</span> <span class="s1">&#39;generator&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;gas&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Correct units of incoherent data points (solar power plants with infeasible capacity values (&gt;100 MW)) and input missing capacity value:</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">5199998365</span><span class="p">,</span> <span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">5199998365</span><span class="p">][</span><span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">5200203619</span><span class="p">,</span> <span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">5200203619</span><span class="p">][</span><span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span>
+
+	<span class="c1"># Drop duplicated elements (same name and capacity):</span>
+	<span class="n">duplicated</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span><span class="p">)</span> <span class="o">&amp;</span>
+						   <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;wind&#39;</span><span class="p">,</span> <span class="s1">&#39;solar&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="kc">False</span><span class="p">)]</span>
+	<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">duplicated</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="print_agg_cap_by_source"><a class="viewcode-back" href="../api.html#power_plants.print_agg_cap_by_source">[docs]</a><span class="k">def</span> <span class="nf">print_agg_cap_by_source</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Show power plant capacity summary with capacities aggregated by power plant source type</span>
+
+<span class="sd">	:param pd.DataFrame df: power plants DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_total_capacity_by_source</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">)[</span><span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;sum&#39;</span><span class="p">])</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total installed capacity: &#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">df_total_capacity_by_source</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="s1">&#39;MW&#39;</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Aggregated installed capacity by source:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">df_total_capacity_by_source</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="plot_power_plant_map"><a class="viewcode-back" href="../api.html#power_plants.plot_power_plant_map">[docs]</a><span class="k">def</span> <span class="nf">plot_power_plant_map</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Plot power plants weighted by their capacity on austrian map</span>
+
+<span class="sd">	:param pd.DataFrame df: power plants DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">gdf_powplant</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span>
+
+	<span class="c1"># We restrict to Austria.</span>
+	<span class="n">ax</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">&#39;../data/raw_data/maps/austria_bezirke/austria_bezirke.shp&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">geometry</span>
+	<span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">)</span>
+	<span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+	<span class="c1"># We can now plot our GeoDataFrame</span>
+	<span class="n">colormap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">tab10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">unique</span><span class="p">())))</span>
+	<span class="n">weight</span> <span class="o">=</span> <span class="n">gdf_powplant</span><span class="p">[</span><span class="s2">&quot;capacity(MW)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+	<span class="n">gdf_powplant</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
+					  <span class="n">c</span><span class="o">=</span><span class="n">colormap</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">factorize</span><span class="p">()[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">s</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">))</span>
+
+	<span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">colormap</span><span class="p">]</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">markers</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">numpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="cluster_data"><a class="viewcode-back" href="../api.html#power_plants.cluster_data">[docs]</a><span class="k">def</span> <span class="nf">cluster_data</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">dist</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Cluster power plants using DBSCAN</span>
+<span class="sd">	</span>
+<span class="sd">	:param pd.DataFrame df: power plants DataFrame</span>
+<span class="sd">	:param int dist: maximum distance between two samples for one to be considered as in the neighborhood of the other</span>
+<span class="sd">	:return: clusters resulting from DBSCAN algorithm</span>
+<span class="sd">	:rtype: pd.Series </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">coords</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+	<span class="n">ids</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+	<span class="n">m_per_radian</span> <span class="o">=</span> <span class="mf">6371.0088</span><span class="o">*</span><span class="mi">1000</span>
+	<span class="n">epsilon</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">/</span> <span class="n">m_per_radian</span>
+	<span class="n">db</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;ball_tree&#39;</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;haversine&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">coords</span><span class="p">))</span>
+	<span class="n">cluster_labels</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">labels_</span>
+	<span class="n">num_clusters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">cluster_labels</span><span class="p">))</span>
+	<span class="n">clusters</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">ids</span><span class="p">[</span><span class="n">cluster_labels</span> <span class="o">==</span> <span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_clusters</span><span class="p">)])</span>
+	<span class="c1">#print(&#39;Number of clusters: {}&#39;.format(num_clusters))</span>
+	<span class="c1">#clusters.to_csv(&quot;../data/csv/generated/clusters.csv&quot;)</span>
+
+	<span class="k">return</span> <span class="n">clusters</span></div>
+
+<div class="viewcode-block" id="remove_redundant_generators"><a class="viewcode-back" href="../api.html#power_plants.remove_redundant_generators">[docs]</a><span class="k">def</span> <span class="nf">remove_redundant_generators</span><span class="p">(</span><span class="n">clusters</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Remove generators whose capacity is already included in a near power plant of the same source</span>
+
+<span class="sd">	:param pd.Series clusters: clusters resulting from :func:`cluster_data`</span>
+<span class="sd">	:param pd.DataFrame df: power plants DataFrame</span>
+<span class="sd">	:return: power plants DataFrame without redundant generators</span>
+<span class="sd">	:rtype: pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">cluster</span> <span class="ow">in</span> <span class="n">clusters</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+		<span class="n">generators</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cluster</span> <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">power</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;generator&#39;</span><span class="p">]</span>
+		<span class="n">plants</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cluster</span> <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">power</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;plant&#39;</span><span class="p">]</span>
+		<span class="n">plant_cap</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">plants</span><span class="p">][</span><span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+		<span class="c1"># If plant_cap-10 &lt;= df.loc[generators][&#39;capacity(MW)&#39;].sum() &lt;= plant_cap+10:</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">plants</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="c1">#print(plants)</span>
+			<span class="n">gen_to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="n">gen</span> <span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="n">generators</span> <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="n">gen</span><span class="p">]</span> <span class="ow">in</span> <span class="n">plant</span> <span class="k">for</span> <span class="n">plant</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="n">plants</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">())]</span>
+			<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">gen_to_drop</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="load_atlas_data"><a class="viewcode-back" href="../api.html#power_plants.load_atlas_data">[docs]</a><span class="k">def</span> <span class="nf">load_atlas_data</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Get solar generation installations data from https://www.statistik.at/atlas/</span>
+
+<span class="sd">	:param str csv_file: path to csv file with new data</span>
+<span class="sd">	:return: DataFrame with formatted new solar installations data</span>
+<span class="sd">	:rtype: pd.DataFrame</span>
+
+<span class="sd">	The new solar power plants data is based on the installed PV systems supported by the funding initiatives</span>
+<span class="sd">	`Climate and Energy Fund &lt;https://www.klimafonds.gv.at/&gt;`_ and `OeMAG &lt;https://www.oem-ag.at/de/home/&gt;`_.</span>
+<span class="sd">	The data shows the output kW per 1000 inhabitants of the PV systems installed in each municipality of Austria.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">atlas_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span>
+	<span class="n">atlas_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Name&#39;</span><span class="p">:</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;Wert&#39;</span><span class="p">:</span><span class="s1">&#39;kW per 1000 hab.&#39;</span><span class="p">,</span> <span class="s1">&#39;abs.&#39;</span><span class="p">:</span><span class="s1">&#39;capacity(MW)&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">atlas_df</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;GKZ&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">atlas_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Unnamed: 4&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Convert &quot;kW&quot; column to float</span>
+	<span class="n">atlas_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">atlas_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atlas_df</span><span class="p">[</span><span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+	<span class="n">atlas_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">atlas_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atlas_df</span><span class="p">[</span><span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+	<span class="n">atlas_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">atlas_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atlas_df</span><span class="p">[</span><span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+
+	<span class="c1"># Drop entries with installed capacity equal to 0</span>
+	<span class="n">atlas_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">atlas_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">atlas_df</span><span class="p">[</span><span class="s1">&#39;capacity(MW)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">atlas_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">has_duplicates</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The index contains duplicates, please change the duplicated id to a valid one&#39;</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">atlas_df</span></div>
+
+
+<div class="viewcode-block" id="load_gps_data"><a class="viewcode-back" href="../api.html#power_plants.load_gps_data">[docs]</a><span class="k">def</span> <span class="nf">load_gps_data</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Get geometric data of the Austrian municipalities from https://data.statistik.gv.at/web/meta.jsp?dataset=OGDEXT_GEM_1</span>
+
+<span class="sd">	:param str csv_file: path to csv file with data</span>
+<span class="sd">	:return: DataFrame with centroid coordinates of each municipality</span>
+<span class="sd">	:rtype: pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">shp_df</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+	<span class="n">shp_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">shp_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">shp_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+	<span class="n">shp_df</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;GKZ&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="n">shp_df</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shp_df</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">)</span>
+	<span class="n">shp_df</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shp_df</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+	<span class="n">shp_df</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shp_df</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">shp_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">has_duplicates</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The index contains duplicates, please change the duplicated ids to a valid one&#39;</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">shp_df</span></div>
+
+
+<div class="viewcode-block" id="update_solar"><a class="viewcode-back" href="../api.html#power_plants.update_solar">[docs]</a><span class="k">def</span> <span class="nf">update_solar</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Update solar power plants with new data</span>
+
+<span class="sd">	:param pd.DataFrame df: power plants DataFrame</span>
+<span class="sd">	:return: new power plants DataFrame with updated data</span>
+<span class="sd">	:rtype: pd.DataFrame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_atlas</span> <span class="o">=</span> <span class="n">load_atlas_data</span><span class="p">(</span><span class="s1">&#39;../data/raw_data/Power_Plants/photovoltaikanlagen_in_österreich.csv&#39;</span><span class="p">)</span>
+	<span class="n">shp_df</span> <span class="o">=</span> <span class="n">load_gps_data</span><span class="p">(</span><span class="s1">&#39;../data/raw_data/maps/austria_gemeinde/austria_gemeinde.shp&#39;</span><span class="p">)</span>
+
+	<span class="c1"># Merge dataframes and input manually the coordinates for the city of Vienna</span>
+	<span class="n">df_atlas</span> <span class="o">=</span> <span class="n">df_atlas</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">shp_df</span><span class="p">[[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">]],</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+	<span class="n">df_atlas</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">90001</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">48.2083</span>
+	<span class="n">df_atlas</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">90001</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">16.373</span>
+
+	<span class="c1"># Put new data into power plants DataFrame with the following format:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	id: GKZ</span>
+<span class="sd">	OSM type: &quot;Non-OSM&quot;</span>
+<span class="sd">	power: &quot;PV systems&quot;</span>
+<span class="sd">	source: &quot;solar&quot;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">df_atlas</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">df_atlas</span><span class="p">[</span><span class="s1">&#39;OSM type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Non-OSM&#39;</span>
+	<span class="n">df_atlas</span><span class="p">[</span><span class="s1">&#39;power&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;PV systems&#39;</span>
+	<span class="n">df_atlas</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;solar&#39;</span>
+	<span class="n">df_atlas</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;kW per 1000 hab.&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">df_atlas</span><span class="p">],</span> <span class="n">verify_integrity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Vettoretti Denis, Basel Morsy, Ribas Sobreviela Jordi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

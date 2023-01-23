@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>terminals &mdash; Austrian Transmission Grid  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Austrian Transmission Grid
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources.html">Data Sources</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Austrian Transmission Grid</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>terminals</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for terminals</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">LineString</span>
+<span class="kn">from</span> <span class="nn">shapely.ops</span> <span class="kn">import</span> <span class="n">transform</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+
+
+<div class="viewcode-block" id="query_terminals"><a class="viewcode-back" href="../api.html#terminals.query_terminals">[docs]</a><span class="k">def</span> <span class="nf">query_terminals</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overpass API query to be run</span>
+
+<span class="sd">    :param:</span>
+<span class="sd">    :return: query string</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    The query looks for substations with a voltage value &gt;= 100kV inside the area of Austria and filters out</span>
+<span class="sd">    the substations with a frequency of 16.7Hz, which belong to the railway system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    // define output format</span>
+<span class="s2">    [out:json];</span>
+
+<span class="s2">    // gather results</span>
+<span class="s2">    area[name=&quot;Österreich&quot;]-&gt;.searchArea;</span>
+<span class="s2">    (</span>
+<span class="s2">      nwr[&quot;power&quot;=&quot;substation&quot;](if:(t[&quot;voltage&quot;]&gt;=100000) &amp;&amp; (t[&quot;frequency&quot;]!=16.7))(area.searchArea);</span>
+<span class="s2">    );</span>
+
+<span class="s2">    // print results</span>
+<span class="s2">    out body geom;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">query</span></div>
+
+
+<div class="viewcode-block" id="format_substations"><a class="viewcode-back" href="../api.html#terminals.format_substations">[docs]</a><span class="k">def</span> <span class="nf">format_substations</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Format and clean substations DataFrame</span>
+
+<span class="sd">    :param pd.DataFrame df: substations DataFrame</span>
+<span class="sd">    :return: formatted substations DataFrame</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Set id of each element as the index of the DataFrame</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verify_integrity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+
+    <span class="c1"># Drop entries with a voltage value of &quot;medium&quot; (this voltage value is considered invalid)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;medium&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Create columns from the information in the &quot;tags&quot; column</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;voltage&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;frequency&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;frequency&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+
+    <span class="c1"># Create one DataFrame for each &quot;type&quot; value as they need to be handled separately</span>
+    <span class="n">df_subs_node</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;node&#39;</span><span class="p">][[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;voltage&#39;</span><span class="p">,</span> <span class="s1">&#39;frequency&#39;</span><span class="p">]]</span>
+    <span class="n">df_subs_way</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;way&#39;</span><span class="p">][[</span><span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;voltage&#39;</span><span class="p">,</span> <span class="s1">&#39;frequency&#39;</span><span class="p">]]</span>
+    <span class="n">df_subs_relation</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;relation&#39;</span><span class="p">][[</span><span class="s1">&#39;members&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;voltage&#39;</span><span class="p">,</span> <span class="s1">&#39;frequency&#39;</span><span class="p">]]</span>
+
+    <span class="c1"># Get geometry coordinates for substations of &quot;type&quot; == &quot;way&quot;</span>
+    <span class="n">df_subs_way</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">df_subs_way</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[[</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">x</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">get_relation_geometry</span><span class="p">(</span><span class="n">members_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">member</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;outer&#39;</span><span class="p">:</span>
+                <span class="n">geometry</span> <span class="o">+=</span> <span class="p">[[</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">member</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">geometry</span>
+    <span class="c1"># Get geometry coordinates for substations of &quot;type&quot; == &quot;relation&quot;</span>
+    <span class="n">df_subs_relation</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_subs_relation</span><span class="o">.</span><span class="n">members</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_relation_geometry</span><span class="p">)</span>
+    <span class="c1"># Get geometry coordinates for substations of &quot;type&quot; == &quot;node&quot;</span>
+    <span class="n">df_subs_node</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_subs_node</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[[</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Drop unused columns</span>
+    <span class="n">df_subs_node</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df_subs_relation</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;members&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Join the three DataFrames</span>
+    <span class="n">df_subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_subs_node</span><span class="p">,</span> <span class="n">df_subs_way</span><span class="p">,</span> <span class="n">df_subs_relation</span><span class="p">])</span>
+
+    <span class="c1"># Delete substations that have a frequency of 16.7 Hz (belong to railway system)</span>
+    <span class="n">df_subs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;16.7&#39;</span><span class="p">))]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Delete substations that don&#39;t have any voltage &gt; 100kV</span>
+    <span class="n">df_subs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_subs</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">all</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">volt</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">100000</span> <span class="k">for</span> <span class="n">volt</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)]))]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Remove duplicated substations (different instances with same geometry)</span>
+    <span class="n">df_subs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_subs</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Duplicate substations with more than one voltage level</span>
+    <span class="n">df_subs</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+    <span class="n">df_subs</span> <span class="o">=</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s1">&#39;voltage&#39;</span><span class="p">)</span>
+    <span class="n">df_subs</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_subs</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span>
+
+    <span class="c1"># Take only the substation nodes that have a voltage &gt; 110 kV</span>
+    <span class="n">df_subs</span> <span class="o">=</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_subs</span><span class="o">.</span><span class="n">voltage</span> <span class="o">&gt;=</span> <span class="mi">110</span><span class="p">]</span>
+
+    <span class="c1"># Delete substations that are redundant because they are already inside another substation (special cases)</span>
+    <span class="n">df_subs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_subs</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;SF6-Halle 380 kV&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Handle nan in &quot;name&quot; -&gt; fill nan values with an empty string</span>
+    <span class="n">df_subs</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Save the &quot;id&quot; information in a new column and create new index with the needed format for the csv file</span>
+    <span class="n">df_subs</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">new_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">([</span><span class="s1">&#39;ElmTerm_</span><span class="si">{0:04}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_subs</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
+    <span class="n">df_subs</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">new_index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_subs</span></div>
+
+
+<div class="viewcode-block" id="convert_substation_areas"><a class="viewcode-back" href="../api.html#terminals.convert_substation_areas">[docs]</a><span class="k">def</span> <span class="nf">convert_substation_areas</span><span class="p">(</span><span class="n">df_subs</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transform substations to circular geometries</span>
+
+<span class="sd">    :param pd.DataFrame df_subs: substations DataFrame</span>
+<span class="sd">    :return: substations DataFrame with new geometry</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+
+<span class="sd">    Uses the Mercator projection to find the Hausdorff distance between the substation&#39;s centroid and</span>
+<span class="sd">    the substation&#39;s perimeter. Then creates a circle with a minimum radius of 200 meters and proportional</span>
+<span class="sd">    to the Hausdorff distance. And finally converts the circle to GPS coordinates and assigns it as the</span>
+<span class="sd">    substation&#39;s geometry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create DataFrame with substations whose &quot;type&quot; is &quot;way&quot; or &quot;relation&quot; as their geometry is a polygon</span>
+    <span class="c1"># (node substations&#39; geometry is a point)</span>
+    <span class="n">df_subs_areas</span> <span class="o">=</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_subs</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">]))]</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="kn">import</span> <span class="nn">pyproj</span>
+
+    <span class="c1"># Define mercator projection and wgs84 projection</span>
+    <span class="n">wgs84</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">CRS</span><span class="p">(</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">)</span>
+    <span class="n">mercator</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">CRS</span><span class="p">(</span><span class="s1">&#39;EPSG:3857&#39;</span><span class="p">)</span>
+    <span class="c1"># Projection from wgs84 to mercator</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="n">wgs84</span><span class="p">,</span> <span class="n">mercator</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span>
+    <span class="c1"># Projection from mercator to wgs84</span>
+    <span class="n">project2</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="n">mercator</span><span class="p">,</span> <span class="n">wgs84</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span>
+
+    <span class="k">def</span> <span class="nf">aux_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Get centroid of the substation&#39;s area</span>
+        <span class="n">centroid</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">centroid</span>
+
+<span class="c1">#         if transform(project, x).area &gt; 50000:</span>
+<span class="c1">#             radius = 500.0</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             radius = 200.0</span>
+
+        <span class="c1"># Project the substation&#39;s centroid and area to mercator</span>
+        <span class="n">point_transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">centroid</span><span class="p">)</span>
+        <span class="n">area_transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="c1"># Calculate Hausdorff distance between the substation&#39;s perimeter and its centroid</span>
+        <span class="n">hausdorff_dist</span> <span class="o">=</span> <span class="n">area_transformed</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">hausdorff_distance</span><span class="p">(</span><span class="n">point_transformed</span><span class="p">)</span>
+        <span class="c1"># Define radius for the new circular area</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">hausdorff_dist</span> <span class="k">if</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">hausdorff_dist</span> <span class="o">&gt;</span> <span class="mi">200</span> <span class="k">else</span> <span class="mi">200</span>
+        <span class="c1"># Create circulate area</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="n">point_transformed</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+        <span class="c1"># Get the polygon with lat lon coordinates in the wgs84 system</span>
+        <span class="n">circle_poly</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">project2</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">circle_poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+
+    <span class="c1"># Apply function to convert substation areas into circles to each element of the DataFrame</span>
+    <span class="n">df_subs_areas_circle</span> <span class="o">=</span> <span class="n">df_subs_areas</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">aux_func</span><span class="p">)</span>
+    <span class="c1"># Assign new geometry to entries in the substations DataFrame</span>
+    <span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_subs_areas_circle</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_subs_areas_circle</span>
+
+    <span class="c1"># Add substations to DataFrame where there should be a substation but the data is missing (special cases)</span>
+    <span class="n">locations</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="mf">46.6433697</span><span class="p">,</span> <span class="mf">14.9357567</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mf">48.4337037</span><span class="p">,</span> <span class="mf">13.9863834</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mf">46.8018598</span><span class="p">,</span> <span class="mf">12.7493858</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mf">47.7509128</span><span class="p">,</span> <span class="mf">13.0361237</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mf">47.64103</span><span class="p">,</span> <span class="mf">12.20077</span><span class="p">)]</span>
+    <span class="n">voltages</span> <span class="o">=</span> <span class="p">[</span><span class="mf">110.0</span><span class="p">,</span> <span class="mf">110.0</span><span class="p">,</span> <span class="mf">110.0</span><span class="p">,</span> <span class="mf">110.0</span><span class="p">,</span> <span class="mf">110.0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">locations</span><span class="p">)):</span>
+        <span class="n">point_transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="n">point_transformed</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+        <span class="n">circle_poly</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">project2</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+        <span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;ElmTerm_</span><span class="si">{0:04}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_subs</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;manually added&#39;</span><span class="p">,</span> <span class="n">voltages</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">50</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">circle_poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="s1">&#39;wXXXXXX&#39;</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">df_subs</span></div>
+
+
+<div class="viewcode-block" id="assign_areas_and_zones"><a class="viewcode-back" href="../api.html#terminals.assign_areas_and_zones">[docs]</a><span class="k">def</span> <span class="nf">assign_areas_and_zones</span><span class="p">(</span><span class="n">df_subs</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Assign areas and zones to terminals using NUTS (Nomenclature of Territorial Units for Statistics)</span>
+
+<span class="sd">    :param pd.DataFrame df_subs: terminals DataFrame</span>
+<span class="sd">    :return: terminals DataFrame with assigned zone and area</span>
+<span class="sd">    :retype: pd.DataFrame</span>
+
+<span class="sd">    NUTS2 regions define the areas and NUTS3 define the zones. Tieline terminals are assigned the code &#39;TL&#39; for the</span>
+<span class="sd">    area and the zone fields.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nuts2</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">&#39;../data/raw_data/maps/STATISTIK_AUSTRIA_NUTS2_20160101/STATISTIK_AUSTRIA_NUTS2_20160101.shp&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">)</span>
+    <span class="n">nuts3</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">&#39;../data/raw_data/maps/STATISTIK_AUSTRIA_NUTS3_20220101/STATISTIK_AUSTRIA_NUTS3_20220101.shp&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">)</span>
+<span class="c1">#     display(nuts2)</span>
+<span class="c1">#     display(nuts3)</span>
+
+    <span class="n">subs_1</span> <span class="o">=</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_subs</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">]))</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">df_subs</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">isna</span><span class="p">()][[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]]</span>
+    <span class="n">subs_2</span> <span class="o">=</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;tieline terminal&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">((</span><span class="n">df_subs</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)))][[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]]</span>
+    <span class="n">subs_1</span><span class="p">[</span><span class="s1">&#39;sh_terminals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs_1</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">LineString</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">centroid</span><span class="p">))</span>
+    <span class="n">subs_2</span><span class="p">[</span><span class="s1">&#39;sh_terminals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs_2</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+    <span class="n">terminals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">subs_1</span><span class="p">,</span> <span class="n">subs_2</span><span class="p">])</span>
+
+    <span class="n">areas</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">nuts2</span><span class="o">.</span><span class="n">ID</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nuts2</span><span class="p">))</span> <span class="k">if</span> <span class="n">nuts2</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">terminal</span><span class="p">))</span> <span class="k">for</span> <span class="n">terminal</span> <span class="ow">in</span> <span class="n">terminals</span><span class="o">.</span><span class="n">sh_terminals</span><span class="p">]</span>
+    <span class="n">zones</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">nuts3</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nuts3</span><span class="p">))</span> <span class="k">if</span> <span class="n">nuts3</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">terminal</span><span class="p">))</span> <span class="k">for</span> <span class="n">terminal</span> <span class="ow">in</span> <span class="n">terminals</span><span class="o">.</span><span class="n">sh_terminals</span><span class="p">]</span>
+
+    <span class="n">terminals</span><span class="p">[</span><span class="s1">&#39;Area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">areas</span>
+    <span class="n">terminals</span><span class="p">[</span><span class="s1">&#39;Zone&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">zones</span>
+
+    <span class="n">df_subs</span><span class="p">[[</span><span class="s1">&#39;Area&#39;</span><span class="p">,</span> <span class="s1">&#39;Zone&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;TL&#39;</span>
+    <span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">terminals</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Area&#39;</span><span class="p">,</span> <span class="s1">&#39;Zone&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">terminals</span><span class="p">[[</span><span class="s1">&#39;Area&#39;</span><span class="p">,</span> <span class="s1">&#39;Zone&#39;</span><span class="p">]]</span>
+
+    <span class="k">return</span> <span class="n">df_subs</span></div>
+
+
+<div class="viewcode-block" id="create_trafos_csv"><a class="viewcode-back" href="../api.html#terminals.create_trafos_csv">[docs]</a><span class="k">def</span> <span class="nf">create_trafos_csv</span><span class="p">(</span><span class="n">df_subs</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create transformers data and write it to a csv file</span>
+
+<span class="sd">    :param pd.DataFrame df_subs: terminals DataFrame</span>
+<span class="sd">    :return: transformers DataFrame</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df_trafos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">,</span><span class="s1">&#39;desc&#39;</span><span class="p">,</span><span class="s1">&#39;buslv.cterm&#39;</span><span class="p">,</span><span class="s1">&#39;buslv.__switch__.on_off&#39;</span><span class="p">,</span><span class="s1">&#39;bushv.cterm&#39;</span><span class="p">,</span><span class="s1">&#39;bushv.__switch__.on_off&#39;</span><span class="p">,</span> <span class="s1">&#39;typ_id&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Get terminals with duplicated geometry as these are the ones that need a transformer between them</span>
+    <span class="n">tr1</span> <span class="o">=</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;geometry&#39;</span><span class="p">)</span>
+    <span class="n">tr2</span> <span class="o">=</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">df_subs</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">df_subs</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;geometry&#39;</span><span class="p">)</span>
+    <span class="n">trafo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">tr1</span><span class="p">,</span> <span class="n">tr2</span><span class="p">])</span>
+
+    <span class="c1"># Assign a group number to each different terminal geometry</span>
+    <span class="n">trafo</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trafo</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">trafo</span><span class="p">[</span><span class="s1">&#39;group_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trafo</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;geometry&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ngroup</span><span class="p">()</span>
+    <span class="n">trafo</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;terminals&#39;</span>
+    <span class="n">trafo</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Group entries by group number and aggregate the voltages and terminals ids into lists</span>
+    <span class="n">trafo</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;voltage&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">trafo</span> <span class="o">=</span> <span class="n">trafo</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;group_num&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;voltage&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="s1">&#39;terminals&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">})</span>
+
+    <span class="n">d_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;[110.0, 220.0]&#39;</span><span class="p">:</span> <span class="s1">&#39;TypTr2_0001&#39;</span><span class="p">,</span> <span class="s1">&#39;[220.0, 380.0]&#39;</span><span class="p">:</span> <span class="s1">&#39;TypTr2_0002&#39;</span><span class="p">,</span> <span class="s1">&#39;[110.0, 380.0]&#39;</span><span class="p">:</span> <span class="s1">&#39;TypTr2_0003&#39;</span><span class="p">}</span>
+
+    <span class="c1"># Terminals with only two voltage levels (1 transformer)</span>
+    <span class="n">trafo_2_vlevels</span> <span class="o">=</span> <span class="n">trafo</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">trafo</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">trafo_2_vlevels</span><span class="p">[[</span><span class="s1">&#39;term1&#39;</span><span class="p">,</span><span class="s1">&#39;term2&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">trafo_2_vlevels</span><span class="o">.</span><span class="n">terminals</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span> <span class="n">trafo_2_vlevels</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">df_trafos</span><span class="p">[[</span><span class="s1">&#39;buslv.cterm&#39;</span><span class="p">,</span> <span class="s1">&#39;bushv.cterm&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">trafo_2_vlevels</span><span class="p">[[</span><span class="s1">&#39;term1&#39;</span><span class="p">,</span><span class="s1">&#39;term2&#39;</span><span class="p">]]</span>
+    <span class="n">df_trafos</span><span class="p">[</span><span class="s1">&#39;typ_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trafo_2_vlevels</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">d_type</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="c1"># Terminals with three voltage levels (2 (or 3?) transformers)</span>
+    <span class="n">trafo_3_vlevels</span> <span class="o">=</span> <span class="n">trafo</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">trafo</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">trafo_3_vlevels</span><span class="p">[[</span><span class="s1">&#39;term1&#39;</span><span class="p">,</span> <span class="s1">&#39;term2&#39;</span><span class="p">,</span> <span class="s1">&#39;term3&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">trafo_3_vlevels</span><span class="o">.</span><span class="n">terminals</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span> <span class="n">trafo_3_vlevels</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">trafo_3_vlevels_terms</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">trafo_3_vlevels</span><span class="p">[[</span><span class="s1">&#39;term1&#39;</span><span class="p">,</span> <span class="s1">&#39;term2&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;term1&#39;</span><span class="p">:</span><span class="s1">&#39;buslv.cterm&#39;</span><span class="p">,</span> <span class="s1">&#39;term2&#39;</span><span class="p">:</span><span class="s1">&#39;bushv.cterm&#39;</span><span class="p">})),</span>
+                                   <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">trafo_3_vlevels</span><span class="p">[[</span><span class="s1">&#39;term2&#39;</span><span class="p">,</span> <span class="s1">&#39;term3&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;term2&#39;</span><span class="p">:</span><span class="s1">&#39;buslv.cterm&#39;</span><span class="p">,</span> <span class="s1">&#39;term3&#39;</span><span class="p">:</span><span class="s1">&#39;bushv.cterm&#39;</span><span class="p">}))])</span>
+    <span class="n">trafo_3_vlevels_terms</span><span class="p">[</span><span class="s1">&#39;typ_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">trafo_3_vlevels</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">trafo_3_vlevels</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">d_type</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">df_trafos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_trafos</span><span class="p">,</span> <span class="n">trafo_3_vlevels_terms</span><span class="p">])</span>
+
+    <span class="c1"># Finish formatting the DataFrame to create the csv file</span>
+    <span class="n">df_trafos</span><span class="p">[[</span><span class="s1">&#39;buslv.__switch__.on_off&#39;</span><span class="p">,</span> <span class="s1">&#39;bushv.__switch__.on_off&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="n">df_trafos</span><span class="p">[</span><span class="s1">&#39;desc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
+    <span class="n">df_trafos</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ElmTr2_</span><span class="si">{0:04}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">df_trafos</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+
+    <span class="c1"># Write data into csv file</span>
+    <span class="n">df_trafos</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;../data/csv/generated/ElmTr2.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_trafos</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Vettoretti Denis, Basel Morsy, Ribas Sobreviela Jordi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

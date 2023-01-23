@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>network_generator_V2 &mdash; Austrian Transmission Grid  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Austrian Transmission Grid
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources.html">Data Sources</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Austrian Transmission Grid</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>network_generator_V2</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for network_generator_V2</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pflib</span> <span class="kn">import</span> <span class="n">pf</span><span class="p">,</span> <span class="n">pf_typing</span> <span class="k">as</span> <span class="n">pt</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+
+<span class="kn">from</span> <span class="nn">toolbox.validate</span> <span class="kn">import</span> <span class="n">NetworkValidator</span>
+
+<span class="n">_obj_class_priority</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ElmNet&#39;</span><span class="p">,</span> <span class="s1">&#39;ElmArea&#39;</span><span class="p">,</span> <span class="s1">&#39;ElmZone&#39;</span><span class="p">,</span> <span class="s1">&#39;Typ...&#39;</span><span class="p">,</span> <span class="s1">&#39;ElmTerm&#39;</span><span class="p">,</span> <span class="s1">&#39;StaCubic&#39;</span><span class="p">]</span>
+<span class="n">_obj_name_prefix</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">_d_attr_type_to_conversion_fct</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">_attr_translation</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;cpOwner&#39;</span><span class="p">:</span> <span class="s1">&#39;pOwner&#39;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="_pf_sort"><a class="viewcode-back" href="../api.html#network_generator_V2._pf_sort">[docs]</a><span class="k">def</span> <span class="nf">_pf_sort</span><span class="p">(</span><span class="n">grid</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sort dataframes based on the PF class order.</span>
+
+<span class="sd">    :param grid: Dict of frames</span>
+<span class="sd">    :return: a sorted dict of frames based on the PF order</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pf_class_priority</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ElmNet&#39;</span><span class="p">,</span> <span class="s1">&#39;ElmArea&#39;</span><span class="p">,</span> <span class="s1">&#39;ElmZone&#39;</span><span class="p">,</span> <span class="s1">&#39;Typ&#39;</span><span class="p">,</span> <span class="s1">&#39;ElmTerm&#39;</span><span class="p">,</span> <span class="s1">&#39;StaCubic&#39;</span><span class="p">]</span>
+
+    <span class="n">pf_classes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="c1"># build ordered list of pf classes used as dict key</span>
+    <span class="n">pf_key_ordered</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">pf_class</span> <span class="ow">in</span> <span class="n">pf_class_priority</span><span class="p">:</span>
+        <span class="n">pf_key_ordered</span> <span class="o">+=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pf_classes</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">pf_class</span><span class="p">)]</span>
+    <span class="n">pf_key_ordered</span> <span class="o">+=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pf_classes</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pf_key_ordered</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">grid</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pf_key_ordered</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="create_project"><a class="viewcode-back" href="../api.html#network_generator_V2.create_project">[docs]</a><span class="k">def</span> <span class="nf">create_project</span><span class="p">(</span><span class="n">project_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">net_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">IntPrj</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a project</span>
+
+<span class="sd">    :param project_name: project name</span>
+<span class="sd">    :param net_name: ElmNet loc_name</span>
+<span class="sd">    :return: the project object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">project_name</span> <span class="o">=</span> <span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">_check_pf_name</span><span class="p">(</span><span class="n">project_name</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s1">&#39;IntPrj&#39;</span><span class="p">)</span>
+    <span class="n">net_name</span> <span class="o">=</span> <span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">_check_pf_name</span><span class="p">(</span><span class="n">net_name</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s1">&#39;ElmNet&#39;</span><span class="p">)</span>
+    <span class="n">o_IntPrj</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">IntPrj</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetActiveProject</span><span class="p">())</span>
+
+    <span class="c1"># Deactivate project if it exists in order to add elements to the existing project</span>
+    <span class="k">if</span> <span class="n">o_IntPrj</span> <span class="ow">and</span> <span class="n">project_name</span> <span class="ow">and</span> <span class="n">project_name</span> <span class="o">!=</span> <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">loc_name</span><span class="p">:</span>
+        <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">Deactivate</span><span class="p">()</span>
+        <span class="n">o_IntPrj</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Create project if not exists or add to and existing project</span>
+    <span class="k">if</span> <span class="n">project_name</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">o_IntPrj</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">ActivateProject</span><span class="p">(</span><span class="n">project_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">net_name</span><span class="p">:</span>
+                <span class="n">net_name</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+            <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">CreateProject</span><span class="p">(</span><span class="n">project_name</span><span class="p">,</span> <span class="n">net_name</span><span class="p">)</span><span class="o">.</span><span class="n">Activate</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;creating in existing grid &#39;</span> <span class="o">+</span> <span class="n">project_name</span><span class="p">)</span>
+        <span class="n">o_IntPrj</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetActiveProject</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">o_IntPrj</span></div>
+
+
+<div class="viewcode-block" id="generate_network_data_from_csv"><a class="viewcode-back" href="../api.html#network_generator_V2.generate_network_data_from_csv">[docs]</a><span class="k">def</span> <span class="nf">generate_network_data_from_csv</span><span class="p">(</span><span class="n">csv_source_files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                                   <span class="n">o_IntPrj</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">IntPrj</span><span class="p">,</span>
+                                   <span class="n">grid_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                   <span class="n">validate_input_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                                   <span class="n">csv_format</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">IntPrj</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate network data from csv files</span>
+
+<span class="sd">    :param csv_source_files: a list of csv files containing the grid data</span>
+<span class="sd">    :param grid_name: loc_name of the ElmNet obj</span>
+<span class="sd">    :param validate_input_data: set to True if you want to validate the input data</span>
+<span class="sd">    :param csv_format: locale format e.g. for DE use {&#39;delimiter&#39;: &#39;;&#39;, &#39;decimal&#39;: &#39;,&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># used to handle German format</span>
+    <span class="k">if</span> <span class="n">csv_format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">csv_format</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;decimal&#39;</span><span class="p">:</span> <span class="s1">&#39;.&#39;</span><span class="p">}</span>
+
+    <span class="n">frames</span> <span class="o">=</span> <span class="n">_import_csv_files</span><span class="p">(</span><span class="n">csv_source_files</span><span class="o">=</span><span class="n">csv_source_files</span><span class="p">,</span> <span class="n">csv_format</span><span class="o">=</span><span class="n">csv_format</span><span class="p">)</span>
+
+    <span class="n">generate_network_data_from_frames</span><span class="p">(</span><span class="n">frames</span><span class="o">=</span><span class="n">frames</span><span class="p">,</span> <span class="n">o_IntPrj</span><span class="o">=</span><span class="n">o_IntPrj</span><span class="p">,</span>
+                                      <span class="n">grid_name</span><span class="o">=</span><span class="n">grid_name</span><span class="p">,</span> <span class="n">validate_input_data</span><span class="o">=</span><span class="n">validate_input_data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_network_data_from_frames"><a class="viewcode-back" href="../api.html#network_generator_V2.generate_network_data_from_frames">[docs]</a><span class="k">def</span> <span class="nf">generate_network_data_from_frames</span><span class="p">(</span><span class="n">frames</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+                                      <span class="n">o_IntPrj</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">IntPrj</span><span class="p">,</span>
+                                      <span class="n">grid_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                      <span class="n">validate_input_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate network data from csv files</span>
+
+<span class="sd">    :param frames: dictionary of frames containing the grid data</span>
+<span class="sd">    :param grid_name: loc_name of the ElmNet obj</span>
+<span class="sd">    :param validate_input_data: set to True if you want to validate the input data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">validate_input_data</span><span class="p">:</span>
+        <span class="n">nv</span> <span class="o">=</span> <span class="n">NetworkValidator</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+        <span class="n">nv</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+        <span class="n">nv</span><span class="o">.</span><span class="n">validate_line_types</span><span class="p">()</span>
+
+    <span class="c1"># sort input list based on PF class order</span>
+    <span class="n">frames</span> <span class="o">=</span> <span class="n">_pf_sort</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetActiveProject</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">Activate</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetActiveProject</span><span class="p">()</span><span class="o">.</span><span class="n">loc_name</span> <span class="o">!=</span> <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">loc_name</span><span class="p">:</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetActiveProject</span><span class="p">()</span><span class="o">.</span><span class="n">Deactivate</span><span class="p">()</span>
+        <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">Activate</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">grid_name</span><span class="p">:</span>
+        <span class="c1"># check if the ElmNet already exists otherwise generate it.</span>
+        <span class="n">o_ElmNet</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">ElmNet</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;netdat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">SearchObject</span><span class="p">(</span><span class="n">grid_name</span> <span class="o">+</span> <span class="s1">&#39;.ElmNet&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">o_ElmNet</span><span class="p">:</span>
+            <span class="c1"># if the ElmNet is generated from the csv ignore this step otherwise create an o_ElmNet obj</span>
+            <span class="k">if</span> <span class="s1">&#39;ElmNet&#39;</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;The grid name is specified as input parameter but also as a frame.&#39;</span>
+                                   <span class="s1">&#39;Only one option is allowed!&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">o_ElmNet</span> <span class="o">=</span> <span class="n">_create_obj</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;netdat&#39;</span><span class="p">),</span> <span class="n">grid_name</span><span class="p">,</span> <span class="s1">&#39;ElmNet&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># if name not specified try to get ElmNet directly form PF, if there is more than one get the active one</span>
+        <span class="k">if</span> <span class="s1">&#39;ElmNet&#39;</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+            <span class="n">o_ElmNet</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;ElmNet frame nto found or grid name not specified. &#39;</span>
+                             <span class="s1">&#39;Please specify a grid name either as input parameter or as a frame!&#39;</span><span class="p">)</span>
+
+    <span class="k">global</span> <span class="n">_d_attr_type_to_conversion_fct</span>
+    <span class="n">_d_attr_type_to_conversion_fct</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">OBJECT</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">STRING_VEC</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">n&#39;</span><span class="p">),</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">INVALID</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">DOUBLE_MAT</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">obj_class</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+        <span class="n">_create_objs</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">obj_class</span><span class="p">],</span> <span class="n">obj_class</span><span class="p">,</span> <span class="n">_get_default_storage_location</span><span class="p">(</span><span class="n">obj_class</span><span class="p">,</span> <span class="n">o_ElmNet</span><span class="p">))</span>
+
+    <span class="n">generate_network_diagram</span><span class="p">(</span><span class="n">grid_name</span><span class="o">=</span><span class="n">grid_name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">o_IntPrj</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_default_storage_location</span><span class="p">(</span><span class="n">obj_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">o_ElmNet</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">ElmNet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">obj_class</span> <span class="o">==</span> <span class="s1">&#39;ElmNet&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;netdat&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">obj_class</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;ElmArea&#39;</span><span class="p">,</span> <span class="s1">&#39;ElmZone&#39;</span><span class="p">,</span> <span class="s1">&#39;ElmFeeder&#39;</span><span class="p">,</span> <span class="s1">&#39;ElmOwner&#39;</span><span class="p">,</span> <span class="s1">&#39;Elm...&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetDataFolder</span><span class="p">(</span><span class="n">obj_class</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">obj_class</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Typ&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;equip&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">obj_class</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Elm&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">o_ElmNet</span>
+    <span class="k">elif</span> <span class="n">obj_class</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Sta&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;unknown obj_class &#39;</span> <span class="o">+</span> <span class="n">obj_class</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_single_object</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">_check_pf_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;netdat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">SearchObject</span><span class="p">(</span><span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;ElmNet&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">obj</span>
+    <span class="n">obj_class_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">name</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">l_objs</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;equip&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">GetContents</span><span class="p">(</span><span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">obj_class_name</span><span class="p">))</span> <span class="k">if</span> <span class="n">obj_class_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Typ&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">obj_class_name</span> <span class="k">else</span> <span class="s1">&#39;.*&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l_objs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">l_objs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">l_objs_ElmTerm</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;ElmTerm&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l_objs_ElmTerm</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">l_objs_ElmTerm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># warnings.warn(f&#39;lookup of obj &quot;{name}&quot; brought the following results: {l_objs}, returning default {default}&#39;)</span>
+    <span class="k">return</span> <span class="n">default</span>
+
+
+<span class="k">def</span> <span class="nf">_check_pf_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">create_warn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">name</span>
+    <span class="n">pf_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;,:*?=&quot;</span><span class="se">\\</span><span class="s1">~|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;._______##&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">create_warn</span> <span class="ow">and</span> <span class="n">pf_name</span> <span class="o">!=</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;invalid name warning: creating/searching object with name &quot;</span><span class="si">{</span><span class="n">pf_name</span><span class="si">}</span><span class="s1">&quot; because the given name &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; contains invalid characters&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pf_name</span>
+
+
+<span class="k">def</span> <span class="nf">_name_with_prefix</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obj_class</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">add_class_name</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">_obj_name_prefix</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj_class</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">obj_class</span> <span class="k">if</span> <span class="n">add_class_name</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="k">else</span> <span class="n">name</span>
+
+
+<span class="k">def</span> <span class="nf">_name_without_prefix</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># return obj.loc_name.removeprefix(_obj_name_prefix.get(obj.GetClassName())) # works only in py39</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">_obj_name_prefix</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">GetClassName</span><span class="p">())</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span>
+    <span class="k">return</span> <span class="n">name</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):]</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="k">else</span> <span class="n">name</span>
+
+
+<span class="k">def</span> <span class="nf">_get_referenced_obj_class_name</span><span class="p">(</span><span class="n">obj_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obj_attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">referenced_obj_attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">obj_attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cpArea&#39;</span><span class="p">,</span> <span class="s1">&#39;cpOwner&#39;</span><span class="p">,</span> <span class="s1">&#39;cpZone&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">obj_attr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;cp&#39;</span><span class="p">,</span><span class="s1">&#39;Elm&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj_attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;pOwner&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s1">&#39;Elm&#39;</span><span class="o">+</span><span class="n">obj_attr</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="n">obj_attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bus1&#39;</span><span class="p">,</span> <span class="s1">&#39;bus2&#39;</span><span class="p">,</span> <span class="s1">&#39;bushv&#39;</span><span class="p">,</span> <span class="s1">&#39;busmv&#39;</span><span class="p">,</span> <span class="s1">&#39;buslv&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s1">&#39;StaCubic&#39;</span>  <span class="c1"># &#39;ElmTerm&#39; if referenced_obj_attr == &#39;cterm&#39; else &#39;StaCubic&#39;</span>
+    <span class="k">if</span> <span class="n">obj_attr</span> <span class="o">==</span> <span class="s1">&#39;typ_id&#39;</span> <span class="ow">and</span> <span class="n">obj_class</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Elm&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj_class</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Elm&#39;</span><span class="p">,</span> <span class="s1">&#39;Typ&#39;</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;could not recognise referenced object</span><span class="se">\&#39;</span><span class="s1">s class name from </span><span class="si">{</span><span class="n">obj_class</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">obj_attr</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">referenced_obj_attr</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">_get_and_configure_referenced_object</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">,</span> <span class="n">obj_attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">referenced_obj_parent</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">,</span> <span class="n">referenced_obj_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">referenced_obj_attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">:</span>
+    <span class="n">o_ref</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">obj_attr</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetAttribute</span><span class="p">(</span><span class="n">obj_attr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">o_ref</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">referenced_obj_class</span> <span class="o">==</span> <span class="s1">&#39;StaCubic&#39;</span><span class="p">:</span>  <span class="c1"># cubicle not set so far and needs to be found or created if not found</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">referenced_obj_attr</span><span class="p">:</span>  <span class="c1"># value is cubicle name - try to find - if this is not successful, assume that value is terminal name</span>
+                <span class="n">l_referenced_obj</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">_check_pf_name</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">referenced_obj_class</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l_referenced_obj</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">l_referenced_obj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># referenced_obj_attr = &#39;&#39;, so nothing to configure anyway - just return</span>
+                <span class="c1"># else: try find it via terminal</span>
+            <span class="k">if</span> <span class="n">referenced_obj_attr</span> <span class="o">==</span> <span class="s1">&#39;cterm&#39;</span><span class="p">:</span>
+                <span class="n">referenced_obj_attr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">if</span> <span class="n">referenced_obj_attr</span><span class="p">:</span>  <span class="c1"># another attribute was set, but the object is not availalbe, so aborting...</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cannot set attribute </span><span class="si">{</span><span class="n">referenced_obj_attr</span><span class="si">}</span><span class="s1"> at cubicle </span><span class="si">{</span><span class="n">obj_attr</span><span class="si">}</span><span class="s1"> of </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1"> because cubicle does not exist.&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">o_ref</span>
+            <span class="n">referenced_obj_parent</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetAttribute</span><span class="p">(</span><span class="s1">&#39;cpGrid&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">referenced_obj_parent</span><span class="p">:</span>
+                <span class="n">referenced_obj_parent</span> <span class="o">=</span> <span class="n">referenced_obj_parent</span><span class="o">.</span><span class="n">SearchObject</span><span class="p">(</span><span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">_check_pf_name</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;ElmTerm&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">referenced_obj_parent</span><span class="p">:</span>
+                <span class="n">l_referenced_obj_parent</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">_check_pf_name</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;ElmTerm&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l_referenced_obj_parent</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">referenced_obj_parent</span> <span class="o">=</span> <span class="n">l_referenced_obj_parent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;could not find valid object </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">referenced_obj_class</span><span class="si">}</span><span class="s1">, so attribute </span><span class="si">{</span><span class="n">obj_attr</span><span class="si">}</span><span class="s1"> not set for </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">, lookup result: </span><span class="si">{</span><span class="n">l_referenced_obj_parent</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">o_ref</span>
+            <span class="n">referenced_obj_name</span> <span class="o">=</span> <span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">_check_pf_name</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_to&#39;</span> <span class="o">+</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetClassName</span><span class="p">()[</span><span class="mi">3</span><span class="p">:]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">_name_without_prefix</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">referenced_obj_class</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">referenced_obj_name</span> <span class="o">=</span> <span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">_name_without_prefix</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="k">if</span> <span class="n">referenced_obj_attr</span> <span class="k">else</span> <span class="n">_check_pf_name</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">referenced_obj_class</span><span class="p">)</span>
+        <span class="n">search_fct</span> <span class="o">=</span> <span class="n">referenced_obj_parent</span><span class="o">.</span><span class="n">SearchObject</span> <span class="k">if</span> <span class="n">referenced_obj_parent</span> <span class="k">else</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span>
+        <span class="n">o_ref</span> <span class="o">=</span> <span class="n">search_fct</span><span class="p">(</span><span class="n">referenced_obj_name</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">referenced_obj_class</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">o_ref</span><span class="p">:</span>
+            <span class="n">o_ref</span> <span class="o">=</span> <span class="n">_create_obj</span><span class="p">(</span><span class="n">referenced_obj_parent</span> <span class="k">if</span> <span class="n">referenced_obj_parent</span> <span class="k">else</span> <span class="n">obj</span><span class="p">,</span> <span class="n">referenced_obj_name</span><span class="p">,</span> <span class="n">referenced_obj_class</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">o_ref</span> <span class="ow">and</span> <span class="n">referenced_obj_attr</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">referenced_obj_attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__switch__.&#39;</span><span class="p">):</span>
+            <span class="n">switch_attr</span> <span class="o">=</span> <span class="n">referenced_obj_attr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;__switch__.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">_get_and_configure_referenced_object</span><span class="p">(</span><span class="n">o_ref</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">o_ref</span><span class="p">,</span> <span class="s1">&#39;StaSwitch&#39;</span><span class="p">,</span> <span class="n">switch_attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attr_type</span> <span class="o">=</span> <span class="n">o_ref</span><span class="o">.</span><span class="n">GetAttributeType</span><span class="p">(</span><span class="n">referenced_obj_attr</span><span class="p">)</span>
+            <span class="n">simple_conversion_fct</span> <span class="o">=</span> <span class="n">_d_attr_type_to_conversion_fct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">simple_conversion_fct</span><span class="p">:</span>
+                <span class="n">o_ref</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="n">referenced_obj_attr</span><span class="p">,</span> <span class="n">simple_conversion_fct</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;could not set </span><span class="si">{</span><span class="n">obj_attr</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">referenced_obj_attr</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> at </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">obj_attr</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">o_ref</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">attr_type</span> <span class="o">==</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">OBJECT</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;setting referenced objects of referenced objects is currently not supported&#39;</span><span class="p">)</span>  <span class="c1"># TODO: implement if necessary</span>
+    <span class="k">return</span> <span class="n">o_ref</span>
+
+
+<span class="k">def</span> <span class="nf">_create_obj</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obj_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">original_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">:</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">CreateObject</span><span class="p">(</span><span class="n">obj_class</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span> <span class="o">!=</span> <span class="n">obj_name</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">40</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;long name warning: the name &quot;</span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s1">&quot; is too long, so object name was reduced to </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span><span class="p">)</span><span class="si">}</span><span class="s1"> characters (=</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">obj_class</span><span class="si">}</span><span class="s1">) in </span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;duplicate name warning: &quot;</span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">parent</span><span class="o">.</span><span class="n">SearchObject</span><span class="p">(</span><span class="n">obj_name</span><span class="p">)</span><span class="o">.</span><span class="n">GetClassName</span><span class="p">()</span><span class="si">}</span><span class="s1">&quot; already exists, so new object was named &quot;</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">obj_class</span><span class="si">}</span><span class="s1">&quot; in </span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">original_name</span><span class="p">):</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;original_name: &#39;</span> <span class="o">+</span> <span class="n">original_name</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;could not create referenced object &quot;</span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">obj_class</span><span class="si">}</span><span class="s1">&quot; in </span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">obj</span>
+
+
+<span class="k">def</span> <span class="nf">_create_objs</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">obj_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_parent</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">):</span>
+    <span class="c1"># with open(csv_file, &#39;r&#39;, encoding=&#39;cp1252&#39;) as file:</span>
+    <span class="n">d_attr_set</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">pf</span><span class="o">.</span><span class="n">WriteCache</span><span class="p">():</span>
+        <span class="c1"># for row in DictReader(file):</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">frame</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="n">_get_single_object</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;fold_id&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;fold_id&#39;</span> <span class="ow">in</span> <span class="n">row</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># fold_id has highest priority</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">parent</span> <span class="ow">and</span> <span class="n">obj_class</span> <span class="o">==</span> <span class="s1">&#39;StaCubic&#39;</span> <span class="ow">and</span> <span class="s1">&#39;cterm&#39;</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="n">parent</span> <span class="o">=</span> <span class="n">_get_single_object</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cterm&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;cterm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.ElmTerm&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;.ElmTerm&#39;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">parent</span><span class="p">:</span>
+                    <span class="n">row</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;cterm&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">parent</span><span class="p">:</span>
+                <span class="n">grid_name</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cpGrid&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">grid_name</span><span class="p">:</span>  <span class="c1"># cpGrid has second priority</span>
+                    <span class="n">parent</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">get_or_create_obj</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;netdat&#39;</span><span class="p">),</span> <span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">_check_pf_name</span><span class="p">(</span><span class="n">grid_name</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="s1">&#39;ElmNet&#39;</span><span class="p">),</span> <span class="s1">&#39;ElmNet&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parent</span> <span class="o">=</span> <span class="n">default_parent</span>
+            <span class="n">obj_name</span> <span class="o">=</span> <span class="n">_name_with_prefix</span><span class="p">(</span><span class="n">_check_pf_name</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">),</span> <span class="n">obj_class</span><span class="p">)</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">SearchObject</span><span class="p">(</span><span class="n">obj_name</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">obj_class</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="p">:</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">_create_obj</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">,</span> <span class="n">obj_class</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">])</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;loc_name&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">d_attr_set</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>  <span class="c1"># type: str</span>
+                    <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;fold_id&#39;</span><span class="p">,</span> <span class="s1">&#39;cpGrid&#39;</span><span class="p">]:</span>
+                        <span class="k">continue</span>
+                    <span class="n">obj_attr</span><span class="p">,</span> <span class="n">referenced_obj_attr</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">attr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">attr</span> <span class="k">else</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+                    <span class="n">obj_attr</span> <span class="o">=</span> <span class="n">obj_attr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">referenced_obj_attr</span> <span class="o">=</span> <span class="n">referenced_obj_attr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">obj_attr</span> <span class="o">=</span> <span class="n">_attr_translation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj_attr</span><span class="p">,</span> <span class="n">obj_attr</span><span class="p">)</span>
+                    <span class="n">attr_type</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">GetAttributeType</span><span class="p">(</span><span class="n">obj_attr</span><span class="p">)</span>
+                    <span class="n">simple_conversion_fct</span> <span class="o">=</span> <span class="n">_d_attr_type_to_conversion_fct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">simple_conversion_fct</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">referenced_obj_attr</span><span class="p">:</span>
+                            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;attribute type of </span><span class="si">{</span><span class="n">obj_class</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">obj_attr</span><span class="si">}</span><span class="s1"> is </span><span class="si">{</span><span class="n">attr_type</span><span class="si">}</span><span class="s1"> and not a referenced object, therefore </span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s1"> cannot be evaluated&#39;</span><span class="p">)</span>
+                        <span class="n">d_attr_set</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">obj_attr</span><span class="o">=</span><span class="n">obj_attr</span><span class="p">,</span> <span class="n">conversion_fct</span><span class="o">=</span><span class="n">simple_conversion_fct</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">attr_type</span> <span class="o">==</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">OBJECT</span><span class="p">:</span>
+                            <span class="n">referenced_obj_class</span> <span class="o">=</span> <span class="n">_get_referenced_obj_class_name</span><span class="p">(</span><span class="n">obj_class</span><span class="p">,</span> <span class="n">obj_attr</span><span class="p">,</span> <span class="n">referenced_obj_attr</span><span class="p">)</span>
+                            <span class="n">referenced_obj_parent</span> <span class="o">=</span> <span class="n">_get_default_storage_location</span><span class="p">(</span><span class="n">referenced_obj_class</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">cpGrid</span><span class="p">)</span>  <span class="c1"># _get_default_search_location_or_default_parent(obj_class, obj_attr, referenced_obj_class, referenced_obj_attr)</span>
+                            <span class="n">d_attr_set</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">obj_attr</span><span class="o">=</span><span class="n">obj_attr</span><span class="p">,</span> <span class="n">referenced_obj_parent</span><span class="o">=</span><span class="n">referenced_obj_parent</span><span class="p">,</span> <span class="n">referenced_obj_class</span><span class="o">=</span><span class="n">referenced_obj_class</span><span class="p">,</span> <span class="n">referenced_obj_attr</span><span class="o">=</span><span class="n">referenced_obj_attr</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="n">attr_type</span> <span class="o">==</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">INVALID</span><span class="p">:</span>
+                            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;invalid attribute: cannot set &quot;</span><span class="si">{</span><span class="n">obj_attr</span><span class="si">}</span><span class="s1">&quot; for object class &quot;</span><span class="si">{</span><span class="n">obj_class</span><span class="si">}</span><span class="s1">&quot;, ignoring data of &quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s1">&quot; in object creation&#39;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;handling of attribute type DataObject.AttributeType.</span><span class="si">{</span><span class="n">attr_type</span><span class="si">}</span><span class="s1"> not supported:  ignoring data of &quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s1">&quot; in object creation&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">obj_class</span> <span class="o">==</span> <span class="s1">&#39;ElmTr2&#39;</span> <span class="ow">and</span> <span class="s1">&#39;typ_id.uktrr&#39;</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">or</span> <span class="n">obj_class</span> <span class="o">==</span> <span class="s1">&#39;TypTr2&#39;</span> <span class="ow">and</span> <span class="s1">&#39;uktrr&#39;</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">o_OptTypTr2</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">OptTyptr2</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">get_or_create_obj</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">get_or_create_obj</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetActiveProject</span><span class="p">()</span><span class="o">.</span><span class="n">SearchObject</span><span class="p">(</span><span class="s1">&#39;*.SetFold&#39;</span><span class="p">),</span> <span class="s1">&#39;Eingabeoptionen&#39;</span><span class="p">,</span> <span class="s1">&#39;IntOpt&#39;</span><span class="p">),</span> <span class="s1">&#39;Optionen 2-Wicklungstransformator&#39;</span><span class="p">,</span> <span class="s1">&#39;OptTyptr2&#39;</span><span class="p">))</span>
+                    <span class="n">o_OptTypTr2</span><span class="o">.</span><span class="n">iopt_uk</span> <span class="o">=</span> <span class="s1">&#39;ukr&#39;</span>
+                    <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">WriteChangesToDb</span><span class="p">()</span>
+                    <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">SetWriteCacheEnabled</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">SetWriteCacheEnabled</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">attr_full</span><span class="p">,</span> <span class="n">d_fct</span> <span class="ow">in</span> <span class="n">d_attr_set</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">value_str</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">attr_full</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">value_str</span><span class="p">:</span>
+                    <span class="n">conversion_fct</span> <span class="o">=</span> <span class="n">d_fct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;conversion_fct&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">conversion_fct</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">conversion_fct</span><span class="p">(</span><span class="n">value_str</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">d_fct</span><span class="p">[</span><span class="s1">&#39;obj_attr&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;desc&#39;</span><span class="p">:</span>
+                            <span class="n">value</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">GetAttribute</span><span class="p">(</span><span class="s1">&#39;desc&#39;</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">_get_and_configure_referenced_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">d_fct</span><span class="p">[</span><span class="s1">&#39;obj_attr&#39;</span><span class="p">],</span> <span class="n">d_fct</span><span class="p">[</span><span class="s1">&#39;referenced_obj_parent&#39;</span><span class="p">],</span> <span class="n">d_fct</span><span class="p">[</span><span class="s1">&#39;referenced_obj_class&#39;</span><span class="p">],</span> <span class="n">d_fct</span><span class="p">[</span><span class="s1">&#39;referenced_obj_attr&#39;</span><span class="p">],</span> <span class="n">value_str</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">obj</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="n">d_fct</span><span class="p">[</span><span class="s1">&#39;obj_attr&#39;</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ERROR while setting &quot;</span><span class="si">{</span><span class="n">attr_full</span><span class="si">}</span><span class="s1">&quot;=&quot;</span><span class="si">{</span><span class="n">value_str</span><span class="si">}</span><span class="s1">&quot; -&gt; </span><span class="si">{</span><span class="n">d_fct</span><span class="p">[</span><span class="s2">&quot;obj_attr&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> at obj </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="c1"># continue rather than ... raise Exception(f&#39;{obj}:{attr}={value}&#39;)</span>
+            <span class="k">if</span> <span class="n">obj_class</span> <span class="o">==</span> <span class="s1">&#39;ElmNet&#39;</span><span class="p">:</span>
+                <span class="n">cast</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">ElmNet</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">Activate</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="import_templates"><a class="viewcode-back" href="../api.html#network_generator_V2.import_templates">[docs]</a><span class="k">def</span> <span class="nf">import_templates</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">o_IntPrj</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">IntPrj</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pf</span><span class="o">.</span><span class="n">DataObject</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Import templates library specified as input in the template folder. If no input project is specified</span>
+<span class="sd">    the active project will be used.</span>
+
+<span class="sd">    :param filepath: filepath of the templates library</span>
+<span class="sd">    :param o_IntPrj: PF project</span>
+<span class="sd">    :param overwrite: if the library already exists it will be overwritten</span>
+<span class="sd">    :return: the imported PF library</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check is input file exists</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s1"> cannot be found&#39;</span><span class="p">)</span>
+
+    <span class="c1"># If there is an input project use it otherwise use the active one</span>
+    <span class="k">if</span> <span class="n">o_IntPrj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">o_IntPrj</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetActiveProject</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">o_IntPrj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Please specify an project object&#39;</span><span class="p">)</span>
+    <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">Activate</span><span class="p">()</span>
+
+    <span class="c1"># if overwrite = true and there is already a library in the project with the same name remove the old lib.</span>
+    <span class="n">pf_lib_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filepath</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;templ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">GetContents</span><span class="p">(</span><span class="n">pf_lib_name</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">overwrite</span><span class="p">:</span>
+        <span class="n">o_ElmLib</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;templ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">GetContents</span><span class="p">(</span><span class="n">pf_lib_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">o_ElmLib</span><span class="o">.</span><span class="n">Delete</span><span class="p">()</span>
+
+    <span class="c1"># import the library</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;templ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">GetContents</span><span class="p">(</span><span class="n">pf_lib_name</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">prj_folder</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;templ&#39;</span><span class="p">)</span>
+        <span class="n">ComPfdImport</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetFromStudyCase</span><span class="p">(</span><span class="s1">&#39;ComPfdImport&#39;</span><span class="p">)</span>
+        <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">Deactivate</span><span class="p">()</span>
+        <span class="n">ComPfdImport</span><span class="o">.</span><span class="n">g_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">ComPfdImport</span><span class="o">.</span><span class="n">g_target</span> <span class="o">=</span> <span class="n">prj_folder</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="n">ComPfdImport</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pf_lib_name</span><span class="si">}</span><span class="s1"> cannot be imported&#39;</span><span class="p">)</span>
+        <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">Activate</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Library already exists, use the existing library&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;templ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">GetContents</span><span class="p">(</span><span class="n">pf_lib_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="add_objs_from_templates"><a class="viewcode-back" href="../api.html#network_generator_V2.add_objs_from_templates">[docs]</a><span class="k">def</span> <span class="nf">add_objs_from_templates</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                            <span class="n">templates</span><span class="p">,</span>
+                            <span class="n">grid_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                            <span class="n">o_IntPrj</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">IntPrj</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                            <span class="n">validate_input_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                            <span class="n">csv_format</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add objects using templates. It is assumed that a template contains only one object of type ElmSym or a ElmGenStat.</span>
+<span class="sd">    This object will be connected to the grid and the power plant for this object will be imported automatically.</span>
+
+<span class="sd">    :param file: input data with the objects to import</span>
+<span class="sd">    :param templates: templates folder object</span>
+<span class="sd">    :param grid_name: loc_name of the ElmNet</span>
+<span class="sd">    :param o_IntPrj: project object</span>
+<span class="sd">    :param validate_input_data: validate input frames</span>
+<span class="sd">    :param csv_format: csv format, default delimiter=&quot;,&quot; decimal=&quot;.&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s1"> cannot be found&#39;</span><span class="p">)</span>
+
+    <span class="c1"># If there is an input project use it otherwise use the active one</span>
+    <span class="k">if</span> <span class="n">o_IntPrj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">o_IntPrj</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetActiveProject</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">o_IntPrj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Please specify an project object&#39;</span><span class="p">)</span>
+    <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">Activate</span><span class="p">()</span>
+
+    <span class="c1"># used to handle German format</span>
+    <span class="k">if</span> <span class="n">csv_format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">csv_format</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;decimal&#39;</span><span class="p">:</span> <span class="s1">&#39;.&#39;</span><span class="p">}</span>
+
+    <span class="n">objs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span>
+                       <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;cp1252&#39;</span><span class="p">,</span>
+                       <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                       <span class="n">delimiter</span><span class="o">=</span><span class="n">csv_format</span><span class="p">[</span><span class="s1">&#39;delimiter&#39;</span><span class="p">],</span>
+                       <span class="n">decimal</span><span class="o">=</span><span class="n">csv_format</span><span class="p">[</span><span class="s1">&#39;decimal&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">validate_input_data</span><span class="p">:</span>
+        <span class="n">nv</span> <span class="o">=</span> <span class="n">NetworkValidator</span><span class="p">({</span><span class="s1">&#39;ElmTemplate&#39;</span><span class="p">:</span> <span class="n">objs</span><span class="p">})</span>
+        <span class="n">nv</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_pf_object</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">grid_name</span><span class="p">,</span> <span class="n">obj_class</span><span class="o">=</span><span class="s1">&#39;ElmNet&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid_name</span><span class="si">}</span><span class="s1"> cannot be found&#39;</span><span class="p">)</span>
+    <span class="n">o_ElmNet</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid_name</span><span class="si">}</span><span class="s1">.ElmNet&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_pf_object</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cterm&#39;</span><span class="p">],</span> <span class="n">obj_class</span><span class="o">=</span><span class="s1">&#39;ElmTerm&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Cannot find cterm where to connect the object&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">templates</span><span class="o">.</span><span class="n">GetContents</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;template&#39;</span><span class="p">]))</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Template cannot be found&#39;</span><span class="p">)</span>
+
+        <span class="n">o_ElmTerm</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cterm&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.ElmTerm&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">o_StaCubic</span> <span class="o">=</span> <span class="n">o_ElmTerm</span><span class="o">.</span><span class="n">CreateObject</span><span class="p">(</span><span class="s2">&quot;StaCubic&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Cub_</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">template_obj</span> <span class="o">=</span> <span class="n">templates</span><span class="o">.</span><span class="n">GetContents</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;template&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">template_objs</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">template_obj</span><span class="o">.</span><span class="n">GetContents</span><span class="p">()</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span> <span class="o">!=</span> <span class="s1">&#39;Library&#39;</span><span class="p">]</span>
+        <span class="n">o_ElmNet</span><span class="o">.</span><span class="n">PasteCopy</span><span class="p">(</span><span class="n">template_objs</span><span class="p">)</span>
+
+        <span class="n">l_loc_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">template_obj</span><span class="o">.</span><span class="n">GetContents</span><span class="p">()</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">loc_name</span> <span class="o">!=</span> <span class="s1">&#39;Library&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">loc_name</span> <span class="ow">in</span> <span class="n">l_loc_name</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loc_name</span><span class="si">}</span><span class="s2">.*&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">loc_name</span> <span class="o">==</span> <span class="s1">&#39;TEMPLATE&#39;</span><span class="p">:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;loc_name&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">GetClassName</span><span class="p">()</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;bus1&quot;</span><span class="p">,</span> <span class="n">o_StaCubic</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s2">&quot;loc_name&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loc_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="define_measuring_points"><a class="viewcode-back" href="../api.html#network_generator_V2.define_measuring_points">[docs]</a><span class="k">def</span> <span class="nf">define_measuring_points</span><span class="p">(</span><span class="n">csv_source_files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                            <span class="n">csv_format</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                            <span class="n">o_IntPrj</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">IntPrj</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                            <span class="n">validate_input_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Define measuring points for StaPqmea and StaVmea</span>
+
+<span class="sd">    :param csv_source_files: list of files</span>
+<span class="sd">    :param o_IntPrj: project object</span>
+<span class="sd">    :param csv_format: csv format, default delimiter=&quot;,&quot; decimal=&quot;.&quot;</span>
+<span class="sd">    :param validate_input_data: validate input data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># used to handle German format</span>
+    <span class="k">if</span> <span class="n">csv_format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">csv_format</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;decimal&#39;</span><span class="p">:</span> <span class="s1">&#39;.&#39;</span><span class="p">}</span>
+
+    <span class="c1"># If there is an input project use it otherwise use the active one</span>
+    <span class="k">if</span> <span class="n">o_IntPrj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">o_IntPrj</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetActiveProject</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">o_IntPrj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Please specify an project object&#39;</span><span class="p">)</span>
+    <span class="n">o_IntPrj</span><span class="o">.</span><span class="n">Activate</span><span class="p">()</span>
+
+    <span class="n">meas</span> <span class="o">=</span> <span class="n">_import_csv_files</span><span class="p">(</span><span class="n">csv_source_files</span><span class="o">=</span><span class="n">csv_source_files</span><span class="p">,</span> <span class="n">csv_format</span><span class="o">=</span><span class="n">csv_format</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">validate_input_data</span><span class="p">:</span>
+        <span class="n">nv</span> <span class="o">=</span> <span class="n">NetworkValidator</span><span class="p">(</span><span class="n">meas</span><span class="p">)</span>
+        <span class="n">nv</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">meas</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">meas</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">frame</span> <span class="o">==</span> <span class="s1">&#39;StaPqmea&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_pf_object</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ElmComp&#39;</span><span class="p">],</span> <span class="n">obj_class</span><span class="o">=</span><span class="s1">&#39;ElmComp&#39;</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ElmComp&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cannot be found&quot;</span><span class="p">)</span>
+                <span class="n">o_StaPqmea</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ElmComp&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.ElmComp&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">SearchObject</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.StaPqmea&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">o_StaPqmea</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cannot be found&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_pf_object</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;pcubic&#39;</span><span class="p">],</span> <span class="n">obj_class</span><span class="o">=</span><span class="s1">&#39;StaCubic&#39;</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;pcubic&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cannot be found&quot;</span><span class="p">)</span>
+                <span class="n">o_StaPqmea</span><span class="o">.</span><span class="n">pcubic</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;pcubic&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.StaCubic&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">frame</span> <span class="o">==</span> <span class="s1">&#39;StaVmea&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_pf_object</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ElmComp&#39;</span><span class="p">],</span> <span class="n">obj_class</span><span class="o">=</span><span class="s1">&#39;ElmComp&#39;</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ElmComp&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cannot be found&quot;</span><span class="p">)</span>
+                <span class="n">o_StaVmea</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ElmComp&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.ElmComp&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">SearchObject</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.StaVmea&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">o_StaVmea</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;loc_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cannot be found&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_pf_object</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;pbusbar&#39;</span><span class="p">],</span> <span class="n">obj_class</span><span class="o">=</span><span class="s1">&#39;ElmTerm&#39;</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;pbusbar&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> cannot be found&quot;</span><span class="p">)</span>
+                <span class="n">o_StaVmea</span><span class="o">.</span><span class="n">pbusbar</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;pbusbar&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.ElmTerm&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">frame</span><span class="si">}</span><span class="s2"> class not implemented yet&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_get_template_obj_class_type"><a class="viewcode-back" href="../api.html#network_generator_V2._get_template_obj_class_type">[docs]</a><span class="k">def</span> <span class="nf">_get_template_obj_class_type</span><span class="p">(</span><span class="n">template</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get template class. It returns ElmSym or ElmGenstat</span>
+
+<span class="sd">    :param template: template object</span>
+<span class="sd">    :return: class type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">GetContents</span><span class="p">(</span><span class="s1">&#39;*.ElmSym&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;ElmSym&#39;</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">GetContents</span><span class="p">(</span><span class="s1">&#39;*.GenStat&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;ElmGenstat&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Class not supported&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_is_pf_object"><a class="viewcode-back" href="../api.html#network_generator_V2._is_pf_object">[docs]</a><span class="k">def</span> <span class="nf">_is_pf_object</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obj_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check is object exists in the current active project</span>
+
+<span class="sd">    :param obj: object</span>
+<span class="sd">    :param obj_class: object class</span>
+<span class="sd">    :return: True is object exists</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">objs</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">obj_class</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="_import_csv_files"><a class="viewcode-back" href="../api.html#network_generator_V2._import_csv_files">[docs]</a><span class="k">def</span> <span class="nf">_import_csv_files</span><span class="p">(</span><span class="n">csv_source_files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">csv_format</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Import csv files</span>
+
+<span class="sd">    :param csv_source_files: list of files to import</span>
+<span class="sd">    :param csv_format: locale format e.g. for DE use {&#39;delimiter&#39;: &#39;;&#39;, &#39;decimal&#39;: &#39;,&#39;}</span>
+<span class="sd">    :return: a dict of frames</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">frames</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">csv_source_files</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+            <span class="c1"># keep only csv files</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">):</span>
+                <span class="n">obj_class</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">frames</span><span class="p">[</span><span class="n">obj_class</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span>
+                                                <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;cp1252&#39;</span><span class="p">,</span>
+                                                <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                                <span class="n">delimiter</span><span class="o">=</span><span class="n">csv_format</span><span class="p">[</span><span class="s1">&#39;delimiter&#39;</span><span class="p">],</span>
+                                                <span class="n">decimal</span><span class="o">=</span><span class="n">csv_format</span><span class="p">[</span><span class="s1">&#39;decimal&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="si">}</span><span class="s1"> is not a csv file, it will be ignored&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> doesn&#39;t exist&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">frames</span></div>
+
+
+<span class="k">def</span> <span class="nf">generate_network_diagram</span><span class="p">(</span><span class="n">grid_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">o_IntGrfnet</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetProjectFolder</span><span class="p">(</span><span class="s1">&#39;dia&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">SearchObject</span><span class="p">(</span><span class="n">grid_name</span> <span class="o">+</span> <span class="s1">&#39;.IntGrfnet&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">o_IntGrfnet</span><span class="p">:</span>
+        <span class="n">o_IntGrfnet</span><span class="o">.</span><span class="n">Delete</span><span class="p">()</span>
+
+    <span class="n">o_ElmNet</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetCalcRelevantObjects</span><span class="p">(</span><span class="n">grid_name</span> <span class="o">+</span> <span class="s1">&#39;.ElmNet&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">o_ElmNet</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Grid cannot be found&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">o_ElmNet</span> <span class="o">=</span> <span class="n">o_ElmNet</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">o_ComSgllayout</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">GetFromStudyCase</span><span class="p">(</span><span class="s1">&#39;ComSgllayout&#39;</span><span class="p">)</span>
+    <span class="n">o_ComSgllayout</span><span class="o">.</span><span class="n">iGenType</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">o_ComSgllayout</span><span class="o">.</span><span class="n">iAction</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">o_ComSgllayout</span><span class="o">.</span><span class="n">pGrids</span> <span class="o">=</span> <span class="n">o_ElmNet</span>
+    <span class="n">o_ComSgllayout</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Vettoretti Denis, Basel Morsy, Ribas Sobreviela Jordi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
