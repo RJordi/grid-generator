@@ -12,12 +12,10 @@ conda env create -f environment.yml
 
 ```
 📦austrian-grid
- ┣ 📂austrian_grid
- ┣ 📂data
- ┃ ┣ 📂qgis_generated_csv
- ┃ ┗ 📂raw_data
+ ┣ 📂examples
+ ┃ ┣ 📂austrian_transmission_grid
+ ┃ ┗ 📂german_transmission_grid
  ┣ 📂data_generator
- ┣ 📂data_generator_2
  ┣ 📂docs
  ┣ 📜environment.yml
  ┣ 📜LICENSE.md
@@ -25,8 +23,7 @@ conda env create -f environment.yml
 ```
 
 where:
- * **austrian_grid**: folder containing the grid model files for the Austrian grid
- * **data**: folder containing the project data
+ * **data_generator**: is a python package containing the code used to prepare the data for a general power grid
+ * **examples**: folder containing examples of grid models created with the grid generator
  * **docs**: folder for project documentation (Sphinx)
- * **data_generator**: is a python package containing the code used to prepare the data for the Austrian grid
- * **data_generator_2**: is a python package containing the code used to prepare the data for a general power grid
+
