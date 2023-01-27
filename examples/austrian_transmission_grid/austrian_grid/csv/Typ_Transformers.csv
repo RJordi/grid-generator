@@ -1,0 +1,4 @@
+loc_name,strn,utrn_h,utrn_l,uktr,pcutr,tr2cn_h,tr2cn_l,nt2ag,itapch,tap_side,ntpmn,ntpmx,nntap0,dutap,phitr,frnom
+TypTr2_0001,10000,220.0,110.0,4.0,100.0,YN,YN,0.0,1,1,-79,80,0,0.6265823,0.0,50.0
+TypTr2_0002,10000,380.0,220.0,4.0,100.0,YN,YN,0.0,1,1,-1,1,0,0.0,0.0,50.0
+TypTr2_0003,10000,380.0,110.0,4.0,100.0,YN,YN,0.0,1,1,-13,13,0,1.29796,0.0,50.0

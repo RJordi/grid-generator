@@ -166,40 +166,6 @@ def convert_substation_areas(df_subs: pd.DataFrame, df_pp: pd.DataFrame) -> pd.D
     return df_subs
 
 
-def assign_areas_and_zones(df_subs: pd.DataFrame) -> pd.DataFrame:
-    """
-    Assign areas and zones to terminals using NUTS (Nomenclature of Territorial Units for Statistics)
-
-    :param pd.DataFrame df_subs: terminals DataFrame
-    :return: terminals DataFrame with assigned zone and area
-    :retype: pd.DataFrame
-
-    NUTS2 regions define the areas and NUTS3 define the zones. Tieline terminals are assigned the code 'TL' for the
-    area and the zone fields.
-    """
-    nuts2 = gpd.read_file('../data/raw_data/maps/STATISTIK_AUSTRIA_NUTS2_20160101/STATISTIK_AUSTRIA_NUTS2_20160101.shp', encoding='utf-8').to_crs('EPSG:4326')
-    nuts3 = gpd.read_file('../data/raw_data/maps/STATISTIK_AUSTRIA_NUTS3_20220101/STATISTIK_AUSTRIA_NUTS3_20220101.shp', encoding='utf-8').to_crs('EPSG:4326')
-#     display(nuts2)
-#     display(nuts3)
-
-    subs_1 = df_subs.loc[df_subs.id.str.contains('|'.join(['w', 'r', ' '])) & ~df_subs.id.isna()][['name', 'geometry']]
-    subs_2 = df_subs.loc[(df_subs.name != 'tieline terminal') & ((df_subs.id.isna()) | (df_subs.id.str.contains('n')))][['name', 'geometry']]
-    subs_1['sh_terminals'] = subs_1.geometry.apply(lambda p: transform(lambda x, y: (y, x), LineString(p).centroid))
-    subs_2['sh_terminals'] = subs_2.geometry.apply(lambda p: transform(lambda x, y: (y, x), Point(p[0])))
-    terminals = pd.concat([subs_1, subs_2])
-
-    areas = [next(nuts2.ID[i] for i in range(len(nuts2)) if nuts2.geometry[i].intersects(terminal)) for terminal in terminals.sh_terminals]
-    zones = [next(nuts3.id[i] for i in range(len(nuts3)) if nuts3.geometry[i].intersects(terminal)) for terminal in terminals.sh_terminals]
-
-    terminals['Area'] = areas
-    terminals['Zone'] = zones
-
-    df_subs[['Area', 'Zone']] = 'TL'
-    df_subs.loc[terminals.index, ['Area', 'Zone']] = terminals[['Area', 'Zone']]
-
-    return df_subs
-
-
 def create_trafos_csv(df_subs: pd.DataFrame) -> pd.DataFrame:
     """
     Create transformers data and write it to a csv file
@@ -208,7 +174,7 @@ def create_trafos_csv(df_subs: pd.DataFrame) -> pd.DataFrame:
     :return: transformers DataFrame
     :rtype: pd.DataFrame
     """
-    df_trafos = pd.DataFrame(columns=['loc_name','desc','buslv.cterm','buslv.__switch__.on_off','bushv.cterm','bushv.__switch__.on_off', 'typ_id'])
+    df_trafos = pd.DataFrame(columns=['id','desc','buslv.cterm','buslv.__switch__.on_off','bushv.cterm','bushv.__switch__.on_off', 'typ_id'])
 
     # Get terminals with duplicated geometry as these are the ones that need a transformer between them
     tr1 = df_subs.loc[~pd.isna(df_subs.id) & df_subs.geometry.duplicated(keep=False)].sort_values(by='geometry')
@@ -245,9 +211,6 @@ def create_trafos_csv(df_subs: pd.DataFrame) -> pd.DataFrame:
     # Finish formatting the DataFrame to create the csv file
     df_trafos[['buslv.__switch__.on_off', 'bushv.__switch__.on_off']] = 1, 1
     df_trafos['desc'] = ' '
-    df_trafos['loc_name'] = ['ElmTr2_{0:04}'.format(i) for i in range(1,len(df_trafos)+1)]
-
-    # Write data to csv file
-    df_trafos.to_csv('../austrian_grid/csv/BaseElements/ElmTr2.csv', index=False)
+    df_trafos['id'] = ['ElmTr2_{0:04}'.format(i) for i in range(1, len(df_trafos)+1)]
 
     return df_trafos

@@ -1,0 +1,1148 @@
+id,unom,desc
+ElmTerm_virtual_0004,380.0,virtual terminal
+ElmTerm_0005,380.0,380-kV-Umspannwerk Großgartach
+ElmTerm_0048,380.0,Lastverteilung/Schaltanlage Kühmoos
+ElmTerm_virtual_0005,380.0,virtual terminal
+ElmTerm_0010,380.0,EnBW Umspannwerk Wendlingen
+ElmTerm_virtual_0003,380.0,virtual terminal
+ElmTerm_virtual_0007,380.0,virtual terminal
+ElmTerm_0035,380.0,Umspannwerk Dellmensingen
+ElmTerm_0017,380.0,Umspannwerk Niederstotzingen
+ElmTerm_0020,220.0,Umspannwerk Stockach
+ElmTerm_virtual_0012,220.0,virtual terminal
+ElmTerm_virtual_0013,220.0,virtual terminal
+ElmTerm_virtual_0014,220.0,virtual terminal
+ElmTerm_virtual_0015,380.0,virtual terminal
+ElmTerm_virtual_0016,380.0,virtual terminal
+ElmTerm_virtual_0017,220.0,virtual terminal
+ElmTerm_virtual_0018,220.0,virtual terminal
+ElmTerm_virtual_0019,220.0,virtual terminal
+ElmTerm_0030,380.0,Umspannwerk Trossingen
+ElmTerm_virtual_0023,380.0,virtual terminal
+ElmTerm_virtual_0022,380.0,virtual terminal
+ElmTerm_0009,220.0,Umspannstation Hoheneck Amprion
+ElmTerm_0007,220.0,Umspannwerk Hoheneck EnBW
+ElmTerm_virtual_0024,380.0,virtual terminal
+ElmTerm_virtual_0002,220.0,virtual terminal
+ElmTerm_virtual_0026,220.0,virtual terminal
+ElmTerm_virtual_0028,220.0,virtual terminal
+ElmTerm_virtual_0029,220.0,virtual terminal
+ElmTerm_virtual_0030,220.0,virtual terminal
+ElmTerm_0798,220.0,floating end terminal
+ElmTerm_0033,220.0,Bühl
+ElmTerm_virtual_0031,220.0,virtual terminal
+ElmTerm_virtual_0032,220.0,virtual terminal
+ElmTerm_0041,380.0,380kV-Umspannwerk Pulverdingen
+ElmTerm_virtual_0033,380.0,virtual terminal
+ElmTerm_virtual_0034,380.0,virtual terminal
+ElmTerm_0075,380.0,380-kV-Umspannwerk Eichstetten
+ElmTerm_virtual_0035,380.0,virtual terminal
+ElmTerm_0065,380.0,Philippsburg 380 kV
+ElmTerm_tieline_0001,380.0,tieline terminal
+ElmTerm_virtual_0036,380.0,virtual terminal
+ElmTerm_virtual_0037,380.0,virtual terminal
+ElmTerm_virtual_0038,380.0,virtual terminal
+ElmTerm_0032,380.0,Umspannwerk Rotensohl
+ElmTerm_0046,220.0,220-kV-Umspannwerk Eichstetten
+ElmTerm_0021,220.0,Umspannwerk Gurtweil
+ElmTerm_virtual_0040,380.0,virtual terminal
+ElmTerm_tieline_0003,380.0,tieline terminal
+ElmTerm_virtual_0041,380.0,virtual terminal
+ElmTerm_virtual_0042,220.0,virtual terminal
+ElmTerm_0049,220.0,Lastverteilung/Schaltanlage Kühmoos
+ElmTerm_virtual_0043,220.0,virtual terminal
+ElmTerm_virtual_0044,380.0,virtual terminal
+ElmTerm_virtual_0045,380.0,virtual terminal
+ElmTerm_virtual_0046,380.0,virtual terminal
+ElmTerm_virtual_0049,220.0,virtual terminal
+ElmTerm_virtual_0050,220.0,virtual terminal
+ElmTerm_0071,220.0, 
+ElmTerm_0743,220.0,added terminal voltage
+ElmTerm_virtual_0051,380.0,virtual terminal
+ElmTerm_0072,380.0,Kabelanfang PSP Wehr
+ElmTerm_virtual_0052,380.0,virtual terminal
+ElmTerm_virtual_0053,380.0,virtual terminal
+ElmTerm_virtual_0054,220.0,virtual terminal
+ElmTerm_tieline_0004,220.0,tieline terminal
+ElmTerm_0799,380.0,floating end terminal
+ElmTerm_virtual_0048,380.0,virtual terminal
+ElmTerm_0061,220.0,Station Rheinau
+ElmTerm_0066,220.0,Umspannwerk Altlußheim
+ElmTerm_0745,380.0,added terminal voltage
+ElmTerm_0008,380.0,Umspannstation Hoheneck Amprion
+ElmTerm_0063,380.0, 
+ElmTerm_virtual_0060,380.0,virtual terminal
+ElmTerm_0057,220.0,Umspannwerk Weier
+ElmTerm_0067,220.0,Umspannanlage Heidelberg-Süd
+ElmTerm_0074,220.0,Umspannwerk Neurott
+ElmTerm_virtual_0006,220.0,virtual terminal
+ElmTerm_virtual_0061,380.0,virtual terminal
+ElmTerm_0024,220.0,220-kV-Umspannwerk Kuppenheim
+ElmTerm_virtual_0062,220.0,virtual terminal
+ElmTerm_0034,220.0,Drehstromschaltwerk Neckarwestheim
+ElmTerm_virtual_0063,220.0,virtual terminal
+ElmTerm_0069,220.0,Mannheim
+ElmTerm_virtual_0011,220.0,virtual terminal
+ElmTerm_virtual_0066,380.0,virtual terminal
+ElmTerm_virtual_0067,380.0,virtual terminal
+ElmTerm_virtual_0068,380.0,virtual terminal
+ElmTerm_virtual_0070,380.0,virtual terminal
+ElmTerm_virtual_0071,380.0,virtual terminal
+ElmTerm_virtual_0072,380.0,virtual terminal
+ElmTerm_0054,380.0,Umspannwerk Hüffenhardt
+ElmTerm_virtual_0073,380.0,virtual terminal
+ElmTerm_0746,380.0,added terminal voltage
+ElmTerm_virtual_0025,380.0,virtual terminal
+ElmTerm_0052,220.0,Beuren
+ElmTerm_virtual_0074,380.0,virtual terminal
+ElmTerm_0018,380.0,Umspannwerk Obermooweiler
+ElmTerm_0059,380.0,Karlsruhe-Daxlanden
+ElmTerm_0060,220.0,Karlsruhe-Daxlanden
+ElmTerm_virtual_0076,380.0,virtual terminal
+ElmTerm_0064,380.0, 
+ElmTerm_virtual_0077,220.0,virtual terminal
+ElmTerm_virtual_0020,220.0,virtual terminal
+ElmTerm_0078,380.0, 
+ElmTerm_0070,380.0, 
+ElmTerm_0028,220.0,Karlsruhe-West
+ElmTerm_virtual_0055,220.0,virtual terminal
+ElmTerm_virtual_0064,220.0,virtual terminal
+ElmTerm_virtual_0058,220.0,virtual terminal
+ElmTerm_virtual_0079,220.0,virtual terminal
+ElmTerm_0748,380.0,added terminal voltage
+ElmTerm_0047,380.0,Schwörstadt
+ElmTerm_0081,380.0,Föhring
+ElmTerm_0102,380.0,Umspannwerk Ottenhofen
+ElmTerm_virtual_0081,380.0,virtual terminal
+ElmTerm_0092,380.0,Umspannwerk Redwitz
+ElmTerm_0093,380.0,Umspannwerk Oberhaid
+ElmTerm_virtual_0082,380.0,virtual terminal
+ElmTerm_0127,380.0,Isar
+ElmTerm_virtual_0084,380.0,virtual terminal
+ElmTerm_0088,380.0,Umspannwerk Raitersaich
+ElmTerm_virtual_0080,380.0,virtual terminal
+ElmTerm_virtual_0085,380.0,virtual terminal
+ElmTerm_0118,380.0,Umspannwerk Aschaffenburg
+ElmTerm_virtual_0087,380.0,virtual terminal
+ElmTerm_0094,380.0,Umspannwerk Eltmann
+ElmTerm_virtual_0088,380.0,virtual terminal
+ElmTerm_0117,380.0,Umspannwerk Lechhausen; Übernahmestation Lechhausen
+ElmTerm_0099,380.0,Umspannwerk Pleinting
+ElmTerm_virtual_0086,220.0,virtual terminal
+ElmTerm_0122,220.0,Umspannwerk Krün
+ElmTerm_0100,220.0,Umspannwerk Pleinting
+ElmTerm_virtual_0089,220.0,virtual terminal
+ElmTerm_0087,380.0,Station Meitingen
+ElmTerm_0082,380.0,Umspannwerk Oberbachern
+ElmTerm_virtual_0090,380.0,virtual terminal
+ElmTerm_0124,380.0,Umspannwerk Meitingen
+ElmTerm_virtual_0091,380.0,virtual terminal
+ElmTerm_0126,220.0,Umspannwerk Altheim
+ElmTerm_0095,220.0,Umspannwerk Sittling
+ElmTerm_0138,220.0,Umspannwerk Ludersheim
+ElmTerm_0129,380.0,Umspannwerk Plattling
+ElmTerm_virtual_0092,380.0,virtual terminal
+ElmTerm_virtual_0094,380.0,virtual terminal
+ElmTerm_0130,380.0,Umspannwerk Gundelfingen
+ElmTerm_virtual_0095,220.0,virtual terminal
+ElmTerm_virtual_0096,220.0,virtual terminal
+ElmTerm_virtual_0097,220.0,virtual terminal
+ElmTerm_virtual_0098,220.0,virtual terminal
+ElmTerm_0096,220.0,Umspannwerk Trennfeld
+ElmTerm_virtual_0099,380.0,virtual terminal
+ElmTerm_virtual_0100,220.0,virtual terminal
+ElmTerm_virtual_0101,220.0,virtual terminal
+ElmTerm_virtual_0093,380.0,virtual terminal
+ElmTerm_0132,220.0,Umspannwerk Pirach
+ElmTerm_virtual_0106,380.0,virtual terminal
+ElmTerm_0114,380.0,Karlstein
+ElmTerm_0101,220.0,Umspannwerk Memmingen
+ElmTerm_virtual_0107,220.0,virtual terminal
+ElmTerm_virtual_0108,220.0,virtual terminal
+ElmTerm_virtual_0104,220.0,virtual terminal
+ElmTerm_tieline_0009,220.0,tieline terminal
+ElmTerm_virtual_0109,220.0,virtual terminal
+ElmTerm_tieline_0010,220.0,tieline terminal
+ElmTerm_0806,380.0,floating end terminal
+ElmTerm_0115,220.0,Schaltwerk Kempten
+ElmTerm_0131,220.0,Umspannwerk Kempten-Au
+ElmTerm_0097,380.0,Ingolstadt
+ElmTerm_0139,380.0,Irsching
+ElmTerm_virtual_0110,220.0,virtual terminal
+ElmTerm_0089,220.0,Umspannwerk Raitersaich
+ElmTerm_0119,220.0,Umspannwerk Aschaffenburg
+ElmTerm_0190,380.0,Umspannwerk Großkrotzenburg
+ElmTerm_0749,380.0,added terminal voltage
+ElmTerm_0125,380.0,Umspannwerk Bidingen Nr. 697 S
+ElmTerm_0120,380.0,Schaltanlage Leupolz
+ElmTerm_0105,380.0,Kriegenbrunn
+ElmTerm_0136,380.0,Grafenrheinfeld
+ElmTerm_virtual_0075,380.0,virtual terminal
+ElmTerm_virtual_0083,380.0,virtual terminal
+ElmTerm_0812,380.0,floating end terminal
+ElmTerm_virtual_0111,380.0,virtual terminal
+ElmTerm_0151,380.0,Umspannwerk Reuter
+ElmTerm_virtual_0112,380.0,virtual terminal
+ElmTerm_0144,380.0,Umspannwerk Malchow
+ElmTerm_0146,380.0,Umspannwerk Marzahn
+ElmTerm_0150,380.0,Umspannwerk Friedrichshain
+ElmTerm_0149,380.0,Berlin/Mitte
+ElmTerm_0145,220.0,Umspannwerk Wuhlheide
+ElmTerm_0147,220.0,Umspannwerk Marzahn
+ElmTerm_0166,380.0,Neuenhagen
+ElmTerm_0143,380.0,380 kV-Kabel Terminal Berlin
+ElmTerm_0152,380.0,Umspannwerk Charlottenburg
+ElmTerm_0148,380.0,Teufelsbruch
+ElmTerm_virtual_0113,380.0,virtual terminal
+ElmTerm_virtual_0114,380.0,virtual terminal
+ElmTerm_0161,220.0,Hennigsdorf
+ElmTerm_virtual_0115,220.0,virtual terminal
+ElmTerm_virtual_0116,220.0,virtual terminal
+ElmTerm_virtual_0117,380.0,virtual terminal
+ElmTerm_0155,220.0,Wustermark
+ElmTerm_virtual_0118,220.0,virtual terminal
+ElmTerm_virtual_0119,380.0,virtual terminal
+ElmTerm_virtual_0120,380.0,virtual terminal
+ElmTerm_virtual_0121,380.0,virtual terminal
+ElmTerm_0163,220.0,Brandenburg-West
+ElmTerm_virtual_0122,220.0,virtual terminal
+ElmTerm_virtual_0123,380.0,virtual terminal
+ElmTerm_0503,380.0,Umspannwerk Wolmirstedt
+ElmTerm_virtual_0124,380.0,virtual terminal
+ElmTerm_virtual_0125,380.0,virtual terminal
+ElmTerm_virtual_0126,220.0,virtual terminal
+ElmTerm_virtual_0127,220.0,virtual terminal
+ElmTerm_virtual_0128,220.0,virtual terminal
+ElmTerm_0160,220.0,Bertikow
+ElmTerm_virtual_0129,220.0,virtual terminal
+ElmTerm_0218,220.0,Pasewalk
+ElmTerm_virtual_0130,220.0,virtual terminal
+ElmTerm_tieline_0018,220.0,tieline terminal
+ElmTerm_0507,380.0,Stendal/West
+ElmTerm_virtual_0131,220.0,virtual terminal
+ElmTerm_0750,380.0,added terminal voltage
+ElmTerm_virtual_0133,380.0,virtual terminal
+ElmTerm_0489,380.0,Graustein
+ElmTerm_0162,220.0,Vierraden
+ElmTerm_0813,380.0,floating end terminal
+ElmTerm_virtual_0134,380.0,virtual terminal
+ElmTerm_0814,380.0,floating end terminal
+ElmTerm_0156,380.0,Umspannwerk Schönewalde
+ElmTerm_virtual_0135,380.0,virtual terminal
+ElmTerm_0153,380.0,Umspannwerk Preilack
+ElmTerm_0168,380.0,Umspannwerk Ragow
+ElmTerm_0495,380.0,Umspannwerk Streumen
+ElmTerm_0496,380.0,Umspannwerk Bärwalde
+ElmTerm_virtual_0132,380.0,virtual terminal
+ElmTerm_0164,380.0,Eisenhüttenstadt
+ElmTerm_0219,220.0,Umspannwerk Windpark Iven
+ElmTerm_virtual_0136,380.0,virtual terminal
+ElmTerm_0815,380.0,floating end terminal
+ElmTerm_0154,380.0,Wustermark
+ElmTerm_0816,380.0,floating end terminal
+ElmTerm_virtual_0137,380.0,virtual terminal
+ElmTerm_0817,380.0,floating end terminal
+ElmTerm_0818,380.0,floating end terminal
+ElmTerm_virtual_0139,220.0,virtual terminal
+ElmTerm_0821,220.0,floating end terminal
+ElmTerm_virtual_0140,220.0,virtual terminal
+ElmTerm_0171,220.0,Umspannwerk Blockland
+ElmTerm_virtual_0141,380.0,virtual terminal
+ElmTerm_0172,380.0,Umspannwerk Farge
+ElmTerm_virtual_0143,380.0,virtual terminal
+ElmTerm_0751,380.0,added terminal voltage
+ElmTerm_virtual_0144,380.0,virtual terminal
+ElmTerm_virtual_0145,380.0,virtual terminal
+ElmTerm_0200,380.0,Umspannwerk Borken
+ElmTerm_virtual_0146,380.0,virtual terminal
+ElmTerm_virtual_0148,380.0,virtual terminal
+ElmTerm_virtual_0149,380.0,virtual terminal
+ElmTerm_0187,380.0,UW Waldeck
+ElmTerm_virtual_0150,380.0,virtual terminal
+ElmTerm_0188,380.0,Umspannwerk Twistetal
+ElmTerm_virtual_0151,380.0,virtual terminal
+ElmTerm_0207,220.0,Biblis A
+ElmTerm_0822,220.0,floating end terminal
+ElmTerm_0206,380.0,Biblis A
+ElmTerm_virtual_0153,380.0,virtual terminal
+ElmTerm_virtual_0152,380.0,virtual terminal
+ElmTerm_virtual_0154,380.0,virtual terminal
+ElmTerm_virtual_0156,380.0,virtual terminal
+ElmTerm_virtual_0157,380.0,virtual terminal
+ElmTerm_0199,220.0,Station Bürstadt
+ElmTerm_virtual_0159,220.0,virtual terminal
+ElmTerm_virtual_0160,220.0,virtual terminal
+ElmTerm_0250,220.0,Umspannwerk Rosdorf
+ElmTerm_0204,220.0,Sandershausen
+ElmTerm_virtual_0162,380.0,virtual terminal
+ElmTerm_0180,380.0,Umspannwerk Karben
+ElmTerm_virtual_0163,380.0,virtual terminal
+ElmTerm_0193,380.0,Station Limburg
+ElmTerm_0181,380.0,Umspannwerk Aßlar
+ElmTerm_virtual_0164,380.0,virtual terminal
+ElmTerm_0460,220.0,BASF
+ElmTerm_virtual_0158,380.0,virtual terminal
+ElmTerm_0752,380.0,added terminal voltage
+ElmTerm_0185,380.0,Mecklar
+ElmTerm_virtual_0165,380.0,virtual terminal
+ElmTerm_virtual_0155,380.0,virtual terminal
+ElmTerm_0183,380.0,Umspannstation Bischofsheim
+ElmTerm_virtual_0161,380.0,virtual terminal
+ElmTerm_0175,220.0,Umspannwerk Frankfurt Nord
+ElmTerm_virtual_0166,220.0,virtual terminal
+ElmTerm_0201,380.0,Umspannwerk Bergshausen
+ElmTerm_0753,380.0,added terminal voltage
+ElmTerm_virtual_0167,380.0,virtual terminal
+ElmTerm_virtual_0168,380.0,virtual terminal
+ElmTerm_0203,380.0,Station Kelsterbach
+ElmTerm_0194,380.0,Kabeleinführung 380 kV
+ElmTerm_virtual_0169,380.0,virtual terminal
+ElmTerm_virtual_0170,380.0,virtual terminal
+ElmTerm_virtual_0171,380.0,virtual terminal
+ElmTerm_0214,380.0,Güstrow
+ElmTerm_virtual_0172,380.0,virtual terminal
+ElmTerm_0754,220.0,added terminal voltage
+ElmTerm_virtual_0173,220.0,virtual terminal
+ElmTerm_0210,220.0,Umspannwerk Lüdershagen
+ElmTerm_0220,220.0,Güstrow
+ElmTerm_0215,220.0,Güstrow
+ElmTerm_virtual_0174,220.0,virtual terminal
+ElmTerm_0217,220.0,Bentwisch
+ElmTerm_virtual_0175,380.0,virtual terminal
+ElmTerm_0211,380.0,Umspannwerk Lubmin
+ElmTerm_virtual_0176,380.0,virtual terminal
+ElmTerm_0224,380.0,Siedenbrünzow
+ElmTerm_0216,380.0,Bentwisch HGÜ
+ElmTerm_virtual_0138,220.0,virtual terminal
+ElmTerm_virtual_0177,220.0,virtual terminal
+ElmTerm_virtual_0178,380.0,virtual terminal
+ElmTerm_0213,380.0,Görries
+ElmTerm_virtual_0179,380.0,virtual terminal
+ElmTerm_0223,380.0,Wessin
+ElmTerm_0212,220.0,Umspannwerk Lubmin
+ElmTerm_0236,220.0,Umspannwerk Braunschweig Nord
+ElmTerm_0234,220.0,Wahle
+ElmTerm_0293,220.0,Mehrum (220 kV)
+ElmTerm_0261,220.0,TenneT TSO GmbH - Betriebszentrum Lehrte
+ElmTerm_virtual_0181,220.0,virtual terminal
+ElmTerm_0233,380.0,Wahle
+ElmTerm_0235,380.0,Klein Ilsede
+ElmTerm_0253,220.0,Gleidingen 220 kV
+ElmTerm_virtual_0182,220.0,virtual terminal
+ElmTerm_0827,380.0,floating end terminal
+ElmTerm_0237,380.0,UW Grohnde 380 kV / 110 kV
+ElmTerm_0248,220.0,Wechold
+ElmTerm_virtual_0185,220.0,virtual terminal
+ElmTerm_0287,220.0,Erzhausen
+ElmTerm_virtual_0186,220.0,virtual terminal
+ElmTerm_0254,220.0,Godenau
+ElmTerm_virtual_0187,220.0,virtual terminal
+ElmTerm_0227,220.0,Umspannwerk Maade
+ElmTerm_0288,220.0,Conneforde 110/220 kV
+ElmTerm_0828,220.0,floating end terminal
+ElmTerm_virtual_0188,220.0,virtual terminal
+ElmTerm_0245,220.0,Salzgitter-Hallendorf
+ElmTerm_virtual_0189,220.0,virtual terminal
+ElmTerm_0289,380.0,Diele
+ElmTerm_0229,380.0,Conneforde
+ElmTerm_0755,380.0,added terminal voltage
+ElmTerm_0242,380.0,Umspannwerk Helmstedt
+ElmTerm_0232,380.0,Umspannwerk Hattorf
+ElmTerm_virtual_0183,380.0,virtual terminal
+ElmTerm_virtual_0190,380.0,virtual terminal
+ElmTerm_0318,380.0,Eickum
+ElmTerm_virtual_0191,380.0,virtual terminal
+ElmTerm_0241,220.0,Voslapp
+ElmTerm_virtual_0192,220.0,virtual terminal
+ElmTerm_0256,380.0,Umspannwerk Rhede
+ElmTerm_virtual_0193,220.0,virtual terminal
+ElmTerm_0258,220.0,Unterweser
+ElmTerm_0275,220.0,Kernkraftwerk Unterweser
+ElmTerm_0260,220.0,Abbenfleth
+ElmTerm_virtual_0195,220.0,virtual terminal
+ElmTerm_virtual_0196,380.0,virtual terminal
+ElmTerm_virtual_0197,380.0,virtual terminal
+ElmTerm_0277,220.0,Sottrum
+ElmTerm_0240,220.0,Dollern
+ElmTerm_virtual_0180,220.0,virtual terminal
+ElmTerm_0251,220.0,Stade
+ElmTerm_virtual_0199,380.0,virtual terminal
+ElmTerm_0239,380.0,Dollern
+ElmTerm_0276,380.0,Sottrum
+ElmTerm_0264,220.0,Emden-Borßum
+ElmTerm_0268,380.0,Niederlangen
+ElmTerm_0267,220.0,Hardegsen
+ElmTerm_0279,380.0,Dörpen West
+ElmTerm_0270,380.0,Hanekenfähr
+ElmTerm_0286,380.0, 
+ElmTerm_virtual_0203,380.0,virtual terminal
+ElmTerm_virtual_0200,380.0,virtual terminal
+ElmTerm_virtual_0201,380.0,virtual terminal
+ElmTerm_virtual_0202,220.0,virtual terminal
+ElmTerm_0271,220.0,Hanekenfähr
+ElmTerm_0249,220.0,Umspannwerk Kraftwerk Robert Frank
+ElmTerm_virtual_0205,220.0,virtual terminal
+ElmTerm_virtual_0206,380.0,virtual terminal
+ElmTerm_virtual_0207,380.0,virtual terminal
+ElmTerm_0829,380.0,floating end terminal
+ElmTerm_0231,380.0,Algermissen
+ElmTerm_virtual_0208,220.0,virtual terminal
+ElmTerm_virtual_0209,220.0,virtual terminal
+ElmTerm_0274,380.0,Kernkraftwerk Unterweser
+ElmTerm_0257,380.0,Unterweser
+ElmTerm_0269,220.0,Cloppenburg 220 kV
+ElmTerm_0283,220.0,Atlantic
+ElmTerm_virtual_0142,380.0,virtual terminal
+ElmTerm_0243,380.0,Landesbergen
+ElmTerm_virtual_0184,380.0,virtual terminal
+ElmTerm_virtual_0210,380.0,virtual terminal
+ElmTerm_0247,380.0,Stadorf
+ElmTerm_0246,380.0,Lüneburg
+ElmTerm_virtual_0204,380.0,virtual terminal
+ElmTerm_virtual_0211,380.0,virtual terminal
+ElmTerm_virtual_0212,220.0,virtual terminal
+ElmTerm_virtual_0194,220.0,virtual terminal
+ElmTerm_0282,220.0,Götzdorf
+ElmTerm_0291,220.0,DOW
+ElmTerm_0831,220.0,floating end terminal
+ElmTerm_0272,220.0, 
+ElmTerm_0281,220.0, 
+ElmTerm_0290,380.0,Meppen
+ElmTerm_0255,380.0,Alfstedt
+ElmTerm_virtual_0213,220.0,virtual terminal
+ElmTerm_virtual_0198,380.0,virtual terminal
+ElmTerm_0244,220.0,Landesbergen
+ElmTerm_0299,220.0,Station Dhünnaue
+ElmTerm_virtual_0214,220.0,virtual terminal
+ElmTerm_0302,220.0,Station Sechtem
+ElmTerm_0834,220.0,floating end terminal
+ElmTerm_0437,380.0,Bergkamen A
+ElmTerm_virtual_0216,380.0,virtual terminal
+ElmTerm_virtual_0217,380.0,virtual terminal
+ElmTerm_virtual_0218,380.0,virtual terminal
+ElmTerm_virtual_0219,380.0,virtual terminal
+ElmTerm_0757,380.0,added terminal voltage
+ElmTerm_virtual_0220,380.0,virtual terminal
+ElmTerm_virtual_0221,380.0,virtual terminal
+ElmTerm_0332,220.0,Uerdingen
+ElmTerm_virtual_0222,220.0,virtual terminal
+ElmTerm_virtual_0223,220.0,virtual terminal
+ElmTerm_virtual_0224,220.0,virtual terminal
+ElmTerm_0441,380.0,KW Heyden
+ElmTerm_0333,380.0,Schaltanlage Ovenstädt
+ElmTerm_0319,380.0,Umspannwerk Bechterdissen
+ElmTerm_0360,220.0,UW Veltheim
+ElmTerm_virtual_0225,220.0,virtual terminal
+ElmTerm_virtual_0227,220.0,virtual terminal
+ElmTerm_virtual_0228,220.0,virtual terminal
+ElmTerm_0389,380.0,Station Uentrop
+ElmTerm_virtual_0229,380.0,virtual terminal
+ElmTerm_virtual_0230,380.0,virtual terminal
+ElmTerm_virtual_0231,380.0,virtual terminal
+ElmTerm_0305,220.0,Station Bergmannsglück
+ElmTerm_0386,220.0,Station Bellendorf
+ElmTerm_0759,220.0,added terminal voltage
+ElmTerm_virtual_0233,220.0,virtual terminal
+ElmTerm_0761,380.0,added terminal voltage
+ElmTerm_0308,380.0,Station Polsum
+ElmTerm_virtual_0234,380.0,virtual terminal
+ElmTerm_0362,380.0,Station Kusenhorst
+ElmTerm_0312,220.0,Station Brauweiler
+ElmTerm_virtual_0235,220.0,virtual terminal
+ElmTerm_virtual_0236,220.0,virtual terminal
+ElmTerm_virtual_0237,380.0,virtual terminal
+ElmTerm_0839,380.0,floating end terminal
+ElmTerm_0353,380.0,Station Oberzier
+ElmTerm_0372,380.0,Station Dahlem
+ElmTerm_virtual_0238,380.0,virtual terminal
+ElmTerm_virtual_0239,220.0,virtual terminal
+ElmTerm_0355,220.0,Umspannwerk Bielefeld Ost
+ElmTerm_virtual_0240,220.0,virtual terminal
+ElmTerm_0298,220.0,Station Opladen
+ElmTerm_0445,220.0,Umspannwerk Lage
+ElmTerm_virtual_0241,220.0,virtual terminal
+ElmTerm_0432,220.0,Station Altenkleusheim
+ElmTerm_0370,220.0,Station Bollenacker
+ElmTerm_virtual_0243,220.0,virtual terminal
+ElmTerm_0842,220.0,floating end terminal
+ElmTerm_virtual_0232,380.0,virtual terminal
+ElmTerm_0843,220.0,floating end terminal
+ElmTerm_virtual_0244,220.0,virtual terminal
+ElmTerm_virtual_0246,220.0,virtual terminal
+ElmTerm_virtual_0247,220.0,virtual terminal
+ElmTerm_0320,220.0,Umspannwerk Bechterdissen
+ElmTerm_virtual_0248,220.0,virtual terminal
+ElmTerm_0379,220.0,Station Beeck
+ElmTerm_virtual_0249,220.0,virtual terminal
+ElmTerm_virtual_0250,220.0,virtual terminal
+ElmTerm_0378,380.0,Station Beeck
+ElmTerm_0845,380.0,floating end terminal
+ElmTerm_virtual_0251,220.0,virtual terminal
+ElmTerm_0380,220.0, 
+ElmTerm_virtual_0252,220.0,virtual terminal
+ElmTerm_0846,220.0,floating end terminal
+ElmTerm_virtual_0253,220.0,virtual terminal
+ElmTerm_virtual_0254,220.0,virtual terminal
+ElmTerm_0384,220.0, 
+ElmTerm_0847,220.0,floating end terminal
+ElmTerm_0329,220.0,Station Walsum
+ElmTerm_virtual_0255,380.0,virtual terminal
+ElmTerm_0466,380.0,Station Weißenthurm
+ElmTerm_0349,380.0,Siersdorf
+ElmTerm_virtual_0256,380.0,virtual terminal
+ElmTerm_0356,380.0,Station Ließem
+ElmTerm_virtual_0257,380.0,virtual terminal
+ElmTerm_0338,380.0,Umspannwerk Rommerskirchen
+ElmTerm_virtual_0259,380.0,virtual terminal
+ElmTerm_virtual_0260,380.0,virtual terminal
+ElmTerm_virtual_0261,220.0,virtual terminal
+ElmTerm_0387,220.0,Station Hesseln
+ElmTerm_0390,380.0,Station Lippborg
+ElmTerm_0392,220.0,Station Gersteinwerk
+ElmTerm_0760,220.0,added terminal voltage
+ElmTerm_virtual_0263,380.0,virtual terminal
+ElmTerm_virtual_0264,380.0,virtual terminal
+ElmTerm_virtual_0265,380.0,virtual terminal
+ElmTerm_virtual_0266,380.0,virtual terminal
+ElmTerm_virtual_0267,380.0,virtual terminal
+ElmTerm_virtual_0268,380.0,virtual terminal
+ElmTerm_virtual_0269,220.0,virtual terminal
+ElmTerm_0398,220.0,Amelsbüren
+ElmTerm_virtual_0270,380.0,virtual terminal
+ElmTerm_0366,380.0,Station Gronau
+ElmTerm_virtual_0272,220.0,virtual terminal
+ElmTerm_0309,220.0,Station Polsum
+ElmTerm_virtual_0273,220.0,virtual terminal
+ElmTerm_virtual_0274,220.0,virtual terminal
+ElmTerm_virtual_0275,220.0,virtual terminal
+ElmTerm_0359,220.0,Station Gohrpunkt
+ElmTerm_0400,220.0,Station Sankt Peter 220 kV
+ElmTerm_0323,220.0,Station Wambel
+ElmTerm_0340,220.0,Ratsbusch
+ElmTerm_virtual_0276,380.0,virtual terminal
+ElmTerm_virtual_0277,380.0,virtual terminal
+ElmTerm_0371,380.0,Station Mengede
+ElmTerm_virtual_0279,220.0,virtual terminal
+ElmTerm_0334,220.0,Umspannwerk Garenfeld
+ElmTerm_virtual_0282,220.0,virtual terminal
+ElmTerm_virtual_0284,220.0,virtual terminal
+ElmTerm_0296,220.0,UW Fühlingen
+ElmTerm_0339,220.0,Umspannwerk Rommerskirchen
+ElmTerm_virtual_0285,220.0,virtual terminal
+ElmTerm_virtual_0226,220.0,virtual terminal
+ElmTerm_0324,220.0,Station Elmenhorst
+ElmTerm_virtual_0286,220.0,virtual terminal
+ElmTerm_virtual_0288,380.0,virtual terminal
+ElmTerm_0404,380.0,Station Karnap
+ElmTerm_virtual_0289,220.0,virtual terminal
+ElmTerm_virtual_0290,220.0,virtual terminal
+ElmTerm_virtual_0291,220.0,virtual terminal
+ElmTerm_0407,220.0,Station Laer
+ElmTerm_virtual_0292,220.0,virtual terminal
+ElmTerm_virtual_0293,220.0,virtual terminal
+ElmTerm_0408,220.0,Station Bochum
+ElmTerm_virtual_0295,220.0,virtual terminal
+ElmTerm_0852,380.0,floating end terminal
+ElmTerm_virtual_0298,380.0,virtual terminal
+ElmTerm_0322,380.0,Station Nordlicht
+ElmTerm_virtual_0300,220.0,virtual terminal
+ElmTerm_0419,220.0,Station Edelstahl Krefeld
+ElmTerm_virtual_0302,380.0,virtual terminal
+ElmTerm_virtual_0303,380.0,virtual terminal
+ElmTerm_virtual_0304,380.0,virtual terminal
+ElmTerm_virtual_0305,220.0,virtual terminal
+ElmTerm_virtual_0306,220.0,virtual terminal
+ElmTerm_virtual_0307,220.0,virtual terminal
+ElmTerm_virtual_0308,220.0,virtual terminal
+ElmTerm_0411,220.0,Elverlingsen
+ElmTerm_0413,220.0,Station Mettmann
+ElmTerm_virtual_0309,220.0,virtual terminal
+ElmTerm_virtual_0311,380.0,virtual terminal
+ElmTerm_0369,220.0,Station Norf
+ElmTerm_virtual_0294,220.0,virtual terminal
+ElmTerm_0433,220.0,Rheinzink
+ElmTerm_virtual_0312,220.0,virtual terminal
+ElmTerm_0416,220.0,Station Mündelheim
+ElmTerm_virtual_0313,380.0,virtual terminal
+ElmTerm_virtual_0314,380.0,virtual terminal
+ElmTerm_0854,220.0,floating end terminal
+ElmTerm_virtual_0315,220.0,virtual terminal
+ElmTerm_virtual_0280,220.0,virtual terminal
+ElmTerm_virtual_0316,220.0,virtual terminal
+ElmTerm_virtual_0317,220.0,virtual terminal
+ElmTerm_0855,220.0,floating end terminal
+ElmTerm_0420,380.0,KW Neurath
+ElmTerm_virtual_0318,380.0,virtual terminal
+ElmTerm_virtual_0323,220.0,virtual terminal
+ElmTerm_virtual_0324,220.0,virtual terminal
+ElmTerm_virtual_0325,380.0,virtual terminal
+ElmTerm_0764,380.0,added terminal voltage
+ElmTerm_0758,380.0,added terminal voltage
+ElmTerm_0423,380.0,Walsum Block 10
+ElmTerm_0857,220.0,floating end terminal
+ElmTerm_0328,220.0,Station Niederrhein
+ElmTerm_virtual_0245,380.0,virtual terminal
+ElmTerm_0373,220.0,KW Niederaußem
+ElmTerm_0859,380.0,floating end terminal
+ElmTerm_virtual_0327,380.0,virtual terminal
+ElmTerm_0860,380.0,floating end terminal
+ElmTerm_0861,220.0,floating end terminal
+ElmTerm_virtual_0299,220.0,virtual terminal
+ElmTerm_virtual_0328,220.0,virtual terminal
+ElmTerm_virtual_0329,220.0,virtual terminal
+ElmTerm_0862,220.0,floating end terminal
+ElmTerm_virtual_0330,220.0,virtual terminal
+ElmTerm_virtual_0283,220.0,virtual terminal
+ElmTerm_0863,220.0,floating end terminal
+ElmTerm_0346,380.0,Umspannwerk Weisweiler
+ElmTerm_0393,380.0,Station Enniger
+ElmTerm_0418,380.0,Station Linde
+ElmTerm_virtual_0310,220.0,virtual terminal
+ElmTerm_virtual_0331,380.0,virtual terminal
+ElmTerm_0766,380.0,added terminal voltage
+ElmTerm_virtual_0333,380.0,virtual terminal
+ElmTerm_virtual_0332,380.0,virtual terminal
+ElmTerm_0458,220.0,Station Dauersberg
+ElmTerm_0303,220.0,Station Siegburg
+ElmTerm_virtual_0334,380.0,virtual terminal
+ElmTerm_virtual_0335,380.0,virtual terminal
+ElmTerm_0313,220.0,Umspannwerk Meißen
+ElmTerm_virtual_0337,220.0,virtual terminal
+ElmTerm_0314,220.0,Station Eller
+ElmTerm_virtual_0338,220.0,virtual terminal
+ElmTerm_virtual_0278,380.0,virtual terminal
+ElmTerm_virtual_0339,220.0,virtual terminal
+ElmTerm_0315,220.0,Station Reisholz
+ElmTerm_virtual_0340,220.0,virtual terminal
+ElmTerm_0868,220.0,floating end terminal
+ElmTerm_virtual_0341,220.0,virtual terminal
+ElmTerm_0869,220.0,floating end terminal
+ElmTerm_virtual_0342,220.0,virtual terminal
+ElmTerm_virtual_0343,220.0,virtual terminal
+ElmTerm_0870,220.0,floating end terminal
+ElmTerm_virtual_0344,220.0,virtual terminal
+ElmTerm_0871,220.0,floating end terminal
+ElmTerm_0872,220.0,floating end terminal
+ElmTerm_0873,220.0,floating end terminal
+ElmTerm_0394,380.0,Vörden
+ElmTerm_0876,220.0,floating end terminal
+ElmTerm_virtual_0345,220.0,virtual terminal
+ElmTerm_0354,380.0,Station Hambach
+ElmTerm_0300,380.0,Station Knapsack
+ElmTerm_0769,380.0,added terminal voltage
+ElmTerm_0391,380.0,Station Gersteinwerk
+ElmTerm_0770,380.0,added terminal voltage
+ElmTerm_0451,380.0,Station Niederstedem
+ElmTerm_virtual_0326,220.0,virtual terminal
+ElmTerm_0317,220.0,Station Utfort
+ElmTerm_virtual_0347,220.0,virtual terminal
+ElmTerm_virtual_0348,220.0,virtual terminal
+ElmTerm_virtual_0349,220.0,virtual terminal
+ElmTerm_virtual_0350,220.0,virtual terminal
+ElmTerm_0429,220.0,Station Westerkappeln
+ElmTerm_0422,380.0,Station Ohligs
+ElmTerm_virtual_0351,380.0,virtual terminal
+ElmTerm_virtual_0352,220.0,virtual terminal
+ElmTerm_0409,380.0,Station Zensenbusch
+ElmTerm_0301,380.0,Station Sechtem
+ElmTerm_0382,220.0, 
+ElmTerm_0381,220.0, 
+ElmTerm_0878,220.0,floating end terminal
+ElmTerm_virtual_0353,220.0,virtual terminal
+ElmTerm_0879,220.0,floating end terminal
+ElmTerm_tieline_0022,220.0,tieline terminal
+ElmTerm_virtual_0354,220.0,virtual terminal
+ElmTerm_virtual_0355,220.0,virtual terminal
+ElmTerm_0459,220.0,Netzleitstelle Mutterstadt
+ElmTerm_0448,220.0,SA Bauler
+ElmTerm_0452,220.0,Station Niederstedem
+ElmTerm_0447,220.0,Station Wengerohr
+ElmTerm_virtual_0356,220.0,virtual terminal
+ElmTerm_tieline_0023,220.0,tieline terminal
+ElmTerm_virtual_0357,220.0,virtual terminal
+ElmTerm_virtual_0358,220.0,virtual terminal
+ElmTerm_virtual_0359,220.0,virtual terminal
+ElmTerm_virtual_0360,220.0,virtual terminal
+ElmTerm_virtual_0361,220.0,virtual terminal
+ElmTerm_0450,220.0,Station Trier
+ElmTerm_0465,220.0,Umspannwerk Maximiliansau
+ElmTerm_virtual_0362,220.0,virtual terminal
+ElmTerm_virtual_0363,220.0,virtual terminal
+ElmTerm_virtual_0364,220.0,virtual terminal
+ElmTerm_0880,220.0,floating end terminal
+ElmTerm_virtual_0365,220.0,virtual terminal
+ElmTerm_virtual_0367,220.0,virtual terminal
+ElmTerm_0483,220.0,Beeden
+ElmTerm_0455,220.0,Umspannwerk Kerzenheim
+ElmTerm_virtual_0368,220.0,virtual terminal
+ElmTerm_virtual_0369,220.0,virtual terminal
+ElmTerm_0456,220.0,Otterbach
+ElmTerm_virtual_0370,220.0,virtual terminal
+ElmTerm_virtual_0371,220.0,virtual terminal
+ElmTerm_0463,380.0,Umspannwerk Waldlaubersheim
+ElmTerm_virtual_0373,380.0,virtual terminal
+ElmTerm_virtual_0374,220.0,virtual terminal
+ElmTerm_0462,380.0,Station Koblenz
+ElmTerm_virtual_0366,380.0,virtual terminal
+ElmTerm_0480,220.0, 
+ElmTerm_virtual_0375,220.0,virtual terminal
+ElmTerm_0771,220.0,added terminal voltage
+ElmTerm_0468,220.0,Umspannwerk Heinitz
+ElmTerm_0481,220.0,Saarstahl
+ElmTerm_virtual_0376,220.0,virtual terminal
+ElmTerm_0476,380.0,Schaltanlage St. Barbara
+ElmTerm_virtual_0377,380.0,virtual terminal
+ElmTerm_virtual_0378,220.0,virtual terminal
+ElmTerm_virtual_0379,220.0,virtual terminal
+ElmTerm_0471,220.0,Umspannwerk Uchtelfangen
+ElmTerm_virtual_0381,220.0,virtual terminal
+ElmTerm_virtual_0382,220.0,virtual terminal
+ElmTerm_virtual_0380,220.0,virtual terminal
+ElmTerm_virtual_0383,220.0,virtual terminal
+ElmTerm_virtual_0384,220.0,virtual terminal
+ElmTerm_virtual_0385,220.0,virtual terminal
+ElmTerm_0475,220.0,Station Saarwellingen
+ElmTerm_0477,220.0,Schaltanlage St. Barbara
+ElmTerm_virtual_0386,220.0,virtual terminal
+ElmTerm_0472,220.0,Dieffeln
+ElmTerm_0478,220.0,UA Obergraben
+ElmTerm_0482,380.0,Mittelbexbach
+ElmTerm_0486,220.0,Umspannwerk Röhrsdorf
+ElmTerm_0501,220.0,Niederwiesa
+ElmTerm_virtual_0387,380.0,virtual terminal
+ElmTerm_0488,380.0,Umspannwerk DD-Süd
+ElmTerm_0497,380.0,Umspannwerk Schmölln
+ElmTerm_virtual_0388,220.0,virtual terminal
+ElmTerm_virtual_0389,220.0,virtual terminal
+ElmTerm_0494,380.0,Freiberg/Nord (380 kV)
+ElmTerm_virtual_0390,380.0,virtual terminal
+ElmTerm_0485,380.0,Umspannwerk Röhrsdorf
+ElmTerm_virtual_0391,220.0,virtual terminal
+ElmTerm_virtual_0392,380.0,virtual terminal
+ElmTerm_virtual_0393,380.0,virtual terminal
+ElmTerm_virtual_0394,380.0,virtual terminal
+ElmTerm_0772,380.0,added terminal voltage
+ElmTerm_0493,380.0,Umspannwerk Hagenwerder
+ElmTerm_0881,380.0,floating end terminal
+ElmTerm_virtual_0395,380.0,virtual terminal
+ElmTerm_0882,380.0,floating end terminal
+ElmTerm_0546,220.0,Umspannwerk Weida
+ElmTerm_0499,220.0,Umspannwerk Herlasgrün
+ElmTerm_tieline_0028,380.0,tieline terminal
+ElmTerm_0498,380.0,Markersbach
+ElmTerm_virtual_0396,380.0,virtual terminal
+ElmTerm_0492,380.0,Umspannwerk Zwönitz
+ElmTerm_virtual_0397,380.0,virtual terminal
+ElmTerm_0548,380.0,Pulgar
+ElmTerm_0490,380.0,Eula
+ElmTerm_virtual_0398,220.0,virtual terminal
+ElmTerm_0491,220.0,Eula
+ElmTerm_0883,220.0,floating end terminal
+ElmTerm_virtual_0399,220.0,virtual terminal
+ElmTerm_virtual_0400,380.0,virtual terminal
+ElmTerm_0500,220.0,Crossen
+ElmTerm_0884,220.0,floating end terminal
+ElmTerm_0885,220.0,floating end terminal
+ElmTerm_0886,220.0,floating end terminal
+ElmTerm_virtual_0401,380.0,virtual terminal
+ElmTerm_virtual_0402,380.0,virtual terminal
+ElmTerm_virtual_0403,380.0,virtual terminal
+ElmTerm_0504,220.0,Umspannwerk Wolmirstedt
+ElmTerm_virtual_0404,220.0,virtual terminal
+ElmTerm_virtual_0405,380.0,virtual terminal
+ElmTerm_0505,380.0,Umspannwerk Lauchstädt
+ElmTerm_0506,380.0,Umspannwerk Klostermansfeld
+ElmTerm_0502,380.0,Umspannwerk Marke
+ElmTerm_0773,380.0,added terminal voltage
+ElmTerm_virtual_0406,380.0,virtual terminal
+ElmTerm_0508,220.0,Magdeburg (50Hertz)
+ElmTerm_virtual_0407,220.0,virtual terminal
+ElmTerm_virtual_0408,380.0,virtual terminal
+ElmTerm_0774,380.0,added terminal voltage
+ElmTerm_0509,220.0,Umspannwerk Förderstedt
+ElmTerm_0512,220.0,Umspannwerk Hamburg-Nord
+ElmTerm_virtual_0409,220.0,virtual terminal
+ElmTerm_virtual_0410,380.0,virtual terminal
+ElmTerm_0511,380.0,Umspannwerk Hamburg-Nord
+ElmTerm_virtual_0411,220.0,virtual terminal
+ElmTerm_virtual_0412,220.0,virtual terminal
+ElmTerm_0519,380.0,Umspannwerk Kernkraftwerk Brunsbüttel
+ElmTerm_virtual_0414,380.0,virtual terminal
+ElmTerm_0527,380.0,Brokdorf
+ElmTerm_virtual_0415,380.0,virtual terminal
+ElmTerm_0523,220.0,Itzehoe/West
+ElmTerm_virtual_0417,220.0,virtual terminal
+ElmTerm_0515,220.0,Kiel-Süd
+ElmTerm_virtual_0413,220.0,virtual terminal
+ElmTerm_0517,220.0,Hamburg Nord
+ElmTerm_0521,220.0,Audorf
+ElmTerm_virtual_0416,220.0,virtual terminal
+ElmTerm_0531,220.0,Lübeck
+ElmTerm_virtual_0418,220.0,virtual terminal
+ElmTerm_0514,220.0,Kummerfeld
+ElmTerm_virtual_0419,380.0,virtual terminal
+ElmTerm_0532,380.0,Konverterstation Büttel
+ElmTerm_0530,220.0,Flensburg
+ElmTerm_tieline_0031,220.0,tieline terminal
+ElmTerm_virtual_0420,380.0,virtual terminal
+ElmTerm_virtual_0421,380.0,virtual terminal
+ElmTerm_virtual_0422,380.0,virtual terminal
+ElmTerm_0529,380.0,Flensburg
+ElmTerm_0522,380.0,Audorf
+ElmTerm_0518,380.0,Umspannwerk Wilster
+ElmTerm_virtual_0423,380.0,virtual terminal
+ElmTerm_0535,380.0,Umspannwerk Jardelund
+ElmTerm_virtual_0424,220.0,virtual terminal
+ElmTerm_virtual_0147,380.0,virtual terminal
+ElmTerm_virtual_0425,380.0,virtual terminal
+ElmTerm_virtual_0426,380.0,virtual terminal
+ElmTerm_0539,380.0,Umspannwerk Vieselbach
+ElmTerm_virtual_0427,380.0,virtual terminal
+ElmTerm_virtual_0428,220.0,virtual terminal
+ElmTerm_virtual_0429,220.0,virtual terminal
+ElmTerm_0538,220.0,Umspannwerk Remptendorf
+ElmTerm_virtual_0430,220.0,virtual terminal
+ElmTerm_0537,380.0,Umspannwerk Remptendorf
+ElmTerm_0543,220.0,Stahlwerk Thüringen
+ElmTerm_virtual_0431,380.0,virtual terminal
+ElmTerm_virtual_0432,380.0,virtual terminal
+ElmTerm_0541,380.0,Großschwabhausen
+ElmTerm_0544,380.0,Eisenach
+ElmTerm_0542,380.0,Umspannwerk Altenfeld
+ElmTerm_0775,220.0,added terminal voltage
+ElmTerm_0006,220.0,380-kV-Umspannwerk Großgartach
+ElmTerm_virtual_0057,220.0,virtual terminal
+ElmTerm_0042,220.0,380kV-Umspannwerk Pulverdingen
+ElmTerm_0038,380.0,Umspannwerk Goldshöfe
+ElmTerm_0039,220.0,Umspannwerk Goldshöfe
+ElmTerm_0777,220.0,added terminal voltage
+ElmTerm_virtual_0047,380.0,virtual terminal
+ElmTerm_0004,220.0,Umspannwerk Herbertingen
+ElmTerm_0019,380.0,380kV-Umspannwerk Grünkraut
+ElmTerm_0003,380.0,Umspannwerk Herbertingen
+ElmTerm_0778,220.0,added terminal voltage
+ElmTerm_0022,380.0,Tiengen
+ElmTerm_0023,220.0,Tiengen
+ElmTerm_0779,380.0,added terminal voltage
+ElmTerm_0137,220.0,Zolling - Irsching
+ElmTerm_0140,220.0,Irsching
+ElmTerm_0121,220.0,Schaltanlage Leupolz
+ElmTerm_virtual_0433,220.0,virtual terminal
+ElmTerm_virtual_0434,220.0,virtual terminal
+ElmTerm_0090,380.0,Umspannwerk Bergrheinfeld
+ElmTerm_0158,220.0,Thyrow
+ElmTerm_virtual_0435,380.0,virtual terminal
+ElmTerm_0782,380.0,added terminal voltage
+ElmTerm_0762,380.0,added terminal voltage
+ElmTerm_0783,380.0,added terminal voltage
+ElmTerm_virtual_0438,380.0,virtual terminal
+ElmTerm_0895,220.0,floating end terminal
+ElmTerm_virtual_0439,380.0,virtual terminal
+ElmTerm_virtual_0296,220.0,virtual terminal
+ElmTerm_virtual_0441,220.0,virtual terminal
+ElmTerm_virtual_0442,220.0,virtual terminal
+ElmTerm_0436,220.0,Station Welper
+ElmTerm_virtual_0443,380.0,virtual terminal
+ElmTerm_virtual_0297,380.0,virtual terminal
+ElmTerm_virtual_0445,220.0,virtual terminal
+ElmTerm_virtual_0446,220.0,virtual terminal
+ElmTerm_virtual_0372,220.0,virtual terminal
+ElmTerm_0896,220.0,floating end terminal
+ElmTerm_0406,220.0,Station Hattingen
+ElmTerm_0306,380.0,Station Kruckel
+ElmTerm_0439,380.0,Kraftwerkschaltanlage Knapsack 1
+ElmTerm_0440,220.0,Kraftwerkschaltanlage Knapsack 1
+ElmTerm_0767,220.0,added terminal voltage
+ElmTerm_0898,220.0,floating end terminal
+ElmTerm_virtual_0448,220.0,virtual terminal
+ElmTerm_0899,220.0,floating end terminal
+ElmTerm_0900,220.0,floating end terminal
+ElmTerm_tieline_0038,380.0,tieline terminal
+ElmTerm_0901,220.0,floating end terminal
+ElmTerm_tieline_0039,220.0,tieline terminal
+ElmTerm_tieline_0040,380.0,tieline terminal
+ElmTerm_0068,220.0,Obrigheim
+ElmTerm_virtual_0065,220.0,virtual terminal
+ElmTerm_0786,220.0,added terminal voltage
+ElmTerm_virtual_0105,220.0,virtual terminal
+ElmTerm_0513,380.0,Krümmel
+ElmTerm_0174,380.0,Umspannwerk Hamburg/Ost
+ElmTerm_virtual_0021,220.0,virtual terminal
+ElmTerm_0196,220.0,Umspannanlage Pfungstadt
+ElmTerm_0192,220.0,Kraftwerkseinspeisung Staudinger
+ElmTerm_0179,220.0,Dörnigheim 220 kV
+ElmTerm_0238,380.0,Ganderkesee
+ElmTerm_0273,220.0,Umspannwerk Kraftwerk Emden
+ElmTerm_0278,220.0,Benteler Stahlwerk
+ElmTerm_0335,220.0,Station Osterath
+ElmTerm_virtual_0450,220.0,virtual terminal
+ElmTerm_virtual_0215,380.0,virtual terminal
+ElmTerm_virtual_0258,220.0,virtual terminal
+ElmTerm_virtual_0281,380.0,virtual terminal
+ElmTerm_virtual_0452,380.0,virtual terminal
+ElmTerm_0427,220.0,Station Eiberg
+ElmTerm_virtual_0287,220.0,virtual terminal
+ElmTerm_0789,220.0,added terminal voltage
+ElmTerm_0790,380.0,added terminal voltage
+ElmTerm_0341,380.0,Station Büscherhof
+ElmTerm_0342,220.0,Station Büscherhof
+ElmTerm_virtual_0444,220.0,virtual terminal
+ElmTerm_virtual_0320,380.0,virtual terminal
+ElmTerm_0310,380.0,Station Hüllen
+ElmTerm_virtual_0451,220.0,virtual terminal
+ElmTerm_0347,380.0,Station Roxel
+ElmTerm_0909,380.0,floating end terminal
+ElmTerm_0405,380.0,Station Hattingen
+ElmTerm_virtual_0346,220.0,virtual terminal
+ElmTerm_0793,220.0,added terminal voltage
+ElmTerm_0910,220.0,floating end terminal
+ElmTerm_0792,380.0,added terminal voltage
+ElmTerm_0791,220.0,added terminal voltage
+ElmTerm_0330,220.0,Station Möllen
+ElmTerm_0794,220.0,added terminal voltage
+ElmTerm_0453,220.0,Station Quint
+ElmTerm_virtual_0454,220.0,virtual terminal
+ElmTerm_0913,220.0,floating end terminal
+ElmTerm_0914,380.0,floating end terminal
+ElmTerm_0470,380.0,Umspannwerk Uchtelfangen
+ElmTerm_0479,220.0,UA Dillinger Hütte Mitte
+ElmTerm_virtual_0069,220.0,virtual terminal
+ElmTerm_0916,220.0,floating end terminal
+ElmTerm_0917,220.0,floating end terminal
+ElmTerm_virtual_0059,220.0,virtual terminal
+ElmTerm_0918,220.0,floating end terminal
+ElmTerm_virtual_0010,380.0,virtual terminal
+ElmTerm_0919,220.0,floating end terminal
+ElmTerm_virtual_0078,220.0,virtual terminal
+ElmTerm_0106,380.0,Schwandorf
+ElmTerm_virtual_0001,380.0,virtual terminal
+ElmTerm_virtual_0008,380.0,virtual terminal
+ElmTerm_0011,220.0,EnBW Umspannwerk Wendlingen
+ElmTerm_virtual_0027,380.0,virtual terminal
+ElmTerm_0031,380.0,EnBW Umspannwerk Altbach 1
+ElmTerm_virtual_0009,380.0,virtual terminal
+ElmTerm_0797,220.0,floating end terminal
+ElmTerm_0013,380.0,EnBW Umspannwerk Laichingen
+ElmTerm_0015,380.0,EnBW Umspannwerk Metzingen
+ElmTerm_0029,220.0,220 kV-Umspannwerk Birkenfeld
+ElmTerm_0026,220.0,Umspannwerk Oberwald
+ElmTerm_0892,220.0,floating end terminal
+ElmTerm_0027,220.0,Umspannwerk Karlsruhe-Ost
+ElmTerm_0776,220.0,added terminal voltage
+ElmTerm_0785,380.0,added terminal voltage
+ElmTerm_0058,380.0,Umrichterwerk Neckarwestheim
+ElmTerm_0037,380.0,Umspannwerk Villingen
+ElmTerm_virtual_0039,380.0,virtual terminal
+ElmTerm_0001,380.0,Umspannwerk Mühlhausen
+ElmTerm_0025,220.0,Umspannwerk Winnenden
+ElmTerm_0051,220.0,Marbach
+ElmTerm_0040,380.0,EnBW Umspannwerk Engstlatt
+ElmTerm_0045,380.0,EnBW Umspannwerk Endersbach
+ElmTerm_tieline_0044,220.0,tieline terminal
+ElmTerm_0198,380.0,Station Bürstadt
+ElmTerm_0053,380.0,Umspannwerk Kupferzell
+ElmTerm_0742,220.0,added terminal voltage
+ElmTerm_tieline_0002,380.0,tieline terminal
+ElmTerm_0014,380.0,Netze BW Umspannwerk Oberjettingen
+ElmTerm_tieline_0035,220.0,tieline terminal
+ElmTerm_0056,380.0,Umspannwerk Höpfingen
+ElmTerm_0036,220.0,Umspannwerk Dellmensingen
+ElmTerm_0803,220.0,floating end terminal
+ElmTerm_virtual_0103,380.0,virtual terminal
+ElmTerm_0055,220.0,Umspannwerk Hüffenhardt
+ElmTerm_0073,380.0,Umspannwerk Neurott
+ElmTerm_tieline_0034,380.0,tieline terminal
+ElmTerm_0744,380.0,added terminal voltage
+ElmTerm_virtual_0056,220.0,virtual terminal
+ElmTerm_0044,220.0,Umspannwerk Wiesloch
+ElmTerm_0077,380.0,Umspannwerk Bruchsal-Kändelweg
+ElmTerm_0002,220.0,Umspannwerk Weilimdorf
+ElmTerm_0800,220.0,floating end terminal
+ElmTerm_0890,220.0,floating end terminal
+ElmTerm_tieline_0042,380.0,tieline terminal
+ElmTerm_0747,220.0,added terminal voltage
+ElmTerm_tieline_0041,220.0,tieline terminal
+ElmTerm_0086,220.0,Umspannwerk Oberbrunn
+ElmTerm_0083,220.0,Umspannwerk Oberbachern
+ElmTerm_0085,220.0,Umspannwerk Neufinsing
+ElmTerm_0787,220.0,added terminal voltage
+ElmTerm_0091,220.0,Umspannwerk Bergrheinfeld
+ElmTerm_tieline_0005,220.0,tieline terminal
+ElmTerm_0108,380.0,Umspannwerk Etzenricht
+ElmTerm_tieline_0006,380.0,tieline terminal
+ElmTerm_0107,220.0,Schwandorf
+ElmTerm_0109,220.0,Umspannwerk Regensburg
+ElmTerm_0098,220.0,Ingolstadt
+ElmTerm_virtual_0102,380.0,virtual terminal
+ElmTerm_0801,380.0,floating end terminal
+ElmTerm_0084,380.0,Hauptumspannwerk Menzing
+ElmTerm_0110,380.0,Umspannwerk Oberottmarshausen
+ElmTerm_0780,220.0,added terminal voltage
+ElmTerm_0123,220.0,Umspannwerk Marienberg
+ElmTerm_0802,220.0,floating end terminal
+ElmTerm_0111,220.0,Umspannwerk Oberottmarshausen
+ElmTerm_0104,220.0,Umspannstation Irsingen
+ElmTerm_0807,380.0,floating end terminal
+ElmTerm_0804,220.0,floating end terminal
+ElmTerm_0810,380.0,floating end terminal
+ElmTerm_0133,220.0,Umspannwerk Simbach
+ElmTerm_0113,220.0,Umspannwerk Rauhenzell
+ElmTerm_0103,220.0,Umspannwerk Ottenhofen
+ElmTerm_0191,220.0,Umspannwerk Großkrotzenburg
+ElmTerm_0197,380.0,UW Dipperz
+ElmTerm_0142,220.0,Schweinfurt
+ElmTerm_0809,380.0,floating end terminal
+ElmTerm_0808,380.0,floating end terminal
+ElmTerm_0112,380.0,Gundremmingen
+ElmTerm_0167,220.0,Neuenhagen
+ElmTerm_0157,380.0,Thyrow
+ElmTerm_0165,380.0,Umspannwerk Perleberg
+ElmTerm_0820,220.0,floating end terminal
+ElmTerm_0819,220.0,floating end terminal
+ElmTerm_0170,380.0,Niedervieland
+ElmTerm_0173,380.0,Umspannwerk Hamburg/Süd
+ElmTerm_0823,220.0,floating end terminal
+ElmTerm_0177,220.0,Umspannwerk Urberach
+ElmTerm_0195,380.0,Umspannwerk Frankfurt Südwest
+ElmTerm_0205,380.0,Umspannwerk Gießen Nord
+ElmTerm_0186,380.0,Umspannwerk Kriftel
+ElmTerm_0457,380.0,Station Dauersberg
+ElmTerm_0824,220.0,floating end terminal
+ElmTerm_0395,380.0,Station Nehden
+ElmTerm_0202,220.0,Beerfelden
+ElmTerm_virtual_0436,220.0,virtual terminal
+ElmTerm_0443,220.0,Umspannanlage Würgassen
+ElmTerm_0442,380.0,Umspannanlage Würgassen
+ElmTerm_0348,380.0,Umspannwerk Elsen
+ElmTerm_0182,380.0,Dillenburg
+ElmTerm_0826,380.0,floating end terminal
+ElmTerm_0284,220.0,Umspannwerk Kraftwerk Wilhelmshaven
+ElmTerm_0230,220.0,Conneforde
+ElmTerm_0225,220.0,Hannover/West
+ElmTerm_0262,380.0,Wehrendorf
+ElmTerm_tieline_0019,380.0,tieline terminal
+ElmTerm_0252,220.0,Inhausen
+ElmTerm_0228,220.0,Lahe
+ElmTerm_0265,220.0,Station Lüstringen
+ElmTerm_0263,220.0,Wehrendorf
+ElmTerm_virtual_0449,380.0,virtual terminal
+ElmTerm_0367,220.0,Station Gronau
+ElmTerm_virtual_0242,220.0,virtual terminal
+ElmTerm_0756,380.0,added terminal voltage
+ElmTerm_0295,220.0,Bocklemünd
+ElmTerm_0304,220.0,Station Stockem
+ElmTerm_0365,220.0,Station Gremberghoven
+ElmTerm_0316,380.0,Station Utfort
+ElmTerm_0337,220.0,Station Dülken
+ElmTerm_virtual_0301,220.0,virtual terminal
+ElmTerm_0297,380.0,Station Opladen
+ElmTerm_virtual_0271,220.0,virtual terminal
+ElmTerm_0345,380.0,Station Rath
+ElmTerm_0435,220.0,LMG
+ElmTerm_0357,380.0,Station Paffendorf
+ElmTerm_0358,220.0,Station Dünnwald
+ElmTerm_0361,220.0,Station Pöppinghausen
+ElmTerm_0844,220.0,floating end terminal
+ElmTerm_tieline_0020,380.0,tieline terminal
+ElmTerm_0363,220.0,Station Kusenhorst
+ElmTerm_0368,220.0,Station Ibbenbüren
+ElmTerm_0431,380.0,Station Lippe
+ElmTerm_0311,220.0,Station Pfalzdorf
+ElmTerm_0351,380.0,Umspannwerk Blankenhagen
+ElmTerm_0874,220.0,floating end terminal
+ElmTerm_0848,220.0,floating end terminal
+ElmTerm_0352,220.0,Umspannwerk Blankenhagen
+ElmTerm_0467,220.0,Station Weißenthurm
+ElmTerm_0388,220.0,Station Meckenheim
+ElmTerm_virtual_0262,380.0,virtual terminal
+ElmTerm_0904,220.0,floating end terminal
+ElmTerm_tieline_0021,380.0,tieline terminal
+ElmTerm_0364,220.0,Herne
+ElmTerm_virtual_0336,380.0,virtual terminal
+ElmTerm_0307,220.0,Station Kruckel
+ElmTerm_0906,220.0,floating end terminal
+ElmTerm_0403,220.0,Umspannwerk Bixterheide
+ElmTerm_0414,220.0,Station Eiserfeld
+ElmTerm_0903,220.0,floating end terminal
+ElmTerm_0853,220.0,floating end terminal
+ElmTerm_0426,380.0,Station Eiberg
+ElmTerm_0438,220.0,Umspannwerk Paderborn Süd
+ElmTerm_virtual_0321,220.0,virtual terminal
+ElmTerm_virtual_0437,220.0,virtual terminal
+ElmTerm_0375,380.0,Witten
+ElmTerm_0851,220.0,floating end terminal
+ElmTerm_virtual_0322,220.0,virtual terminal
+ElmTerm_0763,380.0,added terminal voltage
+ElmTerm_0344,220.0,Station Selbeck
+ElmTerm_0905,220.0,floating end terminal
+ElmTerm_0415,220.0,Setzer Wiese
+ElmTerm_0867,220.0,floating end terminal
+ElmTerm_0331,220.0,Station Gellep
+ElmTerm_0417,220.0,Station Rheinhausen
+ElmTerm_0374,380.0,Station Halfeshof
+ElmTerm_0325,220.0,Station Ossenberg
+ElmTerm_0856,220.0,floating end terminal
+ElmTerm_virtual_0319,220.0,virtual terminal
+ElmTerm_0399,220.0,Station Handbach
+ElmTerm_0444,380.0,Schaltanlage Datteln 4
+ElmTerm_0765,220.0,added terminal voltage
+ElmTerm_0858,380.0,floating end terminal
+ElmTerm_0396,380.0,Station Arpe
+ElmTerm_0434,220.0,Kraftwerkschaltanlage Ibbenbüren
+ElmTerm_0788,220.0,added terminal voltage
+ElmTerm_virtual_0447,220.0,virtual terminal
+ElmTerm_0397,380.0,Station Unna
+ElmTerm_0425,380.0,Geithe
+ElmTerm_0412,220.0,UW Stahlwerk ThyssenKrupp Nirosta
+ElmTerm_0768,380.0,added terminal voltage
+ElmTerm_0327,380.0,Station Niederrhein
+ElmTerm_0784,380.0,added terminal voltage
+ElmTerm_0461,220.0, 
+ElmTerm_0464,380.0,Weingarten
+ElmTerm_virtual_0453,380.0,virtual terminal
+ElmTerm_0449,220.0,Vianden
+ElmTerm_0796,380.0,added terminal voltage
+ElmTerm_0454,220.0,Niederhausen
+ElmTerm_0473,380.0,Umspannanlage Ensdorf
+ElmTerm_tieline_0026,220.0,tieline terminal
+ElmTerm_0474,220.0,Umspannanlage Ensdorf
+ElmTerm_0915,220.0,floating end terminal
+ElmTerm_tieline_0027,380.0,tieline terminal
+ElmTerm_0446,380.0,Station Osburg
+ElmTerm_tieline_0029,380.0,tieline terminal
+ElmTerm_0487,220.0,Umspannwerk Taucha
+ElmTerm_0484,220.0,Umspannwerk Großdalzig
+ElmTerm_0547,220.0,Wolkramshausen (220 kV)
+ElmTerm_0889,220.0,floating end terminal
+ElmTerm_0516,220.0,Umspannwerk Kiel West
+ElmTerm_tieline_0030,380.0,tieline terminal
+ElmTerm_0528,220.0,Brokdorf
+ElmTerm_0520,220.0,Umspannwerk Kernkraftwerk Brunsbüttel
+ElmTerm_0545,380.0,Umspannwerk Weida
+ElmTerm_0536,380.0,Pumpspeicherwerk Goldisthal
+ElmTerm_0540,220.0,Umspannwerk Vieselbach
+ElmTerm_0891,380.0,floating end terminal
+ElmTerm_tieline_0032,380.0,tieline terminal
+ElmTerm_tieline_0033,220.0,tieline terminal
+ElmTerm_0043,380.0,Umspannwerk Wiesloch
+ElmTerm_0134,380.0,Umspannwerk Mechlenreuth
+ElmTerm_tieline_0036,380.0,tieline terminal
+ElmTerm_tieline_0037,220.0,tieline terminal
+ElmTerm_0135,220.0,Umspannwerk Mechlenreuth
+ElmTerm_0781,220.0,added terminal voltage
+ElmTerm_0259,220.0,Station Sankt Hülfe
+ElmTerm_virtual_0440,380.0,virtual terminal
+ElmTerm_0421,220.0,KW Neurath
+ElmTerm_0424,220.0,Station Münster
+ElmTerm_0795,220.0,added terminal voltage
+ElmTerm_0012,380.0,EnBW Umspannwerk Bünzwangen
+ElmTerm_tieline_0043,380.0,tieline terminal
+ElmTerm_0902,220.0,floating end terminal
+ElmTerm_0176,380.0,Umspannwerk Urberach
+ElmTerm_0428,380.0,Station Westerkappeln
+ElmTerm_0321,380.0,Station Verlautenheide
+ElmTerm_0326,220.0, 
+ElmTerm_0343,220.0,Styrum
+ElmTerm_0377,220.0,Station Ruhrort
+ElmTerm_0350,380.0,Station Rosenblumendelle
+ElmTerm_0385,220.0,Station Hamborn

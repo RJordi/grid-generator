@@ -208,7 +208,7 @@ def create_trafos_csv(df_subs: pd.DataFrame) -> pd.DataFrame:
     :return: transformers DataFrame
     :rtype: pd.DataFrame
     """
-    df_trafos = pd.DataFrame(columns=['loc_name','desc','buslv.cterm','buslv.__switch__.on_off','bushv.cterm','bushv.__switch__.on_off', 'typ_id'])
+    df_trafos = pd.DataFrame(columns=['id','buslv.cterm','bushv.cterm', 'typ_id'])
 
     # Get terminals with duplicated geometry as these are the ones that need a transformer between them
     tr1 = df_subs.loc[~pd.isna(df_subs.id) & df_subs.geometry.duplicated(keep=False)].sort_values(by='geometry')
@@ -243,11 +243,6 @@ def create_trafos_csv(df_subs: pd.DataFrame) -> pd.DataFrame:
         df_trafos = pd.concat([df_trafos, trafo_3_vlevels_terms])
 
     # Finish formatting the DataFrame to create the csv file
-    df_trafos[['buslv.__switch__.on_off', 'bushv.__switch__.on_off']] = 1, 1
-    df_trafos['desc'] = ' '
-    df_trafos['loc_name'] = ['ElmTr2_{0:04}'.format(i) for i in range(1,len(df_trafos)+1)]
-
-    # Write data to csv file
-    df_trafos.to_csv('../austrian_grid/csv/BaseElements/ElmTr2.csv', index=False)
+    df_trafos['id'] = ['ElmTr2_{0:04}'.format(i) for i in range(1, len(df_trafos)+1)]
 
     return df_trafos

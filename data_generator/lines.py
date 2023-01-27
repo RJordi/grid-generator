@@ -146,7 +146,8 @@ def handle_nan(df_lines: pd.DataFrame) -> pd.DataFrame:
     # Handle nan in "cables" -> use number of references to determine number of cables
     nan_cables = df_lines.loc[df_lines.cables.isna()]
     nan_cables_known_ref = nan_cables.loc[nan_cables.ref.isna() == False]
-    df_lines.loc[nan_cables_known_ref.index, 'cables'] = nan_cables_known_ref.ref.str.split(';').str.len()*3
+    if len(nan_cables_known_ref) >= 1:
+        df_lines.loc[nan_cables_known_ref.index, 'cables'] = nan_cables_known_ref.ref.str.split(';').str.len()*3
 
     # Use potentially known number of cables in the following line segment
     df_lines['connecting_segments'] = df_lines.nodes.to_frame().apply(lambda x: find_connecting_segments(x, df_lines), axis=1)
@@ -186,11 +187,13 @@ def correct_incoherent_cables(df_lines: pd.DataFrame) -> pd.DataFrame:
     """
     # Case where the references are known
     incoherent_cables = df_lines.loc[(df_lines.cables % 3 != 0) & (df_lines.ref.isna() == False)]
-    df_lines.loc[incoherent_cables.ref.index, 'cables'] = incoherent_cables.ref.str.split(';').str.len()*3
+    if len(incoherent_cables) >= 1:
+        df_lines.loc[incoherent_cables.ref.index, 'cables'] = incoherent_cables.ref.str.split(';').str.len()*3
 
     # Case where references are unknown -> the rest of lines have very short lengths, we give them a "cables" value of 3
     incoherent_cables = df_lines.loc[df_lines.cables % 3 != 0]
-    df_lines.loc[incoherent_cables.index, 'cables'] = 3
+    if len(incoherent_cables) >= 1:
+        df_lines.loc[incoherent_cables.index, 'cables'] = 3
 
     # Use values in "cables" (if it is a multiple of 3) to calculate missing values in "circuits"
     df_lines.loc[(pd.isna(df_lines.circuits)) & (df_lines.cables%3 == 0), 'circuits'] = df_lines.cables/3
@@ -207,18 +210,19 @@ def correct_incoherent_combinations(df_lines: pd.DataFrame) -> pd.DataFrame:
     :rtype: pd.DataFrame
     """
     # Number_of_circuits != Number_of_references
-    diff_ref_circuits = df_lines.loc[(df_lines.circuits != df_lines.ref.str.split(';').str.len()) & (df_lines.ref.isna() == False)]
+    if not df_lines.ref.isna().all():
+        diff_ref_circuits = df_lines.loc[(df_lines.circuits != df_lines.ref.str.split(';').str.len()) & (df_lines.ref.isna() == False)]
 
-    unlikely_circuits = diff_ref_circuits.loc[diff_ref_circuits.circuits >= 3]  # Lines with an unlikely number of circuits (>3 circuits)
-    short_ways = diff_ref_circuits.loc[diff_ref_circuits.length < 0.2]  # Short lines (<0.2 km)
-    long_ways = diff_ref_circuits.loc[diff_ref_circuits.length >= 0.2]  # Longer lines (>0.2 km)
+        unlikely_circuits = diff_ref_circuits.loc[diff_ref_circuits.circuits >= 3]  # Lines with an unlikely number of circuits (>3 circuits)
+        short_ways = diff_ref_circuits.loc[diff_ref_circuits.length < 0.2]  # Short lines (<0.2 km)
+        long_ways = diff_ref_circuits.loc[diff_ref_circuits.length >= 0.2]  # Longer lines (>0.2 km)
 
-    # Assign the number of references as the number of circuits for the "unlikely_circuits"
-    df_lines.loc[unlikely_circuits.index, 'circuits'] = unlikely_circuits.ref.str.split(';').str.len()
-    # Assign the minimum between the number of circuits and the number of references for short lines
-    df_lines.loc[short_ways.index, 'circuits'] = pd.concat([short_ways.circuits, short_ways.ref.str.split(';').str.len()], axis=1).min(axis=1)
-    # Assign the maximum between the number of circuits and the number of references for longer lines
-    df_lines.loc[long_ways.index, 'circuits'] = pd.concat([long_ways.circuits, long_ways.ref.str.split(';').str.len()], axis=1).max(axis=1)
+        # Assign the number of references as the number of circuits for the "unlikely_circuits"
+        df_lines.loc[unlikely_circuits.index, 'circuits'] = unlikely_circuits.ref.str.split(';').str.len()
+        # Assign the minimum between the number of circuits and the number of references for short lines
+        df_lines.loc[short_ways.index, 'circuits'] = pd.concat([short_ways.circuits, short_ways.ref.str.split(';').str.len()], axis=1).min(axis=1)
+        # Assign the maximum between the number of circuits and the number of references for longer lines
+        df_lines.loc[long_ways.index, 'circuits'] = pd.concat([long_ways.circuits, long_ways.ref.str.split(';').str.len()], axis=1).max(axis=1)
 
     # Number_of_cables != Number_of_circuits*3
     diff_cables_circuits = df_lines.loc[(df_lines.cables/3 != df_lines.circuits)]
@@ -267,8 +271,10 @@ def split_lines_by_voltage(df_lines: pd.DataFrame) -> pd.DataFrame:
         return row
 
     s_c_duplicated = s_c_duplicated.apply(aux_func, axis=1)
+    # Identify parallel lines with different voltages appending '_<voltage level>kV' to their index
     new_index = s_c_duplicated.index.astype(str) + '_' + (s_c_duplicated.voltage.astype(int)/1000).astype(int).astype(str) + 'kV'
     s_c_duplicated.set_index(new_index, inplace=True)
+    # Drop line elements that have a voltage < 220kV
     s_c_duplicated.drop(s_c_duplicated.loc[s_c_duplicated.voltage.astype(int) < 220000].index, inplace=True)
 
     df_lines = pd.concat((df_lines, s_c_duplicated))
@@ -295,48 +301,55 @@ def split_lines_by_voltage(df_lines: pd.DataFrame) -> pd.DataFrame:
 
         # case where number_of_circuits % number_of_voltage_levels != 0
     mvl_non_div = mvl_diff_circ.loc[mvl_diff_circ.circuits%mvl_diff_circ.voltage.str.split(';').str.len() != 0]
-            # case where the references are known and there are more references than voltage levels
-    mvl_ref = mvl_non_div.loc[(mvl_non_div.ref.str.split(';').str.len() == mvl_non_div.circuits) & (mvl_non_div.ref.str.split(';').str.len() > mvl_non_div.voltage.str.split(';').str.len())]
-    ref_first_num = [[ref[0] for ref in refs] for refs in mvl_ref.ref.str.split(';')]
-    ref_first_num_unique = [list(dict.fromkeys(x)) for x in ref_first_num]
-    ref_first_num_count = [ref_first_num[i].count(ref_first_num_unique[i][e]) for i in range(len(ref_first_num)) for e in range(len(ref_first_num_unique[i]))]
-    volt = mvl_ref.voltage.str.split(';').explode().tolist()
-    v_new = volt
-    #v_new = [volt[i] for i in range(len(volt)) for x in range(ref_first_num_count[i])]
-    circ_new = ref_first_num_count
-    cable_new = [circ*3 for circ in circ_new]
-    diff_circ_duplicated.loc[mvl_ref.index, 'voltage'] = v_new
-    diff_circ_duplicated.loc[mvl_ref.index, 'circuits'] = circ_new
-    diff_circ_duplicated.loc[mvl_ref.index, 'cables'] = cable_new
-            # case where the references are known and there are more references than voltage levels
-    mvl_ref_2 = mvl_non_div.loc[(mvl_non_div.ref.str.split(';').str.len() == mvl_non_div.circuits) & (mvl_non_div.ref.str.split(';').str.len() <= mvl_non_div.voltage.str.split(';').str.len())]
-    v_new = mvl_ref_2.voltage.str.split(';').explode().tolist()
-    diff_circ_duplicated.loc[mvl_ref_2.index, 'voltage'] = v_new
-    diff_circ_duplicated.loc[mvl_ref_2.index, 'circuits'] = 1
-    diff_circ_duplicated.loc[mvl_ref_2.index, 'cables'] = 3
-            # case where the references are NOT known
-    mvl_non_ref = mvl_non_div.loc[mvl_non_div.ref.str.split(';').str.len() != mvl_non_div.circuits]
-    volt = mvl_non_ref.voltage.str.split(';').tolist()
-    circuits = mvl_non_ref.circuits.tolist()
-    floor_div = (mvl_non_ref.circuits//mvl_non_ref.voltage.str.split(';').str.len()).tolist()
-    div_residual = (mvl_non_ref.circuits%mvl_non_ref.voltage.str.split(';').str.len()).tolist()
-    v_new = [elem for i in range(len(volt)) for elem in volt[i]]
-    circ_new = []
-    for i in range(len(volt)):
-        for elem in volt[i]:
-            circ_new.append(floor_div[i] + div_residual[i])
-    cable_new = [circ*3 for circ in circ_new]
-    diff_circ_duplicated.loc[mvl_non_ref.index, 'voltage'] = v_new
-    diff_circ_duplicated.loc[mvl_non_ref.index, 'circuits'] = circ_new
-    diff_circ_duplicated.loc[mvl_non_ref.index, 'cables'] = cable_new
+    if len(mvl_non_div) >= 1:
+                # case where the references are known and there are more references than voltage levels
+        mvl_ref = mvl_non_div.loc[(mvl_non_div.ref.str.split(';').str.len() == mvl_non_div.circuits) & (mvl_non_div.ref.str.split(';').str.len() > mvl_non_div.voltage.str.split(';').str.len())]
+        ref_first_num = [[ref[0] for ref in refs] for refs in mvl_ref.ref.str.split(';')]
+        ref_first_num_unique = [list(dict.fromkeys(x)) for x in ref_first_num]
+        ref_first_num_count = [ref_first_num[i].count(ref_first_num_unique[i][e]) for i in range(len(ref_first_num)) for e in range(len(ref_first_num_unique[i]))]
+        volt = mvl_ref.voltage.str.split(';').explode().tolist()
+        v_new = volt
+        #v_new = [volt[i] for i in range(len(volt)) for x in range(ref_first_num_count[i])]
+        circ_new = ref_first_num_count
+        cable_new = [circ*3 for circ in circ_new]
+        diff_circ_duplicated.loc[mvl_ref.index, 'voltage'] = v_new
+        diff_circ_duplicated.loc[mvl_ref.index, 'circuits'] = circ_new
+        diff_circ_duplicated.loc[mvl_ref.index, 'cables'] = cable_new
+                # case where the references are known and there are less references than voltage levels
+        mvl_ref_2 = mvl_non_div.loc[(mvl_non_div.ref.str.split(';').str.len() == mvl_non_div.circuits) & (mvl_non_div.ref.str.split(';').str.len() <= mvl_non_div.voltage.str.split(';').str.len())]
+        v_new = mvl_ref_2.voltage.str.split(';').explode().tolist()
+        diff_circ_duplicated.loc[mvl_ref_2.index, 'voltage'] = v_new
+        diff_circ_duplicated.loc[mvl_ref_2.index, 'circuits'] = 1
+        diff_circ_duplicated.loc[mvl_ref_2.index, 'cables'] = 3
+                # case where the references are NOT known
+        mvl_non_ref = mvl_non_div.loc[mvl_non_div.ref.str.split(';').str.len() != mvl_non_div.circuits]
+        volt = mvl_non_ref.voltage.str.split(';').tolist()
+        circuits = mvl_non_ref.circuits.tolist()
+        floor_div = (mvl_non_ref.circuits//mvl_non_ref.voltage.str.split(';').str.len()).tolist()
+        div_residual = (mvl_non_ref.circuits%mvl_non_ref.voltage.str.split(';').str.len()).tolist()
+        v_new = [elem for i in range(len(volt)) for elem in volt[i]]
+        circ_new = []
+        for i in range(len(volt)):
+            for elem in volt[i]:
+                circ_new.append(floor_div[i] + div_residual[i])
+        cable_new = [circ*3 for circ in circ_new]
+        diff_circ_duplicated.loc[mvl_non_ref.index, 'voltage'] = v_new
+        diff_circ_duplicated.loc[mvl_non_ref.index, 'circuits'] = circ_new
+        diff_circ_duplicated.loc[mvl_non_ref.index, 'cables'] = cable_new
 
-#     diff_circ_duplicated.cables = 3
-#     diff_circ_duplicated.circuits = 1
+    # Identify parallel lines with different voltages appending '_<voltage level>kV' to their index
     new_index = diff_circ_duplicated.index.astype(str) + '_' + (diff_circ_duplicated.voltage.astype(int)/1000).astype(int).astype(str) + 'kV'
     diff_circ_duplicated.set_index(new_index, inplace=True)
+    # Drop line elements that have a voltage < 220kV
     diff_circ_duplicated.drop(diff_circ_duplicated.loc[diff_circ_duplicated.voltage.astype(int) < 220000].index, inplace=True)
 
     df_lines = pd.concat((df_lines, diff_circ_duplicated))
+
+    # Join duplicated elements (same voltage id and level) by adding their circuits
+    idx_counts = df_lines.index.value_counts()
+    df_lines = df_lines.groupby(df_lines.index).first()
+    df_lines.loc[idx_counts > 1, 'circuits'] = idx_counts.loc[idx_counts > 1].tolist()
+    df_lines.loc[idx_counts > 1, 'cables'] = df_lines.loc[idx_counts > 1].circuits*3
 
     # Format voltage value
     df_lines.voltage = df_lines.voltage.astype('float')/1000

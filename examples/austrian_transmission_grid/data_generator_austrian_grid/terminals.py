@@ -258,6 +258,6 @@ def create_trafos_csv(df_subs: pd.DataFrame) -> pd.DataFrame:
     df_trafos['loc_name'] = ['ElmTr2_{0:04}'.format(i) for i in range(1,len(df_trafos)+1)]
 
     # Write data to csv file
-    df_trafos.to_csv('../austrian_grid/csv/BaseElements/ElmTr2.csv', index=False)
+    df_trafos.to_csv('../austrian_grid/csv/Transformers.csv', index=False)
 
     return df_trafos

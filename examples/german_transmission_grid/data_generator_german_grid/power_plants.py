@@ -1,8 +1,5 @@
 import pandas as pd
 import numpy as np
-import geopandas as gpd
-import matplotlib.pyplot as plt
-from matplotlib import cm as cm
 from sklearn.cluster import DBSCAN
 
 
@@ -85,6 +82,9 @@ def format_power_plants(df: pd.DataFrame) -> pd.DataFrame:
 	# Drop entries that don't have a value for the capacity
 	df_pp.drop(df_pp.loc[df_pp.capacity.apply(lambda x: any(char.isdigit() for char in x) == False)].index, inplace=True)
 
+	# Set source value as 'unknown' for NaN cases
+	df_pp.loc[df_pp.source.isna(), 'source'] = 'unknown'
+
 	if df_pp.index.has_duplicates:
 		raise Exception('The index contains duplicates, please change the duplicated id to a valid one')
 
@@ -100,7 +100,7 @@ def convert_capacity(df: pd.DataFrame) -> pd.DataFrame:
 	:rtype: pd.DataFrame
 	"""
 	# Create DataFrame from the values in the "capacity" column
-	capacity_df = df['capacity'].str.split(expand=True)
+	capacity_df = df['capacity'].str.split(expand=True, n=1)
 	capacity_df.rename(columns={0: 'value', 1: 'unit'}, inplace=True)
 
 	# Drop entries without a capacity value or with a capacity equal to 0 and format values
@@ -113,7 +113,7 @@ def convert_capacity(df: pd.DataFrame) -> pd.DataFrame:
 			capacity_df.loc[problematic_entries, 'value'] = capacity_df.loc[problematic_entries].value.str.replace('""', '')
 
 			if (capacity_df.loc[problematic_entries].unit.isnull()).all():
-				for i in range (len(val)):
+				for i in range(len(val)):
 					if val[i].isalpha():
 						break_idx = i
 						break
@@ -137,6 +137,11 @@ def convert_capacity(df: pd.DataFrame) -> pd.DataFrame:
 	capacity_df.drop(zero_capacity_entries, inplace=True)
 	df.drop(zero_capacity_entries, inplace=True)
 
+	# Delete entries with a null capacity
+	null_capacity_entries = capacity_df.loc[capacity_df.value.isnull()].index
+	capacity_df.drop(null_capacity_entries, inplace=True)
+	df.drop(null_capacity_entries, inplace=True)
+
 	# Check that all entries have the correct format
 	problematic_values = capacity_df.loc[pd.to_numeric(capacity_df.value, errors='coerce').isnull()].value.unique().tolist() #change to 'ignore' to see problematic values
 	if problematic_values != []:
@@ -158,39 +163,6 @@ def convert_capacity(df: pd.DataFrame) -> pd.DataFrame:
 	df['capacity'] = capacity_df.value
 	df.rename(columns={'capacity': 'capacity(MW)'}, inplace=True)
 
-	return df
-
-
-def reassign_source_values(df:pd.DataFrame) -> pd.DataFrame:
-	"""
-	Modify source for some power plants and create 'template' column
-
-	:param pd.DataFrame df: power plants DataFrame
-	:return: power plants DataFrame with new source values
-	:rtype: pd.DataFrame
-
-	The 'template' column is used to write the csv file. This column maps each power plant's source to a
-	PowerFactory template for that type of power plant.
-	"""
-	df.loc[df.source == 'biogas', 'source'] = 'biomass' # combine biomass and biogas into biomass
-	df.loc[df.source == 'gas;waste;biomass', 'source'] = 'gas' # manually checked
-	df.loc[df.source == 'gas;oil;biomass', 'source'] = 'gas' # manually checked
-	df.loc[df.source == 'waste;gas', 'source'] = 'waste' # manually checked
-	df.loc[df.source == 'hydro;solar', 'source'] = 'hydro' # manually checked
-
-	# Create new column "template" which will be used to create the csv file according to PF format
-	d_type = {'wind': 'Wind', 'solar': 'PV', 'hydro': 'Hydro', 'biomass': 'Gas', 'gas': 'Gas', 'gas;waste': 'Gas', 'waste': 'Gas'}
-	df['template'] = df.source.map(d_type).tolist()
-
-	hydro_methods = ['run-of-the-river', 'water-storage', 'water-pumped-storage']
-	condition = ~df.method.isin(hydro_methods)
-	df.loc[df.source == 'hydro', 'source'] = df.loc[df.source == 'hydro'].source.where(condition, df.source + ': ' + df.method)
-	df.drop('method', axis=1, inplace=True)
-
-	# Delete power plants with source == "battery" and generators with source == "gas" (they are redundant):
-	df.drop(df.loc[df.source == 'battery'].index, inplace=True)
-	df.drop(df.loc[(df.power == 'generator') & (df.source.isin(['gas']) == True)].index, inplace=True)
-
 	# Drop duplicated elements (same name and capacity):
 	duplicated = df.loc[(df[['name', 'capacity(MW)']].duplicated()) & (df.name.isnull() == False) &
 						   (df.source.isin(['wind', 'solar']) == False)]
@@ -208,30 +180,6 @@ def print_agg_cap_by_source(df):
 	df_total_capacity_by_source = df.groupby('source')['capacity(MW)'].agg(['sum'])
 	print('Total installed capacity: ', float(df_total_capacity_by_source.sum()), 'MW')
 	print('\nAggregated installed capacity by source:\n', df_total_capacity_by_source)
-
-
-def plot_power_plant_map(df):
-	"""
-	Plot power plants weighted by their capacity on austrian map
-
-	:param pd.DataFrame df: power plants DataFrame
-	"""
-	gdf_powplant = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.lon, df.lat))
-
-	# We restrict to Austria.
-	ax = gpd.read_file('../data/raw_data/maps/austria_bezirke/austria_bezirke.shp').geometry
-	ax = ax.to_crs('EPSG:4326')
-	ax = ax.plot(color='white', edgecolor='black')
-
-	# We can now plot our GeoDataFrame
-	colormap = cm.tab10(np.linspace(0, 1, len(df.source.unique())))
-	weight = gdf_powplant["capacity(MW)"].astype(float)
-	gdf_powplant.plot(ax=ax, x="lon", y="lat", kind="scatter",
-					  c=colormap[df.source.factorize()[0]], s=weight, figsize=(17, 17))
-
-	markers = [plt.Line2D([0,0],[0,0],color=color, marker='o', linestyle='') for color in colormap]
-	plt.legend(markers, df.source.unique(), numpoints=1, loc='upper left')
-	plt.show()
 
 
 def cluster_data(df: pd.DataFrame, dist: int) -> pd.Series:

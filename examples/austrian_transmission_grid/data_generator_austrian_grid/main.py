@@ -515,8 +515,8 @@ def create_external_grids(df_subs: pd.DataFrame) -> int:
 	df_ext_grids[['bus1.__switch__.on_off', 'Re', 'Xe']] = 1, 0.1, 0.1
 
 	# Write data to csv
-	BaseElements = '../austrian_grid/csv/BaseElements'
-	df_ext_grids.to_csv(BaseElements + '/ElmXnet.csv', index=False)
+	write_data_dir = '../austrian_grid/csv'
+	df_ext_grids.to_csv(write_data_dir + '/ExternalGrids.csv', index=False)
 
 	return 0
 
@@ -533,17 +533,13 @@ def create_pf_csv(df_lines: pd.DataFrame, df_subs: pd.DataFrame, df_pp_agg: pd.D
 	:rtype: int
 	"""
 	# Directory to write the csv files
-	BaseElements = '../austrian_grid/csv/BaseElements'
-	FromTemplates = '../austrian_grid/csv/FromTemplates'
+	write_data_dir = '../austrian_grid/csv'
 
 	# Create empty DataFrames
 	lines_df_pf = pd.DataFrame(columns=['loc_name','bus1.cterm','bus2.cterm','bus1.__switch__.on_off','bus2.__switch__.on_off','dline','typ_id','nlnum','desc','GPScoords'])
 	substations_df_pf = pd.DataFrame(columns=['loc_name', 'uknom', 'cpZone', 'cpArea', 'desc'])
 	pp_df_pf = pd.DataFrame(columns=['loc_name', 'template', 'cterm', 'sgn', 'GPSlat', 'GPSlon'])
 	loads_df_pf = pd.DataFrame(columns=['loc_name', 'bus1', 'plini', 'bus1.__switch__.on_off'])
-	sta_vmea_df_pf = pd.DataFrame(columns=['loc_name', 'pbusbar', 'i_orient', 'nphase', 'ElmComp'])
-	sta_pqmea_df_pf = pd.DataFrame(columns=['loc_name', 'pbusbar', 'i_orient', 'nphase', 'ElmComp'])
-	elm_phi_df_pf = pd.DataFrame(columns=['loc_name', 'pbusbar', 'i_orient', 'nphase', 'ElmComp'])
 
 	# DataFrame for terminals
 	substations_df_pf['loc_name'] = df_subs.index
@@ -573,38 +569,13 @@ def create_pf_csv(df_lines: pd.DataFrame, df_subs: pd.DataFrame, df_pp_agg: pd.D
 	loads_df_pf['bus1.__switch__.on_off'] = 1
 	loads_df_pf['scale0'] = 0.25
 
-	# DataFrames for measured voltage and measured power for Wind and PV controllers
-	wind_pv_df = pp_df_pf.loc[(pp_df_pf.template == 'Wind') | (pp_df_pf.template == 'PV')]
-
-	sta_vmea_df_pf['loc_name'] = ['Vmea_' + sm_name for sm_name in wind_pv_df.loc_name]
-	sta_vmea_df_pf['pbusbar'] = ['ElmTerm_' + sm_name for sm_name in wind_pv_df.loc_name]
-	sta_vmea_df_pf['ElmComp'] = ['ElmComp_' + sm_name for sm_name in wind_pv_df.loc_name]
-	sta_vmea_df_pf[['i_orient', 'nphase']] = 1, 3
-
-	loc_name_wind = ['PQmea_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'Wind'].loc_name]
-	loc_name_solar_p = ['Pmea_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	loc_name_solar_q = ['Qmea_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	sta_pqmea_df_pf['loc_name'] = loc_name_wind + loc_name_solar_p + loc_name_solar_q
-	sta_pqmea_df_pf['pbusbar'] = ['ElmTerm_' + sm_name[1] + '_' + sm_name[2] for sm_name in sta_pqmea_df_pf.loc_name.str.split('_')]
-	sta_pqmea_df_pf['ElmComp'] = ['ElmComp_' + sm_name[1] + '_' + sm_name[2] for sm_name in sta_pqmea_df_pf.loc_name.str.split('_')]
-	sta_pqmea_df_pf[['i_orient', 'nphase']] = 1, 3
-
-	elm_phi_df_pf['loc_name'] = ['PLL_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	elm_phi_df_pf['pbusbar'] = ['ElmTerm_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	elm_phi_df_pf['ElmComp'] = ['ElmComp_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	elm_phi_df_pf[['i_orient', 'nphase']] = 1, 3
-
 	# Write csv files
-	substations_df_pf.to_csv(BaseElements + '/ElmTerm.csv', index=False)
-	lines_df_pf.to_csv(BaseElements + '/ElmLne.csv', index=False)
-	pp_df_pf.to_csv(FromTemplates + '/ElmTemplate.csv', index=False)
-	loads_df_pf.to_csv(BaseElements + '/ElmLod.csv', index=False)
-	sta_vmea_df_pf.to_csv(FromTemplates + '/StaVmea.csv', index=False)
-	sta_pqmea_df_pf.to_csv(FromTemplates + '/StaPqmea.csv', index=False)
-	elm_phi_df_pf.to_csv(FromTemplates + '/ElmPhi.csv', index=False)
+	substations_df_pf.to_csv(write_data_dir + '/Terminals.csv', index=False)
+	lines_df_pf.to_csv(write_data_dir + '/Lines.csv', index=False)
+	pp_df_pf.to_csv(write_data_dir + '/PowerPlants.csv', index=False)
+	loads_df_pf.to_csv(write_data_dir + '/Loads.csv', index=False)
 
 	return 0
-
 
 def qgis(df_lines:pd.DataFrame, df_subs:pd.DataFrame, df_trafos:pd.DataFrame, df2:pd.DataFrame, df_pp:pd.DataFrame,
 		 df_pp_agg:pd.DataFrame, df_loads:pd.DataFrame) -> int:
@@ -789,8 +760,8 @@ def main():
 	tests.main_tests(df_lines.loc[df_lines.connecting_segments != 'chained_line'], df_subs, df_pp_agg)
 
 	# print('Validating csv format...')
-	# lines_csv_df = pd.read_csv('../austrian_grid/csv/BaseElements/ElmLne.csv')
-	# terminals_csv_df = pd.read_csv('../austrian_grid/csv/BaseElements/ElmTerm.csv')
+	# lines_csv_df = pd.read_csv('write_data_dir/Lines.csv')
+	# terminals_csv_df = pd.read_csv('write_data_dir/Terminals.csv')
 	# d = {'ElmLne': lines_csv_df, 'ElmTerm': terminals_csv_df}
 	# validation = validate.NetworkValidator(d)
 	# validation.validate()

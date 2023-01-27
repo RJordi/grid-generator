@@ -5,17 +5,18 @@ from shapely.geometry import Point, Polygon, LineString
 from shapely.ops import transform
 import geopandas as gpd
 from haversine import haversine_vector, Unit
+import os
 
 import power_plants
 import lines
 import terminals
 import tests
-import validate
+# import validate
 
-query_area_tag = 'name="Deutschland"'  # Any other defining tag can be used: https://nominatim.openstreetmap.org/ui/search.html
-query_date = '[date:"2016-07-18T00:00:00Z"]'  # To get most recent data pass an empty string
+query_area_tag = 'name="Catalunya"'  # Any other defining tag can be used: https://nominatim.openstreetmap.org/ui/search.html
+query_date = ''  # To get most recent data pass an empty string
 read_data_dir = './raw_data/'
-write_data_dir = './german_grid/'
+write_data_dir = './transmission_grid/'
 
 
 def query_overpass(query: str) -> pd.DataFrame:
@@ -174,14 +175,14 @@ def assign_substation_to_power_plants(df_pp: pd.DataFrame, df_subs: pd.DataFrame
 
 	# Aggregate (sum) capacities for all power plants that have a capacity <= 10MW (considered distributed generation)
 	df_pp_distrib = df_pp.loc[df_pp['capacity(MW)'] <= 10]
-	grouped_df = df_pp_distrib.groupby(['template', 'assigned_term'], as_index=False).agg({'name': lambda x:'aggregated_pp',
+	grouped_df = df_pp_distrib.groupby(['source', 'assigned_term'], as_index=False).agg({'name': lambda x:'aggregated_pp',
 																							'lat': lambda x: 'agg',
 																							'lon': lambda x: 'agg',
 																							'OSM type': lambda x:'agg',
 																							'power': lambda x:'agg', 'capacity(MW)': 'sum',
 																							'dist_to_term': lambda x:'agg', 'source': lambda x: list(x)[0]})
 
-	df_pp_agg = df_pp.drop(df_pp_distrib.duplicated(subset=['template', 'assigned_term'], keep=False).index, inplace=False)
+	df_pp_agg = df_pp.drop(df_pp_distrib.duplicated(subset=['source', 'assigned_term'], keep=False).index, inplace=False)
 	df_pp_agg = pd.concat([df_pp_agg, grouped_df])
 
 	return df_pp, df_pp_agg
@@ -269,7 +270,7 @@ def handle_floating_ends(df_lines: pd.DataFrame, df_subs: pd.DataFrame) -> tuple
 	# 	// define output format
 	# 	[out:json];
 	# 	// gather results
-	# 	relation(109166);
+	# 	relation(51477);
 	# 	// print results
 	# 	out body geom;
 	area_polygon = transform(lambda x, y: (y, x), area_polygon)
@@ -308,7 +309,6 @@ def handle_floating_ends(df_lines: pd.DataFrame, df_subs: pd.DataFrame) -> tuple
 		return row
 
 	floating_lines_df = floating_lines_df.apply(handle_row, axis=1)
-	# display(floating_lines_df.loc[floating_lines_df.substations=='drop_this_line']) # delete or comment afterwards
 	df_lines.drop(floating_lines_df.loc[floating_lines_df.id == 'drop_this_line'].index, inplace=True)
 	floating_lines_df.drop(floating_lines_df.loc[floating_lines_df.id == 'drop_this_line'].index, inplace=True)
 	df_lines.loc[floating_lines_df.index] = floating_lines_df
@@ -373,79 +373,44 @@ def handle_special_cases(df_lines, df_subs, df_trafos) -> tuple[pd.DataFrame, pd
 	return df_lines, df_subs
 
 
-def create_pf_csv(df_lines: pd.DataFrame, df_subs: pd.DataFrame, df_pp_agg: pd.DataFrame) -> int:
+def create_pf_csv(df_lines: pd.DataFrame, df_subs: pd.DataFrame, df_pp_agg: pd.DataFrame, df_trafos) -> int:
 	"""
 	Create csv files to generate the PowerFactory model
 
 	:param pd.DataFrame df_lines: lines DataFrame
 	:param pd.DataFrame df_subs: terminals DataFrame
 	:param pd.DataFrame df_pp_agg: power plants DataFrame
-	:param pd.DataFrame df_loads: loads DataFrame
+	:param pd.DataFrame df_trafos: transformers DataFrame
 	:return: 0
 	:rtype: int
 	"""
-	# Directory to write the csv files
-	BaseElements = '../austrian_grid/csv/BaseElements'
-	FromTemplates = '../austrian_grid/csv/FromTemplates'
-
 	# Create empty DataFrames
-	lines_df_pf = pd.DataFrame(columns=['loc_name','bus1.cterm','bus2.cterm','bus1.__switch__.on_off','bus2.__switch__.on_off','dline','typ_id','nlnum','desc','GPScoords'])
-	substations_df_pf = pd.DataFrame(columns=['loc_name', 'uknom', 'cpZone', 'cpArea', 'desc'])
-	pp_df_pf = pd.DataFrame(columns=['loc_name', 'template', 'cterm', 'sgn'])
-	loads_df_pf = pd.DataFrame(columns=['loc_name', 'bus1', 'plini', 'bus1.__switch__.on_off'])
-	sta_vmea_df_pf = pd.DataFrame(columns=['loc_name', 'pbusbar', 'i_orient', 'nphase', 'ElmComp'])
-	sta_pqmea_df_pf = pd.DataFrame(columns=['loc_name', 'pbusbar', 'i_orient', 'nphase', 'ElmComp'])
-	elm_phi_df_pf = pd.DataFrame(columns=['loc_name', 'pbusbar', 'i_orient', 'nphase', 'ElmComp'])
+	lines_df_pf = pd.DataFrame(columns=['id','bus1.cterm','bus2.cterm','dline','typ_id','nlnum','desc','GPScoords'])
+	substations_df_pf = pd.DataFrame(columns=['id', 'unom', 'desc'])
+	pp_df_pf = pd.DataFrame(columns=['id', 'source', 'cterm', 'sgn'])
 
 	# DataFrame for terminals
-	substations_df_pf['loc_name'] = df_subs.index
-	substations_df_pf[['uknom', 'desc']] = df_subs[['voltage', 'name']].set_index(substations_df_pf.index)
-	#substations_df_pf[['cpZone', 'cpArea']] = df_subs[['Zone', 'Area']].set_index(substations_df_pf.index)
+	substations_df_pf['id'] = df_subs.index
+	substations_df_pf[['unom', 'desc']] = df_subs[['voltage', 'name']].set_index(substations_df_pf.index)
 
 	# DataFrame for lines
-	lines_df_pf['loc_name'] = ['ElmLne_{0:04}'.format(i) for i in range(1,len(df_lines)+1)]
+	lines_df_pf['id'] = ['ElmLne_{0:04}'.format(i) for i in range(1,len(df_lines)+1)]
 	d_type = {110.0: 'TypLne_1', 220.0: 'TypLne_2', 380.0: 'TypLne_3'}
 	lines_df_pf['typ_id'] = df_lines.voltage.map(d_type).tolist()
 	lines_df_pf[['bus1.cterm','bus2.cterm']] = pd.DataFrame(df_lines.substations.tolist())
-	lines_df_pf[['bus1.__switch__.on_off', 'bus2.__switch__.on_off']] = 1, 1
 	df_lines.circuits = df_lines.circuits.astype(int)
 	lines_df_pf[['dline','desc', 'GPScoords', 'nlnum']] = df_lines[['length', 'name', 'geometry', 'circuits']].set_index(lines_df_pf.index)
 
 	# DataFrame for power plants
-	pp_df_pf['loc_name'] = ['SM_{0:04}'.format(i) for i in range(1, len(df_pp_agg)+1)]
-	pp_df_pf[['template', 'cterm']] = df_pp_agg[['template', 'assigned_term']].set_index(pp_df_pf.index)
-	pp_df_pf['sgn'] = [df_pp_agg['capacity(MW)'].values[i]*0.9 if df_pp_agg.template.values[i] not in ['PV', 'Wind'] else df_pp_agg['capacity(MW)'].values[i] for i in range(len(df_pp_agg))]
-	pp_df_pf['ip_ctrl'] = 0
-	pp_df_pf['ip_ctrl'].loc[pp_df_pf['sgn'].idxmax()] = 1
-
-	# DataFrames for measured voltage and measured power for Wind and PV controllers
-	wind_pv_df = pp_df_pf.loc[(pp_df_pf.template == 'Wind') | (pp_df_pf.template == 'PV')]
-
-	sta_vmea_df_pf['loc_name'] = ['Vmea_' + sm_name for sm_name in wind_pv_df.loc_name]
-	sta_vmea_df_pf['pbusbar'] = ['ElmTerm_' + sm_name for sm_name in wind_pv_df.loc_name]
-	sta_vmea_df_pf['ElmComp'] = ['ElmComp_' + sm_name for sm_name in wind_pv_df.loc_name]
-	sta_vmea_df_pf[['i_orient', 'nphase']] = 1, 3
-
-	loc_name_wind = ['PQmea_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'Wind'].loc_name]
-	loc_name_solar_p = ['Pmea_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	loc_name_solar_q = ['Qmea_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	sta_pqmea_df_pf['loc_name'] = loc_name_wind + loc_name_solar_p + loc_name_solar_q
-	sta_pqmea_df_pf['pbusbar'] = ['ElmTerm_' + sm_name[1] + '_' + sm_name[2] for sm_name in sta_pqmea_df_pf.loc_name.str.split('_')]
-	sta_pqmea_df_pf['ElmComp'] = ['ElmComp_' + sm_name[1] + '_' + sm_name[2] for sm_name in sta_pqmea_df_pf.loc_name.str.split('_')]
-	sta_pqmea_df_pf[['i_orient', 'nphase']] = 1, 3
-
-	elm_phi_df_pf['loc_name'] = ['PLL_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	elm_phi_df_pf['pbusbar'] = ['ElmTerm_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	elm_phi_df_pf['ElmComp'] = ['ElmComp_' + sm_name for sm_name in wind_pv_df.loc[wind_pv_df.template == 'PV'].loc_name]
-	elm_phi_df_pf[['i_orient', 'nphase']] = 1, 3
+	pp_df_pf['id'] = ['SM_{0:04}'.format(i) for i in range(1, len(df_pp_agg)+1)]
+	pp_df_pf[['source', 'cterm']] = df_pp_agg[['source', 'assigned_term']].set_index(pp_df_pf.index)
+	pp_df_pf['sgn'] = [df_pp_agg['capacity(MW)'].values[i]*0.9 if df_pp_agg.source.values[i] not in ['PV', 'Wind'] else df_pp_agg['capacity(MW)'].values[i] for i in range(len(df_pp_agg))]
 
 	# Write csv files
-	substations_df_pf.to_csv(write_data_dir + 'csv/ElmTerm.csv', index=False)
-	lines_df_pf.to_csv(write_data_dir + 'csv/ElmLne.csv', index=False)
-	pp_df_pf.to_csv(write_data_dir + 'csv/ElmTemplate.csv', index=False)
-	sta_vmea_df_pf.to_csv(write_data_dir + 'csv/StaVmea.csv', index=False)
-	sta_pqmea_df_pf.to_csv(write_data_dir + 'csv/StaPqmea.csv', index=False)
-	elm_phi_df_pf.to_csv(write_data_dir + 'csv/ElmPhi.csv', index=False)
+	substations_df_pf.to_csv(write_data_dir + 'csv/Terminals.csv', index=False)
+	lines_df_pf.to_csv(write_data_dir + 'csv/Lines.csv', index=False)
+	pp_df_pf.to_csv(write_data_dir + 'csv/PowerPlants.csv', index=False)
+	df_trafos.to_csv(write_data_dir + 'csv/Transformers.csv', index=False)
 
 	return 0
 
@@ -461,7 +426,6 @@ def qgis(df_lines:pd.DataFrame, df_subs:pd.DataFrame, df_trafos:pd.DataFrame, df
 	:param pd.DataFrame df2: substations DataFrame with original geometries (before converting to circles)
 	:param pd.DataFrame df_pp: power plants DataFrame
 	:param pd.DataFrame df_pp_agg: power plants DataFrame with aggregated distributed generation
-	:param pd.DataFrame df_loads: loads DataFrame
 	:return: 0
 	:rtype: int
 
@@ -473,9 +437,6 @@ def qgis(df_lines:pd.DataFrame, df_subs:pd.DataFrame, df_trafos:pd.DataFrame, df
 	being aggregated and the other contains the aggregated power plants located at the position where their assigned
 	terminal is positioned.
 	"""
-	# Directory to write the qgis files
-	QGIS_dir = '../data/qgis_generated_csv'
-
 	df_qgis_lines = df_lines[['voltage', 'length', 'id', 'substations']]
 	df_qgis_lines['sh_lines'] = df_lines.geometry.apply(lambda p: transform(lambda x, y: (y, x), LineString(p)))
 	df_qgis_lines['idx'] = df_lines.index
@@ -489,10 +450,10 @@ def qgis(df_lines:pd.DataFrame, df_subs:pd.DataFrame, df_trafos:pd.DataFrame, df
 	df_qgis_terminals['sh_terminals'] = subs_1.geometry.apply(lambda p: transform(lambda x, y: (y, x), LineString(p)))
 	df_qgis_terminals_nodes['sh_terminals'] = subs_2.geometry.apply(lambda p: transform(lambda x, y: (y, x), Point(p[0])))
 
-	l1 = [[df_trafos.loc_name.tolist()[i] for i in range(len(df_trafos)) if \
+	l1 = [[df_trafos.id.tolist()[i] for i in range(len(df_trafos)) if \
 	 term == df_trafos['buslv.cterm'].tolist()[i] or term == df_trafos['bushv.cterm'].tolist()[i]] for \
 	 term in df_qgis_terminals.index]
-	l2 = [[df_trafos.loc_name.tolist()[i] for i in range(len(df_trafos)) if \
+	l2 = [[df_trafos.id.tolist()[i] for i in range(len(df_trafos)) if \
 	 term == df_trafos['buslv.cterm'].tolist()[i] or term == df_trafos['bushv.cterm'].tolist()[i]] for \
 	 term in df_qgis_terminals_nodes.index]
 
@@ -505,14 +466,14 @@ def qgis(df_lines:pd.DataFrame, df_subs:pd.DataFrame, df_trafos:pd.DataFrame, df
 	df_qgis_subs_og = df_subs_og.loc[df_subs_og.id.str.contains('|'.join(['w', 'r'])) & ~df_subs_og.id.isna()][['name', 'geometry']]
 	df_qgis_subs_og['geometry'] = df_qgis_subs_og.geometry.apply(lambda p: transform(lambda x, y: (y, x), Polygon(p)))
 
-	df_qgis_pp_og = df_pp[['name', 'template', 'capacity(MW)', 'assigned_term', 'dist_to_term']]
+	df_qgis_pp_og = df_pp[['name', 'source', 'capacity(MW)', 'assigned_term', 'dist_to_term']]
 	df_qgis_pp_og['sh_pp_og'] = [Point(lon, lat) for lon,lat in zip(df_pp.lon, df_pp.lat)] # Raises a deprecation warning but it's fine to ignore it (https://shapely.readthedocs.io/en/stable/migration.html#creating-numpy-arrays-of-geometry-objects)
 	df_qgis_pp_og['idx'] = ['SM_{0:04}'.format(i) for i in range(1,len(df_pp)+1)]
 
 	terminals_centroids = pd.concat([df_qgis_terminals_nodes.sh_terminals.apply(lambda x: x.coords[0]),
 									 df_qgis_terminals.sh_terminals.apply(lambda x: x.centroid.coords[0])])
 
-	df_qgis_pp_agg = df_pp_agg[['name', 'template', 'capacity(MW)', 'assigned_term']]
+	df_qgis_pp_agg = df_pp_agg[['name', 'source', 'capacity(MW)', 'assigned_term']]
 	df_qgis_pp_agg['lat'] = [terminals_centroids[x][0] for x in df_qgis_pp_agg.assigned_term]
 	df_qgis_pp_agg['lon'] = [terminals_centroids[x][1] for x in df_qgis_pp_agg.assigned_term]
 	df_qgis_pp_agg['sh_pp_agg'] = [Point(lat, lon) for lat,lon in zip(df_qgis_pp_agg.lat, df_qgis_pp_agg.lon)]
@@ -532,28 +493,31 @@ def main():
 
 	print('--- EXECUTION STARTED ---')
 
-	# print('Querying OSM for lines...')
-	# df1 = query_overpass(lines.query_lines(query_area_tag, query_date))
-	# print(df1)
-	# df1.to_json(read_data_dir + '/DE_subregions/lines_DE_18072016.json', orient='records')
-	# print('Querying OSM for terminals...')
-	# df2 = query_overpass(terminals.query_terminals(query_area_tag, query_date))
-	# df2.to_json(read_data_dir + '/DE_subregions/substations_DE_18072016.json', orient='records')
-	# print('Querying OSM for power plants...')
-	# df3 = query_overpass(power_plants.query_power_plants(query_area_tag, query_date))
-	# df3.to_json(read_data_dir + '/DE_subregions/power_plants_DE_18072016.json', orient='records')
+	raw_data_files = os.listdir(read_data_dir)
+	if 'lines.json' in raw_data_files:
+		print('Reading lines data from json file...')
+		df1 = pd.read_json(read_data_dir + 'lines.json', orient='records')
+	else:
+		print('Querying OSM for lines...')
+		df1 = query_overpass(lines.query_lines(query_area_tag, query_date))
+		df1.to_json(read_data_dir + 'lines.json', orient='records')
 
-	print('Reading lines data from json file...')
-	df1 = pd.read_json(read_data_dir + 'lines_DE_18072016.json', orient='records')
-	print('Reading terminals data from json file...')
-	df2 = pd.read_json(read_data_dir + 'substations_DE_18072016.json', orient='records')
-	print('Reading power plants data from json file...')
-	df3 = pd.read_json(read_data_dir + 'power_plants_DE_18072016.json', orient='records')
-	# print('Reading load profiles data from csv files...')
-	# load_profile_summer_day_workday = pd.read_csv('../data/raw_data/Loads/1h_load_profile_20_07_2021.csv')
-	# load_profile_summer_day_weekend = pd.read_csv('../data/raw_data/Loads/1h_load_profile_25_07_2021.csv')
-	# load_profile_winter_day_workday = pd.read_csv('../data/raw_data/Loads/1h_load_profile_16_02_2021.csv')
-	# load_profile_winter_day_weekend = pd.read_csv('../data/raw_data/Loads/1h_load_profile_21_02_2021.csv')
+	if 'substations.json' in raw_data_files:
+		print('Reading terminals data from json file...')
+		df2 = pd.read_json(read_data_dir + 'substations.json', orient='records')
+	else:
+		print('Querying OSM for terminals...')
+		df2 = query_overpass(terminals.query_terminals(query_area_tag, query_date))
+		df2.to_json(read_data_dir + 'substations.json', orient='records')
+
+	if 'power_plants.json' in raw_data_files:
+		print('Reading power plants data from json file...')
+		df3 = pd.read_json(read_data_dir + 'power_plants.json', orient='records')
+	else:
+		print('Querying OSM for power plants...')
+		df3 = query_overpass(power_plants.query_power_plants(query_area_tag, query_date))
+		df3.to_json(read_data_dir + 'power_plants.json', orient='records')
+
 
 	print('Formatting data...')
 	df_lines = lines.format_lines(df1)
@@ -565,18 +529,14 @@ def main():
 
 	print('Cleaning data...')
 	df_lines = delete_lines_in_subs(df_lines, df_subs)
-	print('	handle nan')
+	print(' format data')
 	df_lines = lines.handle_nan(df_lines)
-	print('	correct_incoherent_cables')
 	df_lines = lines.correct_incoherent_cables(df_lines)
-	print('	correct_incoherent_combinations')
 	df_lines = lines.correct_incoherent_combinations(df_lines)
-	print('	convert_capacity')
+	print(' convert power plants capacity')
 	df_pp = power_plants.convert_capacity(df_pp)
-	#print(' remove_redundant_generators')
-	#df_pp = power_plants.remove_redundant_generators(power_plants.cluster_data(df_pp, 1000), df_pp)
-	print('	reassign_source_values')
-	df_pp = power_plants.reassign_source_values(df_pp)
+	print(' remove_redundant_generators')
+	df_pp = power_plants.remove_redundant_generators(power_plants.cluster_data(df_pp, 1000), df_pp)
 
 	print('Splitting lines by voltage...')
 	df_lines = lines.split_lines_by_voltage(df_lines)
@@ -594,9 +554,6 @@ def main():
 	print('Joining line segments...')
 	df_lines = lines.join_lines(df_lines)
 
-	# print('Assigning areas and zones to terminals...')
-	# df_subs = terminals.assign_areas_and_zones(df_subs)
-
 	print('Creating transformers data...')
 	df_trafos = terminals.create_trafos_csv(df_subs)
 
@@ -607,17 +564,17 @@ def main():
 	df_pp, df_pp_agg = assign_substation_to_power_plants(df_pp, df_subs)
 
 	print('Writing data to csv...')
-	create_pf_csv(df_lines, df_subs, df_pp_agg)
+	create_pf_csv(df_lines, df_subs, df_pp_agg, df_trafos)
 
 	print('Running tests...')
 	tests.main_tests(df_lines.loc[df_lines.connecting_segments != 'chained_line'], df_subs, df_pp_agg)
 
-	print('Validating csv format...')
-	lines_csv_df = pd.read_csv(write_data_dir + 'csv/ElmLne.csv')
-	terminals_csv_df = pd.read_csv(write_data_dir + 'csv/ElmTerm.csv')
-	d = {'ElmLne': lines_csv_df, 'ElmTerm': terminals_csv_df}
-	validation = validate.NetworkValidator(d)
-	validation.validate()
+	# print('Validating csv format...')
+	# lines_csv_df = pd.read_csv(write_data_dir + 'csv/ElmLne.csv')
+	# terminals_csv_df = pd.read_csv(write_data_dir + 'csv/ElmTerm.csv')
+	# d = {'ElmLne': lines_csv_df, 'ElmTerm': terminals_csv_df}
+	# validation = validate.NetworkValidator(d)
+	# validation.validate()
 
 	print('Creating files for QGIS visualization...')
 	qgis(df_lines, df_subs, df_trafos, df2, df_pp, df_pp_agg)

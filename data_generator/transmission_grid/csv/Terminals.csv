@@ -1,0 +1,178 @@
+id,unom,desc
+ElmTerm_0010,220.0,Subestació de Sentmenat
+ElmTerm_virtual_0001,220.0,virtual terminal
+ElmTerm_0086,380.0,added terminal voltage
+ElmTerm_0087,380.0,added terminal voltage
+ElmTerm_virtual_0002,380.0,virtual terminal
+ElmTerm_virtual_0003,380.0,virtual terminal
+ElmTerm_virtual_0004,380.0,virtual terminal
+ElmTerm_0088,380.0,added terminal voltage
+ElmTerm_0006,220.0,Subestació de Pierola
+ElmTerm_0035,220.0,Subestació transformadora de Rubió
+ElmTerm_0012,220.0, 
+ElmTerm_0113,220.0,floating end terminal
+ElmTerm_0013,220.0,Subestació de Sant Celoni
+ElmTerm_virtual_0007,220.0,virtual terminal
+ElmTerm_0089,380.0,added terminal voltage
+ElmTerm_0114,380.0,floating end terminal
+ElmTerm_virtual_0008,380.0,virtual terminal
+ElmTerm_virtual_0009,380.0,virtual terminal
+ElmTerm_0050,220.0,Subestació de Santa Coloma
+ElmTerm_virtual_0010,220.0,virtual terminal
+ElmTerm_virtual_0011,220.0,virtual terminal
+ElmTerm_0049,220.0,Subestació Via Favència
+ElmTerm_virtual_0012,380.0,virtual terminal
+ElmTerm_0090,380.0,added terminal voltage
+ElmTerm_0039,220.0,Subestació de Sant Just
+ElmTerm_virtual_0013,220.0,virtual terminal
+ElmTerm_virtual_0014,220.0,virtual terminal
+ElmTerm_0091,220.0,added terminal voltage
+ElmTerm_virtual_0015,220.0,virtual terminal
+ElmTerm_virtual_0016,220.0,virtual terminal
+ElmTerm_0015,220.0, 
+ElmTerm_0092,380.0,added terminal voltage
+ElmTerm_tieline_0001,380.0,tieline terminal
+ElmTerm_virtual_0017,220.0,virtual terminal
+ElmTerm_0018,220.0, 
+ElmTerm_0093,220.0,added terminal voltage
+ElmTerm_tieline_0002,380.0,tieline terminal
+ElmTerm_0020,220.0,Central hidroelèctrica de Riba-roja
+ElmTerm_0115,380.0,floating end terminal
+ElmTerm_virtual_0018,380.0,virtual terminal
+ElmTerm_tieline_0003,380.0,tieline terminal
+ElmTerm_0094,380.0,added terminal voltage
+ElmTerm_0095,380.0,added terminal voltage
+ElmTerm_0022,220.0,Subestació els Aubals
+ElmTerm_virtual_0019,220.0,virtual terminal
+ElmTerm_tieline_0004,220.0,tieline terminal
+ElmTerm_0116,220.0,floating end terminal
+ElmTerm_virtual_0020,220.0,virtual terminal
+ElmTerm_0117,380.0,floating end terminal
+ElmTerm_0096,380.0,added terminal voltage
+ElmTerm_virtual_0021,220.0,virtual terminal
+ElmTerm_0002,220.0,Subestació de Begues
+ElmTerm_virtual_0022,220.0,virtual terminal
+ElmTerm_virtual_0023,220.0,virtual terminal
+ElmTerm_0122,220.0,floating end terminal
+ElmTerm_virtual_0024,380.0,virtual terminal
+ElmTerm_virtual_0025,380.0,virtual terminal
+ElmTerm_virtual_0026,220.0,virtual terminal
+ElmTerm_virtual_0027,220.0,virtual terminal
+ElmTerm_0025,220.0, 
+ElmTerm_virtual_0028,220.0,virtual terminal
+ElmTerm_0027,220.0,Subestació de Torres de Segre
+ElmTerm_tieline_0005,220.0,tieline terminal
+ElmTerm_0028,220.0,Subestació d'Albatàrrec
+ElmTerm_0026,220.0, 
+ElmTerm_virtual_0029,220.0,virtual terminal
+ElmTerm_virtual_0030,220.0,virtual terminal
+ElmTerm_virtual_0031,220.0,virtual terminal
+ElmTerm_0031,220.0, 
+ElmTerm_0030,220.0, 
+ElmTerm_0125,220.0,floating end terminal
+ElmTerm_virtual_0032,220.0,virtual terminal
+ElmTerm_0097,220.0,added terminal voltage
+ElmTerm_virtual_0033,220.0,virtual terminal
+ElmTerm_0126,220.0,floating end terminal
+ElmTerm_virtual_0034,380.0,virtual terminal
+ElmTerm_virtual_0035,380.0,virtual terminal
+ElmTerm_virtual_0036,380.0,virtual terminal
+ElmTerm_0098,380.0,added terminal voltage
+ElmTerm_0099,380.0,added terminal voltage
+ElmTerm_0127,380.0,floating end terminal
+ElmTerm_virtual_0006,220.0,virtual terminal
+ElmTerm_0034,220.0,Subestació de Centelles
+ElmTerm_virtual_0037,380.0,virtual terminal
+ElmTerm_0100,380.0,added terminal voltage
+ElmTerm_virtual_0038,380.0,virtual terminal
+ElmTerm_virtual_0039,220.0,virtual terminal
+ElmTerm_0036,220.0,Central del Pont de Suert
+ElmTerm_virtual_0040,220.0,virtual terminal
+ElmTerm_virtual_0041,220.0,virtual terminal
+ElmTerm_0053,220.0,Central hidràulica de la Pobla de Segur
+ElmTerm_tieline_0007,220.0,tieline terminal
+ElmTerm_tieline_0008,220.0,tieline terminal
+ElmTerm_virtual_0042,380.0,virtual terminal
+ElmTerm_virtual_0043,220.0,virtual terminal
+ElmTerm_virtual_0044,220.0,virtual terminal
+ElmTerm_virtual_0045,220.0,virtual terminal
+ElmTerm_virtual_0046,220.0,virtual terminal
+ElmTerm_virtual_0047,220.0,virtual terminal
+ElmTerm_0128,220.0,floating end terminal
+ElmTerm_0129,220.0,floating end terminal
+ElmTerm_virtual_0048,220.0,virtual terminal
+ElmTerm_0130,380.0,floating end terminal
+ElmTerm_virtual_0005,220.0,virtual terminal
+ElmTerm_0101,380.0,added terminal voltage
+ElmTerm_virtual_0049,380.0,virtual terminal
+ElmTerm_0131,220.0,floating end terminal
+ElmTerm_virtual_0050,220.0,virtual terminal
+ElmTerm_0102,220.0,added terminal voltage
+ElmTerm_tieline_0009,220.0,tieline terminal
+ElmTerm_virtual_0051,220.0,virtual terminal
+ElmTerm_virtual_0052,220.0,virtual terminal
+ElmTerm_virtual_0053,220.0,virtual terminal
+ElmTerm_virtual_0054,220.0,virtual terminal
+ElmTerm_0133,220.0,floating end terminal
+ElmTerm_0134,220.0,floating end terminal
+ElmTerm_0042,220.0,Subestació Tavascan
+ElmTerm_0007,220.0, 
+ElmTerm_virtual_0055,220.0,virtual terminal
+ElmTerm_virtual_0056,220.0,virtual terminal
+ElmTerm_0041,220.0,Subestació elèctrica
+ElmTerm_0038,220.0,Subestació de Juneda
+ElmTerm_0103,380.0,added terminal voltage
+ElmTerm_0104,380.0,added terminal voltage
+ElmTerm_0023,220.0,Subestació de Viladecans
+ElmTerm_virtual_0057,220.0,virtual terminal
+ElmTerm_0024,220.0,Subestació Castellet i la Gornal
+ElmTerm_0048,220.0, 
+ElmTerm_0137,220.0,floating end terminal
+ElmTerm_0138,220.0,floating end terminal
+ElmTerm_0105,220.0,added terminal voltage
+ElmTerm_0106,380.0,added terminal voltage
+ElmTerm_virtual_0058,220.0,virtual terminal
+ElmTerm_virtual_0059,220.0,virtual terminal
+ElmTerm_tieline_0010,220.0,tieline terminal
+ElmTerm_0046,220.0, 
+ElmTerm_virtual_0060,220.0,virtual terminal
+ElmTerm_0140,220.0,floating end terminal
+ElmTerm_0141,220.0,floating end terminal
+ElmTerm_virtual_0062,380.0,virtual terminal
+ElmTerm_virtual_0063,380.0,virtual terminal
+ElmTerm_0142,220.0,floating end terminal
+ElmTerm_virtual_0065,220.0,virtual terminal
+ElmTerm_virtual_0066,220.0,virtual terminal
+ElmTerm_0040,220.0,Estació Elèctrica de Pujalt
+ElmTerm_virtual_0067,220.0,virtual terminal
+ElmTerm_virtual_0068,220.0,virtual terminal
+ElmTerm_virtual_0069,220.0,virtual terminal
+ElmTerm_virtual_0070,220.0,virtual terminal
+ElmTerm_0144,220.0,floating end terminal
+ElmTerm_virtual_0071,220.0,virtual terminal
+ElmTerm_0145,220.0,floating end terminal
+ElmTerm_0052,220.0,Subestació de Trinitat
+ElmTerm_0004,220.0,Estació receptora de Can Figueres
+ElmTerm_0011,220.0,Subestació de Juià
+ElmTerm_0107,220.0,added terminal voltage
+ElmTerm_0109,220.0,added terminal voltage
+ElmTerm_0110,220.0,added terminal voltage
+ElmTerm_0008,220.0,Subestació de Canyet
+ElmTerm_0033,220.0, 
+ElmTerm_virtual_0061,220.0,virtual terminal
+ElmTerm_0147,380.0,floating end terminal
+ElmTerm_virtual_0073,380.0,virtual terminal
+ElmTerm_virtual_0074,380.0,virtual terminal
+ElmTerm_0148,380.0,floating end terminal
+ElmTerm_0149,220.0,floating end terminal
+ElmTerm_virtual_0075,220.0,virtual terminal
+ElmTerm_virtual_0076,220.0,virtual terminal
+ElmTerm_virtual_0072,380.0,virtual terminal
+ElmTerm_0132,220.0,floating end terminal
+ElmTerm_0139,220.0,floating end terminal
+ElmTerm_0029,220.0, 
+ElmTerm_0111,380.0,added terminal voltage
+ElmTerm_tieline_0006,380.0,tieline terminal
+ElmTerm_0044,220.0,Estació Receptora de Collblanc
+ElmTerm_0108,380.0,added terminal voltage
+ElmTerm_0112,220.0,added terminal voltage
